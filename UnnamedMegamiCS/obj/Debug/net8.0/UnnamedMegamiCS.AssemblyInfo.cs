@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("UnnamedMegamiCS")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cb83b720e55179ba0e9d05b0b9e3256371645324")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+60f03ffd51c99b8fd996870db95d8a71931a115f")]
 [assembly: System.Reflection.AssemblyProductAttribute("UnnamedMegamiCS")]
 [assembly: System.Reflection.AssemblyTitleAttribute("UnnamedMegamiCS")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
