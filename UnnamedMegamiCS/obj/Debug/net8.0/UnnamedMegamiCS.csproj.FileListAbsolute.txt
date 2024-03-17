@@ -1,0 +1,5 @@
+/workspaces/Unnamed-Megami-but-CSharp/UnnamedMegamiCS/obj/Debug/net8.0/UnnamedMegamiCS.GeneratedMSBuildEditorConfig.editorconfig
+/workspaces/Unnamed-Megami-but-CSharp/UnnamedMegamiCS/obj/Debug/net8.0/UnnamedMegamiCS.AssemblyInfoInputs.cache
+/workspaces/Unnamed-Megami-but-CSharp/UnnamedMegamiCS/obj/Debug/net8.0/UnnamedMegamiCS.AssemblyInfo.cs
+/workspaces/Unnamed-Megami-but-CSharp/UnnamedMegamiCS/obj/Debug/net8.0/UnnamedMegamiCS.csproj.CoreCompileInputs.cache
+/workspaces/Unnamed-Megami-but-CSharp/UnnamedMegamiCS/obj/Debug/net8.0/UnnamedMegamiCS.sourcelink.json
