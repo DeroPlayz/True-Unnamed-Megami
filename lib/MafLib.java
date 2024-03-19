@@ -42,7 +42,7 @@ public class MafLib{
         if(EndOnNewline == false){
             System.out.print(Prompt);
         } 
-        String response = Scan.nextLine();
+        String response = Scan.next();
         return response;
     }
 

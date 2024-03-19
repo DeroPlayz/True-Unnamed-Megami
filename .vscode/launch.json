@@ -8,6 +8,13 @@
             "type": "java",
             "name": "Main",
             "request": "launch",
+            "mainClass": "src.Main",
+            "projectName": "Unnamed-Megami-but-CSharp_5dc75fa3"
+        },
+        {
+            "type": "java",
+            "name": "Main",
+            "request": "launch",
             "mainClass": "Main",
             "projectName": "Unnamed-Megami-but-CSharp_5dc75fa3"
         }

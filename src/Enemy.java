@@ -1,3 +1,4 @@
+package src;
 public class Enemy extends Entity{
 
     Enemy(String Name, int Level, int MaxHP, int MaxSP, String Arcana, int Strength, int Magic, int Endurance, int Agility, double[] Affinities) {
