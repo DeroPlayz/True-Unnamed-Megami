@@ -1,30 +1,30 @@
 class Entity{
     //???
-        String Name;
-        String Arcana;
-    
+        private String Name;                                    public String getName(){return Name;}
+        private String Arcana;                                  public String getArcana(){return Arcana;}
+
     //Stats
-        int Level;
-        double XP;
+        private int Level;                                      public int getLevel(){return Level;}
+        private double XP;                                      public double getXP(){return XP;}
+         
+        private int CurrentHP;                                  public int getCurrentHP(){return CurrentHP;}
+        private int MaxHP;                                      public int getMaxHP(){return MaxHP;}
+
+        private int CurrentSP;                                  public int getCurrentSP(){return CurrentSP;}
+        private int MaxSP;                                      public int getMaxSP(){return MaxSP;}
+ 
+        private int Strength;                                   public int getStrength(){return Strength;}
+        private int Magic;                                      public int getMagic(){return Magic;}
+        private int Endurance;                                  public int getEndurance(){return Endurance;}
+        private int Agility;                                    public int getAgility(){return Agility;}
+ 
+        private double Cash;                                    public double getCash(){return Cash;}
         
-        int CurrentHP;
-        int MaxHP;
-
-        int CurrentSP;
-        int MaxSP;
-
-        int Strength;
-        int Magic;
-        int Endurance;
-        int Agility;
-
-        double Cash;
-    
-        double[] Affinities = {1, 1, 1, 1, 1, 1, 1};
+        private double[] Affinities = {1, 1, 1, 1, 1, 1, 1};    public double[] getAffinities(){return Affinities;}
 
     //Position
-        int x;
-        int z;
+        int X;                                                  public int getX(){return X;}
+        int Z;                                                  public int getZ(){return Z;}
     
     Entity(String Name, int Level, double Cash, String Arcana){
         this.Name = Name;
