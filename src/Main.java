@@ -1,8 +1,11 @@
 package src;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import static src.Map.*;
 
 import lib.MafLib;
 
@@ -10,16 +13,17 @@ class Main{
     static Entity Player = new Entity();
     static int Answer = 0;
     public static void main(String[] args){
+        ClearScreen();
         StartUp();
     }
 
     private static void StartUp(){
-        //Generally speaking, NG is White, LG is Cyan, Settings are Yellow, and SG is Green.
+        //Generally speaking, NG is White, LG is Cyan, Settings are Black, and SG is Green.
         System.out.println(MafLib.BOLD + MafLib.MAGENTA + "  🔥Unnamed Megami⚡" + MafLib.RESET);
         System.out.println(MafLib.BLUE + "------ Main Menu -----");
         System.out.println(MafLib.RESET + "1. New Game");
         System.out.println(MafLib.CYAN + "2. Load Game");
-        System.out.println(MafLib.YELLOW + "3. Settings" + MafLib.RESET);
+        System.out.println(MafLib.BLACK + "3. Settings" + MafLib.RESET);
         Answer = MafLib.askInt("", false);
         if(Answer < 1 || Answer > 3){
             ClearScreen();
@@ -31,8 +35,11 @@ class Main{
         }
         else if(Answer == 2){
             Load();
-            System.out.println(Player);
         }
+        else if(Answer == 3){
+            Settings();
+        }
+        System.out.println(WORLD_MAP);
     }
 
     private static void ClearScreen(){
@@ -50,7 +57,7 @@ class Main{
             FileOutputStream FOS;
             ObjectOutputStream OOS;
             try {
-            FOS = new FileOutputStream(new File("Save/Save" + slot));
+            FOS = new FileOutputStream(new File("User/Save" + slot));
             OOS = new ObjectOutputStream(FOS);
             OOS.writeObject(Player.getName());
 
@@ -58,15 +65,38 @@ class Main{
                 e.printStackTrace();
             }
         }
-
-        if(slot < 1 || slot > 10){
-            ClearScreen();
-            Save();
-        }
     }
 
     private static void Load(){
         int slot = MafLib.askInt(MafLib.CYAN + "Which slot would you like to load from? (1-10)" + MafLib.RESET, true);
+        if(slot < 1 || slot > 10){
+            ClearScreen();
+            Load();
+        }
+        else{
+            FileInputStream FIS;
+            ObjectInputStream OIS;
+            try {
+            FIS = new FileInputStream(new File("User/Save" + slot));
+            OIS = new ObjectInputStream(FIS);
+            Player.setName((String) OIS.readObject());
+            }
+            catch(IOException e){
+                e.printStackTrace();
+            }
+            catch(ClassNotFoundException e){
+                e.printStackTrace();
+            }
+        }
+    }
 
+    private static void Settings(){
+        System.out.println(MafLib.BLACK + "--- Settings ---");
+        System.out.println("0. Go Back" + MafLib.RESET);
+        Answer = MafLib.askInt("", false);
+        if(Answer == 0){
+            ClearScreen();
+            StartUp();
+        }
     }
 }
