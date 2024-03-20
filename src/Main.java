@@ -20,15 +20,18 @@ class Main{
         System.out.println(MafLib.RESET + "1. New Game");
         System.out.println(MafLib.CYAN + "2. Load Game");
         System.out.println(MafLib.YELLOW + "3. Settings" + MafLib.RESET);
-        
         Answer = MafLib.askInt("", false);
         if(Answer < 1 || Answer > 3){
             ClearScreen();
             StartUp();
         }
         else if(Answer == 1){
-            String a = MafLib.askString(MafLib.CYAN + "What is your name?" + MafLib.RESET, true);
+            Player.setName(MafLib.askString(MafLib.CYAN + "What is your name?" + MafLib.RESET, true));
             Save();
+        }
+        else if(Answer == 2){
+            Load();
+            System.out.println(Player);
         }
     }
 
@@ -36,11 +39,12 @@ class Main{
         System.out.println("\033[H\033[2J");
         System.out.flush();
     }
+
     private static void Save(){
-        int slot = MafLib.askInt(MafLib.GREEN + "Which slot would you like to save in? (1-10)", true);
+        int slot = MafLib.askInt(MafLib.GREEN + "Which slot would you like to save in? (1-10)" + MafLib.RESET, true);
         if(slot < 1 || slot > 10){
             ClearScreen();
-            Save();
+            StartUp();
         }
         else{
             FileOutputStream FOS;
@@ -54,5 +58,15 @@ class Main{
                 e.printStackTrace();
             }
         }
+
+        if(slot < 1 || slot > 10){
+            ClearScreen();
+            Save();
+        }
+    }
+
+    private static void Load(){
+        int slot = MafLib.askInt(MafLib.CYAN + "Which slot would you like to load from? (1-10)" + MafLib.RESET, true);
+
     }
 }

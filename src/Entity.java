@@ -81,4 +81,8 @@ class Entity{
         this.Agility = Agility;
         this.Affinities = Affinities;
     }
+
+    public String toString(){
+        String s = Name + 
+    }
 }
