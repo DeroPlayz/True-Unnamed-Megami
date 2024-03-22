@@ -1,5 +1,7 @@
+package src;
+
 import static src.Tile.*;
-import static Main.Player;
+import static src.Main.Player;
 
 public class Map {
     String Name;
@@ -46,6 +48,7 @@ public class Map {
                 }
                 if(Board[i][j].getLetter().length() == 2){
                     s += " ";
+                    
                 }
                 if(Board[i][j].getLetter().length() == 1){
                     s += " ";
