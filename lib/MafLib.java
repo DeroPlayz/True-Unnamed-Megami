@@ -42,9 +42,16 @@ public class MafLib{
         if(EndOnNewline == false){
             System.out.print(Prompt);
         } 
-        String response = Scan.next();
+        String response = Scan.nextLine();
         return response;
     }
+        static String ans = "";
+
+    // public static void askString(String Prompt) {
+    //     log.setText(Prompt);
+    //     frame.add(response);
+    //     response.setBounds(680, 500, 200, 20);
+    // }
 
     public static int askInt(String Prompt, Boolean EndOnNewline){
         String nl = "";
@@ -60,9 +67,6 @@ public class MafLib{
         }
         else{
             response = response.substring(0, dot);
-        }
-        if(response.length() == 0){
-            response = "0";
         }
         return Integer.valueOf(response);
         

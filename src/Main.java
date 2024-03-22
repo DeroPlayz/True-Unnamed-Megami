@@ -1,11 +1,10 @@
-package src;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import static src.Map.*;
+import static Map.*;
 
 import lib.MafLib;
 
@@ -19,6 +18,9 @@ class Main{
 
     private static void StartUp(){
         //Generally speaking, NG is White, LG is Cyan, Settings are Black, and SG is Green.
+        Player.setX(7);
+        Player.setZ(7);
+        
         System.out.println(MafLib.BOLD + MafLib.MAGENTA + "  🔥Unnamed Megami⚡" + MafLib.RESET);
         System.out.println(MafLib.BLUE + "------ Main Menu -----");
         System.out.println(MafLib.RESET + "1. New Game");

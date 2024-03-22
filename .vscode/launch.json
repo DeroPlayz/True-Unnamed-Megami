@@ -9,6 +9,20 @@
             "name": "Main",
             "request": "launch",
             "mainClass": "src.Main",
+            "projectName": "Unnamed-Megami_28bf500c"
+        },
+        {
+            "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "src.Main",
+            "projectName": "True-Unnamed-Megami_a3dc777"
+        },
+        {
+            "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "src.Main",
             "projectName": "Unnamed-Megami_cdc3aa34"
         },
         {

@@ -28,8 +28,8 @@ class Entity{
         private double[] Affinities = {1, 1, 1, 1, 1, 1, 1};    public double[] getAffinities(){return Affinities;}     public void setAffinities(double[] Affinities){this.Affinities = Affinities;}
 
     //Position
-        int X;                                                  public int getX(){return X;}                            public void setX(int X){this.X = X;}
-        int Z;                                                  public int getZ(){return Z;}                            public void setZ(int Z){this.Z = Z;}
+        int X;                                                  public int getX(){return X;}                            public void setX(int X){this.X = X-1;}
+        int Z;                                                  public int getZ(){return Z;}                            public void setZ(int Z){this.Z = Z-1;}
     
     @SuppressWarnings("deprecation")
     NumberFormat Currency = NumberFormat.getCurrencyInstance(new Locale("en", "US"));

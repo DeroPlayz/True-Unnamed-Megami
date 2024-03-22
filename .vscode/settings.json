@@ -1,3 +1,6 @@
 {
-    "dotnet.defaultSolution": "UnnamedMegamiCS.sln"
+    "java.debug.settings.onBuildFailureProceed": true,
+    "githubPullRequests.ignoredPullRequestBranches": [
+        "main"
+    ]
 }

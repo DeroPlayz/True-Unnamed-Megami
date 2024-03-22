@@ -1,4 +1,4 @@
-package src;
+package World;
 
 import static lib.MafLib.*;
 
@@ -26,15 +26,16 @@ public class Tile{
     public static final Tile Path = new Tile("Path", false, "P", YELLOW);
     public static final Tile Mountain = new Tile("Path", false, "M", BLACK);
     
+    
     public static final Tile Coliseum = new Tile("Spirit Coliseum", false, "SC", BLUE);
-    public static final Tile SCWall = new Tile("Wall", false, "W", BLUE);
+        public static final Tile SCWall = new Tile("Wall", false, "W", BLUE);
     
     public static final Tile Prison = new Tile("Prison of Lies", false, "PL", RED);
-    public static final Tile PLWall = new Tile("Wall", false, "W", RED);
+        public static final Tile PLWall = new Tile("Wall", false, "W", RED);
     
     public static final Tile Palace = new Tile("Palace of Wrath", false, "PW", MAGENTA);
-    public static final Tile PWWall = new Tile("Wall", false, "W", MAGENTA);
+        public static final Tile PWWall = new Tile("Wall", false, "W", MAGENTA);
     
     public static final Tile Centralis = new Tile("Centralis Genesis", false, "CG", CYAN);
-    public static final Tile CGWALL = new Tile("Wall", false, "W", CYAN);
+        public static final Tile CGWALL = new Tile("Wall", false, "W", CYAN);
 }
