@@ -6,12 +6,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import static src.Map.*;
-
+import static src.Entity.Stella;
 import lib.MafLib;
+import static src.Entity.EnemyParty;
 
 class Main{
     static Entity Player = new Entity();
+    static Entity[] Party = {Player, Stella, null, null};
     static int Answer = 0;
     public static void main(String[] args){
         ClearScreen();
@@ -34,8 +35,7 @@ class Main{
             StartUp();
         }
         else if(Answer == 1){
-            Player.setName(MafLib.askString(MafLib.CYAN + "What is your name?" + MafLib.RESET, true));
-            Save();
+            New();
         }
         else if(Answer == 2){
             Load();
@@ -43,12 +43,23 @@ class Main{
         else if(Answer == 3){
             Settings();
         }
-        System.out.println(WORLD_MAP);
+        EnemyParty = new Entity[]{Demon.Pixie};
+
+        Player.Act();
+        System.out.println(EnemyParty[0]);
     }
 
-    private static void ClearScreen(){
-        System.out.println("\033[H\033[2J");
-        System.out.flush();
+    /*
+     * START
+     * SAVE
+     * LOAD
+     * SETTINGS
+     * CLEAR SCREEN
+     */
+
+    private static void New(){
+        Player.setName(MafLib.askString(MafLib.CYAN + "What is your name?" + MafLib.RESET, true));
+        Save();
     }
 
     private static void Save(){
@@ -85,11 +96,9 @@ class Main{
             OIS = new ObjectInputStream(FIS);
             Player.setName((String) OIS.readObject());
             }
-            catch(IOException e){
-                e.printStackTrace();
-            }
-            catch(ClassNotFoundException e){
-                e.printStackTrace();
+            catch(IOException | ClassNotFoundException e){
+                System.out.println(MafLib.RESET + "No save found. Initializing");
+                New();
             }
         }
     }
@@ -102,5 +111,10 @@ class Main{
             ClearScreen();
             StartUp();
         }
+    }
+
+    public static void ClearScreen(){
+        System.out.println("\033[H\033[2J");
+        System.out.flush();
     }
 }
