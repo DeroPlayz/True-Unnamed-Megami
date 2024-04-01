@@ -7,6 +7,7 @@ import static src.Main.ClearScreen;
 import lib.MafLib;
 
 class Entity{
+<<<<<<< HEAD
     //???
         private String Name;                                    public String getName(){return Name;}                   public void setName(String Name){this.Name = Name;}
         private String Arcana;                                  public String getArcana(){return Arcana;}               public void setArcana(String Arcana){this.Arcana = Arcana;}
@@ -34,6 +35,8 @@ class Entity{
         int X;                                                  public int getX(){return X;}                            public void setX(int X){this.X = X-1;}
         int Z;                                                  public int getZ(){return Z;}                            public void setZ(int Z){this.Z = Z-1;}
     
+=======
+>>>>>>> db6f5a3 (.)
     @SuppressWarnings("deprecation")
     NumberFormat Currency = NumberFormat.getCurrencyInstance(new Locale("en", "US"));
 
