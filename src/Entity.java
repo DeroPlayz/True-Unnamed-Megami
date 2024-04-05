@@ -44,7 +44,7 @@ class Entity{
     public static Entity[] EnemyParty;
 
     public void Act(){
-        int Answer = MafLib.askInt("What would you like to do?\n" + MafLib.RED + "1. Melee\t" + MafLib.BLUE + "2. Spell\n" + MafLib.GREEN + "3.Use an item\t" + MafLib.YELLOW + "4. Guard" + MafLib.RESET, true);
+        int Answer = MafLib.askInt("What would you like to do?\n" + MafLib.RED + "1. Melee\t" + MafLib.BLUE + "2. Spell\n" + MafLib.GREEN + "3.Use an item\t" + MafLib.YELLOW + "4. Guard" + MafLib.RESET);
         if(Answer < 1 || Answer > 5){
             ClearScreen();
             Act();
@@ -71,7 +71,7 @@ class Entity{
                 prompt += EnemyParty[i].getName();
             }
         }
-        int Answer = MafLib.askInt(prompt, true);
+        int Answer = MafLib.askInt(prompt);
         if((Action.getAccuracy()/EnemyParty[Answer-1].getAgility()) > ((int) (Math.random()*100) + 1)){
         
         }

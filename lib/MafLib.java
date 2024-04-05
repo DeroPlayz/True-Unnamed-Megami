@@ -35,13 +35,8 @@ public class MafLib{
     
     static Scanner Scan = new Scanner(System.in);
     
-    public static String askString(String Prompt, Boolean EndOnNewline){
-        if(EndOnNewline == true){
-            System.out.println(Prompt);
-        }
-        if(EndOnNewline == false){
-            System.out.print(Prompt);
-        } 
+    public static String askString(String Prompt){
+        System.out.print(Prompt);
         String response = Scan.nextLine();
         return response;
     }
@@ -53,12 +48,8 @@ public class MafLib{
     //     response.setBounds(680, 500, 200, 20);
     // }
 
-    public static int askInt(String Prompt, Boolean EndOnNewline){
-        String nl = "";
-        if(EndOnNewline == true){
-            nl = "\n";
-        }
-        System.out.print(Prompt + nl);
+    public static int askInt(String Prompt){
+        System.out.print(Prompt);
         String response = Scan.next();
         response = response.replaceAll("[^0-9.]", "");
         int dot = response.indexOf(".");
@@ -72,12 +63,8 @@ public class MafLib{
         
     }
 
-    public static double askDouble(String Prompt, Boolean EndOnNewline){
-        String nl = "";
-        if(EndOnNewline == true){
-            nl = "\n";
-        }
-        System.out.print(Prompt + nl);
+    public static double askDouble(String Prompt){
+        System.out.print(Prompt);
         String response = Scan.next();
         response = response.replaceAll("[^0-9]", "");
         if(response.contains(".") == false){

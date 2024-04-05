@@ -1,14 +1,15 @@
 package src;
 
+import static src.Entity.Stella;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import static src.Entity.Stella;
+
 import lib.MafLib;
-import static src.Entity.EnemyParty;
 
 class Main{
     static Entity Player = new Entity();
@@ -29,7 +30,7 @@ class Main{
         System.out.println(MafLib.RESET + "1. New Game");
         System.out.println(MafLib.CYAN + "2. Load Game");
         System.out.println(MafLib.BLACK + "3. Settings" + MafLib.RESET);
-        Answer = MafLib.askInt("", false);
+        Answer = MafLib.askInt("");
         if(Answer < 1 || Answer > 3){
             ClearScreen();
             StartUp();
@@ -43,10 +44,6 @@ class Main{
         else if(Answer == 3){
             Settings();
         }
-        EnemyParty = new Entity[]{Demon.Pixie};
-
-        Player.Act();
-        System.out.println(EnemyParty[0]);
     }
 
     /*
@@ -58,12 +55,13 @@ class Main{
      */
 
     private static void New(){
-        Player.setName(MafLib.askString(MafLib.CYAN + "What is your name?" + MafLib.RESET, true));
+        String s = MafLib.askString(MafLib.CYAN + "What is your name?" + MafLib.RESET + "\n");
+        Player.setName(s);
         Save();
     }
 
     private static void Save(){
-        int slot = MafLib.askInt(MafLib.GREEN + "Which slot would you like to save in? (1-10)" + MafLib.RESET, true);
+        int slot = MafLib.askInt(MafLib.GREEN + "Which slot would you like to save in?\n" + MafLib.RESET + "\n");
         if(slot < 1 || slot > 10){
             ClearScreen();
             StartUp();
@@ -75,7 +73,6 @@ class Main{
             FOS = new FileOutputStream(new File("User/Save" + slot));
             OOS = new ObjectOutputStream(FOS);
             OOS.writeObject(Player.getName());
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -83,7 +80,23 @@ class Main{
     }
 
     private static void Load(){
-        int slot = MafLib.askInt(MafLib.CYAN + "Which slot would you like to load from? (1-10)" + MafLib.RESET, true);
+        FileInputStream SR;
+        String pr = "Which slot would you like to load from?";
+        try{
+            SR = new FileInputStream("User/Save1");
+            for(int i = 1; i <= 10; i++){
+                if(new File("User/Save" + i).exists()){
+                    SR = new FileInputStream("User/Save" + i);
+                    pr += "\n" + i + ". " + SR.read();
+                }
+            }
+            SR.close();
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
+
+        int slot = MafLib.askInt(MafLib.CYAN + pr + MafLib.RESET + "\n");
         if(slot < 1 || slot > 10){
             ClearScreen();
             Load();
@@ -106,7 +119,7 @@ class Main{
     private static void Settings(){
         System.out.println(MafLib.BLACK + "--- Settings ---");
         System.out.println("0. Go Back" + MafLib.RESET);
-        Answer = MafLib.askInt("", false);
+        Answer = MafLib.askInt("");
         if(Answer == 0){
             ClearScreen();
             StartUp();
