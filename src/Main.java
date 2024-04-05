@@ -61,7 +61,7 @@ class Main{
     }
 
     private static void Save(){
-        int slot = MafLib.askInt(MafLib.GREEN + "Which slot would you like to save in?\n" + MafLib.RESET + "\n");
+        int slot = MafLib.askInt(MafLib.GREEN + "Which slot would you like to save in?\n" + MafLib.RESET);
         if(slot < 1 || slot > 10){
             ClearScreen();
             StartUp();
