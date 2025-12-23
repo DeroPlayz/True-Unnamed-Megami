@@ -55,8 +55,7 @@ class Main{
      */
 
     private static void New(){
-        String s = MafLib.askString(MafLib.CYAN + "What is your name?" + MafLib.RESET + "\n");
-        Player.setName(s);
+        Player.setName(MafLib.askString(MafLib.CYAN + "What is your name?" + MafLib.RESET + "\n"));
         Save();
     }
 
@@ -70,12 +69,14 @@ class Main{
             FileOutputStream FOS;
             ObjectOutputStream OOS;
             try {
-            FOS = new FileOutputStream(new File("User/Save" + slot));
-            OOS = new ObjectOutputStream(FOS);
-            OOS.writeObject(Player.getName());
-            } catch (IOException e) {
+                FOS = new FileOutputStream(new File("User/Save" + slot));
+                OOS = new ObjectOutputStream(FOS);
+                OOS.writeObject(Player.getName());
+            }
+            catch (IOException e) {
                 e.printStackTrace();
             }
+            Load(slot);
         }
     }
 
@@ -108,6 +109,27 @@ class Main{
             FIS = new FileInputStream(new File("User/Save" + slot));
             OIS = new ObjectInputStream(FIS);
             Player.setName((String) OIS.readObject());
+            Loop();
+            }
+            catch(IOException | ClassNotFoundException e){
+                System.out.println(MafLib.RESET + "No save found. Initializing");
+                New();
+            }
+        }
+    }
+
+    private static void Load(int slot){
+        if(slot < 1 || slot > 10){
+            ClearScreen();
+            Load();
+        }
+        else{
+            FileInputStream FIS;
+            ObjectInputStream OIS;
+            try {
+            FIS = new FileInputStream(new File("User/Save" + slot));
+            OIS = new ObjectInputStream(FIS);
+            Player.setName((String) OIS.readObject());
             }
             catch(IOException | ClassNotFoundException e){
                 System.out.println(MafLib.RESET + "No save found. Initializing");
@@ -129,5 +151,11 @@ class Main{
     public static void ClearScreen(){
         System.out.println("\033[H\033[2J");
         System.out.flush();
+    }
+
+    public static void Loop() {
+        System.out.println(Map.WORLD_MAP.toString());
+        System.out.println(Player.toString());
+        System.out.println(Stella.toString());
     }
 }

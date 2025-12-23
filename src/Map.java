@@ -48,10 +48,9 @@ public class Map {
                 }
                 if(Board[i][j].getLetter().length() == 2){
                     s += " ";
-                    
                 }
-                if(Board[i][j].getLetter().length() == 1){
-                    s += " ";
+                else if(Board[i][j].getLetter().length() == 1){
+                    s += "  ";
                 }
                 s += " ";
             }

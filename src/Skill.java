@@ -1,6 +1,7 @@
 package src;
 
 public class Skill {
+
     private String Name;        public String getName(){return Name;}           public void setName(String Name){this.Name = Name;}
     private String Element;     public String getElement(){return Element;}     public void setElement(String Element){this.Element = Element;}
     private String PointType;   public String getPointType(){return PointType;} public void setPointType(String PointType){this.PointType = PointType;}

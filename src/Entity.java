@@ -6,6 +6,12 @@ import static src.Main.ClearScreen;
 import lib.MafLib;
 
 class Entity{
+    public static final double WEAK = 1.5;
+    public static final double NORMAL = 1.0;
+    public static final double RESISTANT = 0.5;
+    public static final double IMMUNE = 0.0;
+    public static final double ABSORB = -1.0;
+
     @SuppressWarnings("deprecation")
     NumberFormat Currency = NumberFormat.getCurrencyInstance(new Locale("en", "US"));
 
@@ -123,8 +129,8 @@ class Entity{
     Entity(String Name, int Level, int MaxHP, int MaxSP, String Arcana, int Strength, int Magic, int Endurance, int Agility, double PhysicalAffinity, double FireAffinity, double IceAffinity, double ElectricAffinity, double WindAffinity, double LightAffinity, double DarkAffinity){
         this.Name = Name;
         this.Level = Level;
-        this.MaxHP = MaxHP;
-        this.MaxSP = MaxSP;
+        this.CurrentHP = this.MaxHP = MaxHP;
+        this.CurrentSP = this.MaxSP = MaxSP;
         this.Arcana = Arcana;
         this.Strength = Strength;
         this.Magic = Magic;
@@ -137,17 +143,14 @@ class Entity{
         this.WindAffinity = WindAffinity;
         this.LightAffinity = LightAffinity;
         this.DarkAffinity = DarkAffinity;
-        
     }
 
     //toString
     public String toString(){
-        if(Name.equals("Stella")){
-            return MafLib.MAGENTA + Name + " (" + Arcana + ", Level " + Level + ")\n" + Currency.format(Cash) + "\n" + CurrentHP + "/" + MaxHP + " HP\n" + CurrentSP + "/" + MaxSP + " SP" + MafLib.RESET;
-        }
-        else{
-            return Name + " (" + Arcana + ", Level " + Level + ")\n" + Currency.format(Cash) + "\n" + CurrentHP + "/" + MaxHP + " HP\n" + CurrentSP + "/" + MaxSP + " SP";
-        }
+        String s = "";
+        if(Name.equals("Stella")){s += MafLib.MAGENTA;}
+        s += Name + " (" + Arcana + ", Level " + Level + ")\n" + Currency.format(Cash) + "\n" + CurrentHP + "/" + MaxHP + " HP\n" + CurrentSP + "/" + MaxSP + " SP";
+        return s;
     }
 
     public static Entity Stella = new Entity(
@@ -160,12 +163,12 @@ class Entity{
         1,
         4,
         3,
-        0.5,
-        1.5,
+        RESISTANT,
+        WEAK,
         1,
-        0.5,
+        RESISTANT,
         1,
-        0.5,
-        1.5
+        RESISTANT,
+        WEAK
     );
 }

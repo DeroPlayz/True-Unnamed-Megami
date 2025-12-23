@@ -37,16 +37,9 @@ public class MafLib{
     
     public static String askString(String Prompt){
         System.out.print(Prompt);
-        String response = Scan.nextLine();
+        String response = Scan.next();
         return response;
     }
-        static String ans = "";
-
-    // public static void askString(String Prompt) {
-    //     log.setText(Prompt);
-    //     frame.add(response);
-    //     response.setBounds(680, 500, 200, 20);
-    // }
 
     public static int askInt(String Prompt){
         System.out.print(Prompt);
@@ -60,14 +53,13 @@ public class MafLib{
             response = response.substring(0, dot);
         }
         return Integer.valueOf(response);
-        
     }
 
     public static double askDouble(String Prompt){
         System.out.print(Prompt);
         String response = Scan.next();
         response = response.replaceAll("[^0-9]", "");
-        if(response.contains(".") == false){
+        if(!response.contains(".")){
             return Double.valueOf(response + ".0");
         }
         else{
