@@ -33,7 +33,7 @@ public class Map {
 
     public String toString(){
         String s = "";
-        s += "WM 1  2  3  4  5  6  7  8  9  10 11 12 13 14 15\n";
+        s += "WM 1   2   3   4   5   6   7   8   9   10  11  12  13  14  15\n";
         for(int i = 0; i < Board.length; i++){
             if(i < 9){
                 s += "0";

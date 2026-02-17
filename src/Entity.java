@@ -47,7 +47,7 @@ class Entity{
         int X;                                                  public int getX(){return X;}                                    public void setX(int X){this.X = X;}
         int Z;                                                  public int getZ(){return Z;}                                    public void setZ(int Z){this.Z = Z;}
 
-    public static Entity[] EnemyParty;
+    public static Entity[] EnemyParty = new Entity[1];
 
     public void Act(){
         int Answer = MafLib.askInt("What would you like to do?\n" + MafLib.RED + "1. Melee\t" + MafLib.BLUE + "2. Spell\n" + MafLib.GREEN + "3.Use an item\t" + MafLib.YELLOW + "4. Guard" + MafLib.RESET);
@@ -62,9 +62,9 @@ class Entity{
 
     public void Attack(Skill Action){
         String prompt = "Which enemy will you target?";
+        EnemyParty = new Entity[]{Demon.Pixie, Demon.Pixie, Demon.Pixie, Demon.Pixie};
         for(int i = 0; i < EnemyParty.length; i++){
             if((EnemyParty[i] == null) == false){
-                prompt += "\n" + (i+1) + ". ";
                 if(EnemyParty[i].getCurrentHP() > EnemyParty[i].getMaxHP()*0.9){;
                     prompt += MafLib.GREEN;
                 }    
@@ -74,9 +74,11 @@ class Entity{
                 if(EnemyParty[i].getCurrentHP() > EnemyParty[i].getMaxHP()*0.3){;
                     prompt += MafLib.RED;
                 }
+                prompt += "\n" + (i+1) + ". ";
                 prompt += EnemyParty[i].getName();
             }
         }
+        prompt += "\n";
         int Answer = MafLib.askInt(prompt);
         if((Action.getAccuracy()/EnemyParty[Answer-1].getAgility()) > ((int) (Math.random()*100) + 1)){
         
@@ -149,7 +151,7 @@ class Entity{
     public String toString(){
         String s = "";
         if(Name.equals("Stella")){s += MafLib.MAGENTA;}
-        s += Name + " (" + Arcana + ", Level " + Level + ")\n" + Currency.format(Cash) + "\n" + CurrentHP + "/" + MaxHP + " HP\n" + CurrentSP + "/" + MaxSP + " SP";
+        s += Name + " (" + Arcana + ", Level " + Level + ")\n" + Currency.format(Cash) + "\n" + CurrentHP + "/" + MaxHP + " HP\n" + CurrentSP + "/" + MaxSP + " SP" + MafLib.RESET;
         return s;
     }
 

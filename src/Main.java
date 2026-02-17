@@ -16,9 +16,22 @@ class Main{
     static Entity[] Party = {Player, Stella, null, null};
     static int Answer = 0;
     public static void main(String[] args){
+        Runtime.getRuntime().addShutdownHook(
+        new Thread("app-shutdown-hook") {
+            @Override 
+            public void run() { 
+                System.out.println(MafLib.RESET); 
+            }
+        });
         ClearScreen();
         StartUp();
     }
+    
+
+    // Source - https://stackoverflow.com/a/23487534
+// Posted by bobah, modified by community. See post 'Timeline' for change history
+// Retrieved 2026-02-17, License - CC BY-SA 3.0
+
 
     private static void StartUp(){
         //Generally speaking, NG is White, LG is Cyan, Settings are Black, and SG is Green.
@@ -46,14 +59,6 @@ class Main{
         }
     }
 
-    /*
-     * START
-     * SAVE
-     * LOAD
-     * SETTINGS
-     * CLEAR SCREEN
-     */
-
     private static void New(){
         Player.setName(MafLib.askString(MafLib.CYAN + "What is your name?" + MafLib.RESET + "\n"));
         Save();
@@ -66,6 +71,9 @@ class Main{
             StartUp();
         }
         else{
+            if(new File("User/Save" + slot).exists()){
+                MafLib.askString(MafLib.RED + "This slot contains existing save data. If you intend to overwrite it, press Enter to continue.\nIf you do not wish to overwrite the save, press CTRL+C (or CMD+C on Mac) to exit the game.\n" + MafLib.RESET);
+            }
             FileOutputStream FOS;
             ObjectOutputStream OOS;
             try {
@@ -81,6 +89,7 @@ class Main{
     }
 
     private static void Load(){
+        //Loads actual save files so the user can make a selection.
         FileInputStream SR;
         String pr = "Which slot would you like to load from?";
         try{
@@ -88,20 +97,24 @@ class Main{
             for(int i = 1; i <= 10; i++){
                 if(new File("User/Save" + i).exists()){
                     SR = new FileInputStream("User/Save" + i);
-                    pr += "\n" + i + ". " + SR.read();
+                    ObjectInputStream ReadFromSave = new ObjectInputStream(SR);
+                    pr += "\n" + i + ". " + ReadFromSave.readObject();
+                    ReadFromSave.close();
                 }
             }
             SR.close();
         }
-        catch(IOException e){
-            e.printStackTrace();
-        }
+        catch(IOException | ClassNotFoundException e){}
 
+        //Asks the user to select a slot.
         int slot = MafLib.askInt(MafLib.CYAN + pr + MafLib.RESET + "\n");
+        //If the slot chosen is invalid, repeat the question.
         if(slot < 1 || slot > 10){
             ClearScreen();
             Load();
         }
+
+        //If the slot is a real file and thers's save data located inside it, load it.
         else{
             FileInputStream FIS;
             ObjectInputStream OIS;
@@ -112,10 +125,12 @@ class Main{
             Loop();
             }
             catch(IOException | ClassNotFoundException e){
+                //Create a save file when an attempt is made to load when no save files exist.
                 System.out.println(MafLib.RESET + "No save found. Initializing");
                 New();
             }
         }
+        Player.Attack(Skill.Melee);
     }
 
     private static void Load(int slot){
