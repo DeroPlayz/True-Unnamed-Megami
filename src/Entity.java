@@ -49,11 +49,11 @@ class Entity{
 
     public static Entity[] EnemyParty = new Entity[1];
 
-    public void Act(){
+    public void CombatAct(){
         int Answer = MafLib.askInt("What would you like to do?\n" + MafLib.RED + "1. Melee\t" + MafLib.BLUE + "2. Spell\n" + MafLib.GREEN + "3.Use an item\t" + MafLib.YELLOW + "4. Guard" + MafLib.RESET);
         if(Answer < 1 || Answer > 5){
             ClearScreen();
-            Act();
+            CombatAct();
         }
         if(Answer == 1){
             Attack(Skill.Melee);    
