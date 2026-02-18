@@ -167,16 +167,6 @@ class Main{
     }
 
     public static void Loop() {
-        ArrayList<Integer> i = new ArrayList<Integer>(Arrays.asList(1,2,3,4,5,6,7,8,9,10));
-        int j = 0;
-        while (i.size() > 0){
-            j = (int) Math.round((Math.random()*10) + 1);
-            if(i.indexOf(j) >= 0){i.remove(i.indexOf(j));}
-            System.out.println(j + " removed.");
-            System.out.println("Remaining: " + i.toString());
-        }
-    }
-    public static void Losop() {
         // System.out.println(Map.WORLD_MAP.toString());
         // System.out.println(Player.toString());
         // System.out.println(Stella.toString());
@@ -189,10 +179,10 @@ class Main{
             if (Answer == 3){Player.setX(Player.Z - 1);} // Left
             if (Answer == 4){Player.setX(Player.Z + 1);} // Right
 
-            int demon_attack_chance = (int) Math.round((Math.random()*10));
-            System.out.println("Odds of getting attacked by demons: " + demon_attack_chance);
+            int demon_attack_chance = (int) Math.round((Math.random()*10)) + 1;
             if (demon_attack_chance <= 4){
                 System.out.println(MafLib.RED + MafLib.BOLD + "Oh no! You've been ambushed by demons!" + MafLib.RESET);
+                
             }
         }
         else if (Answer == 2){
