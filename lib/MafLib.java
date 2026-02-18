@@ -52,7 +52,11 @@ public class MafLib{
         else{
             response = response.substring(0, dot);
         }
-        return Integer.valueOf(response);
+        if (MafLib.isNumeric(response)){
+            return Integer.valueOf(response);
+        }
+        return 1;
+        // return MafLib.askInt(Prompt);
     }
 
     public static double askDouble(String Prompt){
@@ -88,10 +92,11 @@ public class MafLib{
     
     public static boolean isNumeric(String s){
         s = s.toLowerCase();
-        for(int i = 0; i < s.length(); i++){
-            if("1234567890.".contains(String.valueOf((s.charAt(i)))) == false){
-                return false;
-            }
+        try {
+            Integer.valueOf(s);
+        }
+        catch (NumberFormatException e){
+            return false;
         }
         return true;
     }
