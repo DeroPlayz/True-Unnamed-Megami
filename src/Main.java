@@ -8,6 +8,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import lib.MafLib;
 
@@ -165,6 +167,16 @@ class Main{
     }
 
     public static void Loop() {
+        ArrayList<Integer> i = new ArrayList<Integer>(Arrays.asList(1,2,3,4,5,6,7,8,9,10));
+        int j = 0;
+        while (i.size() > 0){
+            j = (int) Math.round((Math.random()*10) + 1);
+            if(i.indexOf(j) >= 0){i.remove(i.indexOf(j));}
+            System.out.println(j + " removed.");
+            System.out.println("Remaining: " + i.toString());
+        }
+    }
+    public static void Losop() {
         // System.out.println(Map.WORLD_MAP.toString());
         // System.out.println(Player.toString());
         // System.out.println(Stella.toString());
@@ -176,6 +188,12 @@ class Main{
             // P.S. I now understand why lower Y is used for "up" sometimes.
             if (Answer == 3){Player.setX(Player.Z - 1);} // Left
             if (Answer == 4){Player.setX(Player.Z + 1);} // Right
+
+            int demon_attack_chance = (int) Math.round((Math.random()*10));
+            System.out.println("Odds of getting attacked by demons: " + demon_attack_chance);
+            if (demon_attack_chance <= 4){
+                System.out.println(MafLib.RED + MafLib.BOLD + "Oh no! You've been ambushed by demons!" + MafLib.RESET);
+            }
         }
         else if (Answer == 2){
             System.out.println(Map.WORLD_MAP.toString());
@@ -184,40 +202,9 @@ class Main{
             Answer = MafLib.askInt("What would you like to check?\n" + MafLib.BLUE + "1. Party\n" + MafLib.GREEN + "2. Inventory\n" + MafLib.RED + "3. Compendium\n" + MafLib.BLACK + "4. Nevermind, go back.\n" + MafLib.RESET);
             if (Answer == 4){
                 ClearScreen();
-                Loop(new int[]{3});
+                Loop();
             }
         }
         Loop();
-    }
-
-    public static void Loop(int[] args){
-        System.out.println("What would you like to do?\n" + MafLib.GREEN + "1. Move\n" + MafLib.YELLOW + "2. View Map\n" + MafLib.BLUE + "3. Status\n" + MafLib.BLACK + "4. Settings\n" + MafLib.RESET);
-        System.out.println(args[0]);
-        if (args[0] == 1){
-            if (args.length < 2){args[1] = MafLib.askInt("Which direction?\n1. Up\n2. Down\n3. Left\n4. Right\n");}
-            else{
-                System.out.println("Which direction?\n1. Up\n2. Down\n3. Left\n4. Right\n");
-                // System.out.println(args[1]);
-            }
-            if (args[1] == 1){Player.setZ(Player.Z - 1);} // Up
-            if (args[1] == 2){Player.setZ(Player.Z + 1);} // Down
-            // P.S. I now understand why lower Y is used for "up" sometimes.
-            if (args[1] == 3){Player.setX(Player.Z - 1);} // Left
-            if (args[1] == 4){Player.setX(Player.Z + 1);} // Right
-        }
-        else if (args[0] == 2){
-            System.out.println(args[0]);
-            System.out.println(Map.WORLD_MAP.toString());
-        }
-        else if (args[0] == 3){
-            if (args.length < 2){args[1] = MafLib.askInt("What would you like to check?\n" + MafLib.BLUE + "1. Party\n" + MafLib.GREEN + "2. Inventory\n" + MafLib.RED + "3. Compendium\n" + MafLib.BLACK + "4. Nevermind, go back.\n" + MafLib.RESET);}
-            else{
-                System.out.println("What would you like to check?\n" + MafLib.BLUE + "1. Party\n" + MafLib.GREEN + "2. Inventory\n" + MafLib.RED + "3. Compendium\n" + MafLib.BLACK + "4. Nevermind, go back.\n" + MafLib.RESET);
-            }
-            if (args[1] == 4){
-                ClearScreen();
-                Loop(new int[]{3});
-            }
-        }
     }
 }
