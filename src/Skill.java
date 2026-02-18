@@ -16,12 +16,13 @@ public class Skill {
     // For Magic, this is identical formula-wise, but ostensibly uses your Magic stat instead.
 
     private int Accuracy;       public int getAccuracy(){return Accuracy;}      public void setAccuracy(int Accuracy){this.Accuracy = Accuracy;}
-    /* Accuracy/100 = Chance of the skill landing. Support skills have an accuracy of 1 billion to ensure they will land.
+    /* Accuracy/100 = Chance of the skill landing.
+     * Support skills have an accuracy of 1,000,000,000 to ensure they will land.
      * This is to make sure supports can actually heal and buff their allies without a risk of it just doing nothing,
      * Additionally, this will ensure debuff skills land, even if you have an agility of 1 and your opponent's
      * is 99.
      */
-    
+
     public Skill(String Name, String Element, String PointType, int Cost, int Power, int Accuracy){
         this.Name = Name;
         this.Element = Element;
