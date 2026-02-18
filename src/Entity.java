@@ -167,9 +167,9 @@ class Entity{
         3,
         RESISTANT,
         WEAK,
-        1,
+        NORMAL,
         RESISTANT,
-        1,
+        NORMAL,
         RESISTANT,
         WEAK
     );
