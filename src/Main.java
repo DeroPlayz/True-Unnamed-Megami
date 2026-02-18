@@ -16,6 +16,9 @@ class Main{
     static Entity[] Party = {Player, Stella, null, null};
     static int Answer = 0;
     public static void main(String[] args){
+        // Source - https://stackoverflow.com/a/23487534
+        // Posted by bobah, modified by community. See post 'Timeline' for change history
+        // Retrieved 2026-02-17, License - CC BY-SA 3.0
         Runtime.getRuntime().addShutdownHook(
         new Thread("app-shutdown-hook") {
             @Override 
@@ -26,12 +29,6 @@ class Main{
         ClearScreen();
         StartUp();
     }
-    
-
-    // Source - https://stackoverflow.com/a/23487534
-// Posted by bobah, modified by community. See post 'Timeline' for change history
-// Retrieved 2026-02-17, License - CC BY-SA 3.0
-
 
     private static void StartUp(){
         //Generally speaking, NG is White, LG is Cyan, Settings are Black, and SG is Green.
