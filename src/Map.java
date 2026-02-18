@@ -33,28 +33,30 @@ public class Map {
 
     public String toString(){
         String s = "";
-        s += "WM 1   2   3   4   5   6   7   8   9   10  11  12  13  14  15\n";
-        for(int i = 0; i < Board.length; i++){
-            if(i < 9){
-                s += "0";
-            }
-            s += String.valueOf(i+1) + " ";
-            for(int j = 0; j < Board[i].length; j++){
-                if(Player.getX() == j && Player.getZ() == i){
-                    s += "Y";
+        if (Name == "World Map"){
+            s += "WM 1   2   3   4   5   6   7   8   9   10  11  12  13  14  15\n";
+            for(int i = 0; i < Board.length; i++){
+                if(i < 9){
+                    s += "0";
                 }
-                else{
-                    s += Board[i][j];
-                }
-                if(Board[i][j].getLetter().length() == 2){
+                s += String.valueOf(i+1) + " ";
+                for(int j = 0; j < Board[i].length; j++){
+                    if(Player.getX() == j && Player.getZ() == i){
+                        s += "Y";
+                    }
+                    else{
+                        s += Board[i][j];
+                    }
+                    if(Board[i][j].getLetter().length() == 2){
+                        s += " ";
+                    }
+                    else if(Board[i][j].getLetter().length() == 1){
+                        s += "  ";
+                    }
                     s += " ";
                 }
-                else if(Board[i][j].getLetter().length() == 1){
-                    s += "  ";
-                }
-                s += " ";
+                if (i != Board.length - 1){s += "\n";}
             }
-            s += "\n";
         }
         return s;
     }
