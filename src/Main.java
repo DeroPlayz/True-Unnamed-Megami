@@ -54,7 +54,7 @@ class Main{
             Load();
         }
         else if (Answer == 3){
-            Settings();
+            Settings(0);
         }
     }
 
@@ -151,11 +151,15 @@ class Main{
         }
     }
 
-    private static void Settings(){
+    private static void Settings(int mode){
         System.out.println(MafLib.BLACK + "--- Settings ---");
-        System.out.println("0. Go Back" + MafLib.RESET);
+        System.out.println("1. Go Back");
+        if (mode == 1){
+            System.out.println("2. Save");
+            System.out.println("3. Load" + MafLib.RESET);
+        }
         Answer = MafLib.askInt("");
-        if (Answer == 0){
+        if (Answer == 1){
             ClearScreen();
             StartUp();
         }
@@ -184,6 +188,9 @@ class Main{
                 Loop();
             }
         }
+        else if (Answer == 4){
+            Settings(1);
+        }
         Loop();
     }
 
@@ -200,10 +207,10 @@ class Main{
 
         if (demon_attack_chance <= 4){
             System.out.println(MafLib.RED + MafLib.BOLD + "Oh no! You've been ambushed by demons!" + MafLib.RESET);
-            EnemyParty.add(new Demon(Demon.Pixie));
-            EnemyParty.add(new Demon(Demon.Pixie));
-            EnemyParty.add(new Demon(Demon.Pixie));
-            EnemyParty.add(new Demon(Demon.Pixie));
+            int j = (int) (Math.random()*2+1);
+            for(int i = 0; i < j; i++){
+                EnemyParty.add(new Demon(Demon.Pixie));
+            }
             CombatLoop();
         }
         if (Answer != 5){
