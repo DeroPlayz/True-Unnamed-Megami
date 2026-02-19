@@ -18,7 +18,8 @@ public class MafLib{
     public static final String RESET = "\033[0m";
     public static final String CLEARC = "\033[39m";
     public static final String CLEARF = "\033[22m" + "\033[23m" + "\033[24m" + "\033[27m" + "\033[28" + "\033[29m";
-    public static final String BLACK = "\033[30m"; public static final String BLACKH = "\033[40m";
+    // public static final String BLACK = "\033[30m"; public static final String BLACKH = "\033[40m";
+    public static final String BLACK = "\033[37m"; public static final String BLACKH = "\033[47m";
     public static final String RED = "\033[31m"; public static final String REDH = "\033[41m";
     public static final String GREEN = "\033[32m"; public static final String GREENH = "\033[42m"; //Mint Green
     public static final String YELLOW = "\033[33m"; public static final String YELLOWH = "\033[43m";
