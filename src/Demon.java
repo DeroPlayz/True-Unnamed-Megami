@@ -5,6 +5,10 @@ public class Demon extends Entity{
         super(Name, Level, MaxHP, MaxSP, Arcana, Strength, Magic, Endurance, Agility, PhysicalAffinity, FireAffinity, IceAffinity, ElectricAffinity, WindAffinity, LightAffinity, DarkAffinity);
     }
 
+    public String PrintBrief(){
+        return super.getName() + " (" + super.getCurrentHP() + "/" + super.getMaxHP() + ") [Level " + super.getLevel() + "]";
+    }
+
     public void Act(){
         
     }
