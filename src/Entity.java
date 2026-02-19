@@ -3,10 +3,12 @@ package src;
 import java.text.NumberFormat;
 import java.util.Locale;
 import static src.Main.ClearScreen;
+import static src.Main.CombatLoop;
+
 import lib.MafLib;
 import static src.Main.EnemyParty;
 
-class Entity{
+class Entity {
     public static final double WEAK = 1.5;
     public static final double NORMAL = 1.0;
     public static final double RESISTANT = 0.5;
@@ -48,6 +50,10 @@ class Entity{
         int X;                                                  public int getX(){return X;}                                    public void setX(int X){this.X = X;}
         int Z;                                                  public int getZ(){return Z;}                                    public void setZ(int Z){this.Z = Z;}
 
+    public void DealDamage(int amount, Entity target){
+        target.CurrentHP -= amount;
+    }
+
     public void CombatAct(){
         int Answer = MafLib.askInt("What would you like to do?\n" + MafLib.RED + "1. Melee\t" + MafLib.BLUE + "2. Spell\n" + MafLib.GREEN + "3. Use an item\t" + MafLib.YELLOW + "4. Guard\n" + MafLib.RESET);
         if(Answer < 1 || Answer > 5){
@@ -57,29 +63,33 @@ class Entity{
         if(Answer == 1){
             Attack(Skill.Melee);
         }
+        CombatLoop();
     }
 
     public void Attack(Skill Attack){
         String prompt = "Which enemy will you target?";
-        for(int i = 0; i < EnemyParty.length; i++){
-            if((EnemyParty[i] == null) == false){
-                if(EnemyParty[i].getCurrentHP() > EnemyParty[i].getMaxHP()*0.6){;
-                    prompt += MafLib.GREEN;
-                }    
-                if(EnemyParty[i].getCurrentHP() <= EnemyParty[i].getMaxHP()*0.6){;
-                    prompt += MafLib.YELLOW;
-                }
-                if(EnemyParty[i].getCurrentHP() <= EnemyParty[i].getMaxHP()*0.3){;
+        for(int i = 0; i < EnemyParty.size(); i++){
+            if((EnemyParty.get(i) == null) == false){
+                if(EnemyParty.get(i).getCurrentHP() <= EnemyParty.get(i).getMaxHP()*0.3){;
                     prompt += MafLib.RED;
                 }
+                if(EnemyParty.get(i).getCurrentHP() <= EnemyParty.get(i).getMaxHP()*0.6){;
+                    prompt += MafLib.YELLOW;
+                }
+                if(EnemyParty.get(i).getCurrentHP() > EnemyParty.get(i).getMaxHP()*0.6){;
+                    prompt += MafLib.GREEN;
+                }    
+
                 prompt += "\n" + (i+1) + ". ";
-                prompt += EnemyParty[i].getName();
+                prompt += EnemyParty.get(i).getName();
             }
         }
-        prompt += "\n";
+        prompt += "\n" + MafLib.RESET;
         int Answer = MafLib.askInt(prompt);
+        if (Answer > EnemyParty.size()){Attack(Attack);}
+        
         double chance = (int) (Math.random() * 100) + 1;
-        double threshold = (int) (Math.pow(Agility + 1, 3.74) * Math.pow((double) EnemyParty[Answer-1].getAgility(), 3.0) * (Attack.getAccuracy()/100.0));
+        double threshold = (int) (Math.pow(Agility + 1, 3.74) * Math.pow((double) EnemyParty.get(Answer-1).getAgility(), 3.0) * (Attack.getAccuracy()/100.0));
         // System.out.println("Chance: " + chance);
         // // System.out.println("Threshold Pt. 1: " + Math.pow(Agility + 1, 3.74));
         // // System.out.println("Threshold Pt. 2: " + Math.pow(EnemyParty[Answer-1].getAgility(), 3.0));
@@ -89,26 +99,28 @@ class Entity{
             System.out.println("Miss!");
         }
         else{
-            System.out.println("Base Power: " + Attack.getPower());
-            System.out.println("User Strength: " + Strength);
+            // System.out.println("Base Power: " + Attack.getPower());
+            // System.out.println("User Strength: " + Strength);
             double d = Attack.getPower() * Strength;
-            System.out.println("BP * US: " + d);
+            // System.out.println("BP * US: " + d);
 
             int c = (int) (Math.random()*3);
-            System.out.println("Variation: " + c);
+            // System.out.println("Variation: " + c);
 
             double m = Math.random()*2+1;
             m = (int) m;
             m /= 10;
             if (c == 1){d += d*m;}
             if (c == 2){d -= d*m;}
-            System.out.println("Modifier: " + m);
-            System.out.println("Damage Dealt: " + (int) (d));
+            // System.out.println("Modifier: " + m);
+            // System.out.println("Damage Dealt: " + (int) (d));
+            DealDamage((int) d, EnemyParty.get(Answer - 1));
+            if (EnemyParty.get(Answer - 1).getCurrentHP() < 1){
+                EnemyParty.remove(Answer - 1);
+            }
         }
     }
 
-    //Constructors
-    //Constructors
     //Constructors
     Entity(){
         Name = "";

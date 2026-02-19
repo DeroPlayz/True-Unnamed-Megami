@@ -8,12 +8,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+
 import lib.MafLib;
 
 class Main{
     static Entity Player = new Entity();
     static Entity[] Party = {Player, Stella, null, null};
-    static Demon[] EnemyParty;
+    static ArrayList<Demon> EnemyParty = new ArrayList<>();
     static int Answer = 0;
     public static void main(String[] args){
         // Source - https://stackoverflow.com/a/23487534
@@ -198,6 +200,10 @@ class Main{
 
         if (demon_attack_chance <= 4){
             System.out.println(MafLib.RED + MafLib.BOLD + "Oh no! You've been ambushed by demons!" + MafLib.RESET);
+            EnemyParty.add(new Demon(Demon.Pixie));
+            EnemyParty.add(new Demon(Demon.Pixie));
+            EnemyParty.add(new Demon(Demon.Pixie));
+            EnemyParty.add(new Demon(Demon.Pixie));
             CombatLoop();
         }
         if (Answer != 5){
@@ -207,10 +213,11 @@ class Main{
     }
 
     public static void CombatLoop(){
-        EnemyParty = new Demon[]{Demon.Pixie, Demon.Pixie};
-        for(int i = 0; i < EnemyParty.length; i++){
-            System.out.println(EnemyParty[i].PrintBrief());
+        while (EnemyParty.size() > 0){
+            for(int i = 0; i < EnemyParty.size(); i++){
+                System.out.println(EnemyParty.get(i).PrintBrief());
+            }
+            Player.CombatAct();
         }
-        Player.CombatAct();
     }
 }
