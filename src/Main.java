@@ -13,6 +13,7 @@ import lib.MafLib;
 class Main{
     static Entity Player = new Entity();
     static Entity[] Party = {Player, Stella, null, null};
+    static Demon[] EnemyParty;
     static int Answer = 0;
     public static void main(String[] args){
         // Source - https://stackoverflow.com/a/23487534
@@ -169,18 +170,7 @@ class Main{
         // System.out.println(Stella.toString());
         Answer = MafLib.askInt("What would you like to do?\n" + MafLib.GREEN + "1. Move\n" + MafLib.YELLOW + "2. View Map\n" + MafLib.BLUE + "3. Status\n" + MafLib.BLACK + "4. Settings\n" + MafLib.RESET);
         if (Answer == 1){
-            Answer = MafLib.askInt("Which direction?\n1. Up\n2. Down\n3. Left\n4. Right\n");
-            if (Answer == 1){Player.setZ(Player.Z - 1);} // Up
-            if (Answer == 2){Player.setZ(Player.Z + 1);} // Down
-            // P.S. I now understand why lower Y is used for "up" sometimes.
-            if (Answer == 3){Player.setX(Player.Z - 1);} // Left
-            if (Answer == 4){Player.setX(Player.Z + 1);} // Right
-
-            int demon_attack_chance = (int) Math.round((Math.random()*10)) + 1;
-            if (demon_attack_chance <= 4){
-                System.out.println(MafLib.RED + MafLib.BOLD + "Oh no! You've been ambushed by demons!" + MafLib.RESET);
-                
-            }
+            Move();
         }
         else if (Answer == 2){
             System.out.println(Map.WORLD_MAP.toString());
@@ -193,5 +183,34 @@ class Main{
             }
         }
         Loop();
+    }
+
+    public static void Move(){
+        Answer = MafLib.askInt(MafLib.RESET + "Which direction?\n1. Up\n2. Down\n3. Left\n4. Right\n5. Stop Moving\n");
+        if (Answer == 1){Player.setZ(Player.Z - 1);} // Up
+        if (Answer == 2){Player.setZ(Player.Z + 1);} // Down
+        // P.S. I now understand why lower Y is used for "up" sometimes.
+        if (Answer == 3){Player.setX(Player.Z - 1);} // Left
+        if (Answer == 4){Player.setX(Player.Z + 1);} // Right
+
+        int demon_attack_chance = (int) Math.round((Math.random()*10)) + 1;
+        if(Answer == 5){demon_attack_chance = 10;}
+
+        if (demon_attack_chance <= 4){
+            System.out.println(MafLib.RED + MafLib.BOLD + "Oh no! You've been ambushed by demons!" + MafLib.RESET);
+            CombatLoop();
+        }
+        if (Answer != 5){
+            Move();
+        }
+        Loop();
+    }
+
+    public static void CombatLoop(){
+        EnemyParty = new Demon[]{Demon.Pixie, Demon.Pixie};
+        for(int i = 0; i < EnemyParty.length; i++){
+            System.out.println(EnemyParty[i].PrintBrief());
+        }
+        Player.CombatAct();
     }
 }
