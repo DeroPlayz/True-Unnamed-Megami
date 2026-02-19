@@ -87,36 +87,37 @@ class Entity {
         prompt += "\n" + MafLib.RESET;
         int Answer = MafLib.askInt(prompt);
         if (Answer > EnemyParty.size()){Attack(Attack);}
-        
-        double chance = (int) (Math.random() * 100) + 1;
-        double threshold = (int) (Math.pow(Agility + 1, 3.74) * Math.pow((double) EnemyParty.get(Answer-1).getAgility(), 3.0) * (Attack.getAccuracy()/100.0));
-        // System.out.println("Chance: " + chance);
-        // // System.out.println("Threshold Pt. 1: " + Math.pow(Agility + 1, 3.74));
-        // // System.out.println("Threshold Pt. 2: " + Math.pow(EnemyParty[Answer-1].getAgility(), 3.0));
-        // // System.out.println("Threshold Pt. 3: " + (Attack.getAccuracy()/100.0));
-        // System.out.println("Threshold: " + threshold);
-        if (chance > threshold){
-            System.out.println("Miss!");
-        }
         else{
-            // System.out.println("Base Power: " + Attack.getPower());
-            // System.out.println("User Strength: " + Strength);
-            double d = Attack.getPower() * Strength;
-            // System.out.println("BP * US: " + d);
+            double chance = (int) (Math.random() * 100) + 1;
+            double threshold = (int) (Math.pow(Agility + 1, 3.74) * Math.pow((double) EnemyParty.get(Answer-1).getAgility(), 3.0) * (Attack.getAccuracy()/100.0));
+            // System.out.println("Chance: " + chance);
+            // // System.out.println("Threshold Pt. 1: " + Math.pow(Agility + 1, 3.74));
+            // // System.out.println("Threshold Pt. 2: " + Math.pow(EnemyParty[Answer-1].getAgility(), 3.0));
+            // // System.out.println("Threshold Pt. 3: " + (Attack.getAccuracy()/100.0));
+            // System.out.println("Threshold: " + threshold);
+            if (chance > threshold){
+                System.out.println("Miss!");
+            }
+            else{
+                // System.out.println("Base Power: " + Attack.getPower());
+                // System.out.println("User Strength: " + Strength);
+                double d = Attack.getPower() * Strength;
+                // System.out.println("BP * US: " + d);
 
-            int c = (int) (Math.random()*3);
-            // System.out.println("Variation: " + c);
+                int c = (int) (Math.random()*3);
+                // System.out.println("Variation: " + c);
 
-            double m = Math.random()*2+1;
-            m = (int) m;
-            m /= 10;
-            if (c == 1){d += d*m;}
-            if (c == 2){d -= d*m;}
-            // System.out.println("Modifier: " + m);
-            // System.out.println("Damage Dealt: " + (int) (d));
-            DealDamage((int) d, EnemyParty.get(Answer - 1));
-            if (EnemyParty.get(Answer - 1).getCurrentHP() < 1){
-                EnemyParty.remove(Answer - 1);
+                double m = Math.random()*2+1;
+                m = (int) m;
+                m /= 10;
+                if (c == 1){d += d*m;}
+                if (c == 2){d -= d*m;}
+                // System.out.println("Modifier: " + m);
+                // System.out.println("Damage Dealt: " + (int) (d));
+                DealDamage((int) d, EnemyParty.get(Answer - 1));
+                if (EnemyParty.get(Answer - 1).getCurrentHP() < 1){
+                    EnemyParty.remove(Answer - 1);
+                }
             }
         }
     }
