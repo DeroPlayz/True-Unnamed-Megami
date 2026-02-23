@@ -1,6 +1,6 @@
-package src;
+package dero.unnamed_megami;
 
-import static src.Entity.Stella;
+import static dero.unnamed_megami.Entity.Stella;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,9 +8,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
-
-import lib.MafLib;
 
 class Main{
     static Entity Player = new Entity();
@@ -76,6 +77,7 @@ class Main{
             FileOutputStream FOS;
             ObjectOutputStream OOS;
             try {
+                Files.createFile(Paths.get("User/Save" + slot));
                 FOS = new FileOutputStream(new File("User/Save" + slot));
                 OOS = new ObjectOutputStream(FOS);
                 OOS.writeObject(Player.getName());
@@ -92,7 +94,7 @@ class Main{
         FileInputStream SR;
         String pr = "Which slot would you like to load from?";
         try{
-            SR = new FileInputStream("User/Save1");
+            SR = null;
             for(int i = 1; i <= 10; i++){
                 if (new File("User/Save" + i).exists()){
                     SR = new FileInputStream("User/Save" + i);

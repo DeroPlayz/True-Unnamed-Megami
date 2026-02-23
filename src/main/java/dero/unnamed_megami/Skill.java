@@ -1,4 +1,4 @@
-package src;
+package dero.unnamed_megami;
 
 public class Skill {
 

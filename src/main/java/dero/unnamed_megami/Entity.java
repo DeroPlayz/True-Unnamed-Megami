@@ -1,12 +1,10 @@
-package src;
+package dero.unnamed_megami;
 
 import java.text.NumberFormat;
 import java.util.Locale;
-import static src.Main.ClearScreen;
-import static src.Main.CombatLoop;
-
-import lib.MafLib;
-import static src.Main.EnemyParty;
+import static dero.unnamed_megami.Main.ClearScreen;
+import static dero.unnamed_megami.Main.CombatLoop;
+import static dero.unnamed_megami.Main.EnemyParty;
 
 class Entity {
     public static final double WEAK = 1.5;

@@ -1,4 +1,4 @@
-package lib;
+package dero.unnamed_megami;
 
 // import java.awt.event.ActionEvent;
 // import java.awt.event.ActionListener;

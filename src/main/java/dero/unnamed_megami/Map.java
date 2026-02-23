@@ -1,7 +1,7 @@
-package src;
+package dero.unnamed_megami;
 
-import static src.Tile.*;
-import static src.Main.Player;
+import static dero.unnamed_megami.Tile.*;
+import static dero.unnamed_megami.Main.Player;
 
 public class Map {
     String Name;

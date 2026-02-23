@@ -1,4 +1,5 @@
-package src;
+package dero.unnamed_megami;
+
 public class Demon extends Entity implements Cloneable{
 
     Demon(String Name, int Level, int MaxHP, int MaxSP, String Arcana, int Strength, int Magic, int Endurance, int Agility, double PhysicalAffinity, double FireAffinity, double IceAffinity, double ElectricAffinity, double WindAffinity, double LightAffinity, double DarkAffinity) {

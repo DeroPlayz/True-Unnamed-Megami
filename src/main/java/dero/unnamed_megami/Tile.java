@@ -1,6 +1,6 @@
-package src;
+package dero.unnamed_megami;
 
-import static lib.MafLib.*;
+import static dero.unnamed_megami.MafLib.*;
 
 public class Tile{
     private String Name; public String getName(){return Name;}
