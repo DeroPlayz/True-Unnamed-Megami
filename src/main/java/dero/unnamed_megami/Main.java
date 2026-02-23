@@ -19,6 +19,7 @@ class Main{
     static Entity[] Party = {Player, Stella, null, null};
     static ArrayList<Demon> EnemyParty = new ArrayList<>();
     static int Answer = 0;
+    
     public static void main(String[] args){
         // Source - https://stackoverflow.com/a/23487534
         // Posted by bobah, modified by community. See post 'Timeline' for change history
