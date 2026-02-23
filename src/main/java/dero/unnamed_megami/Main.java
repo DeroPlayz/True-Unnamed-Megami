@@ -4,12 +4,13 @@ import static dero.unnamed_megami.Entity.Stella;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
@@ -77,33 +78,47 @@ class Main{
             FileOutputStream FOS;
             ObjectOutputStream OOS;
             try {
-                Files.createFile(Paths.get("User/Save" + slot));
+                Files.createDirectory(Paths.get("User"));
                 FOS = new FileOutputStream(new File("User/Save" + slot));
                 OOS = new ObjectOutputStream(FOS);
                 OOS.writeObject(Player.getName());
+                // System.out.println("Fuck #0");
+            }
+            catch (FileNotFoundException e) {
+                e.printStackTrace();
+                // System.out.println("Fuck #1");
+            }
+            catch (FileAlreadyExistsException e) {
+                e.printStackTrace();
+                // System.out.println("Fuck #2");
             }
             catch (IOException e) {
                 e.printStackTrace();
+                // System.out.println("Fuck #3");
             }
+            // System.out.println("Fuck #4");
             Load(slot);
         }
     }
 
     private static void Load(){
         //Loads actual save files so the user can make a selection.
-        FileInputStream SR;
         String pr = "Which slot would you like to load from?";
+        // System.out.println("Fuck #5");
         try{
-            SR = null;
             for(int i = 1; i <= 10; i++){
+                // System.out.println("Fuck #6." + i);
                 if (new File("User/Save" + i).exists()){
-                    SR = new FileInputStream("User/Save" + i);
+                    // System.out.println("Fuck #7." + i);
+                    FileInputStream SR = new FileInputStream("User/Save" + i);
                     ObjectInputStream ReadFromSave = new ObjectInputStream(SR);
                     pr += "\n" + i + ". " + ReadFromSave.readObject();
                     ReadFromSave.close();
+                    SR.close();
+                    // System.out.println("Fuck #8." + i);
                 }
             }
-            SR.close();
+            // System.out.println("Fuck #9");
         }
         catch(IOException | ClassNotFoundException e){}
 
@@ -139,18 +154,23 @@ class Main{
             Load();
         }
         else{
+            // System.out.println("Fuck #5");
             FileInputStream FIS;
             ObjectInputStream OIS;
             try {
-            FIS = new FileInputStream(new File("User/Save" + slot));
-            OIS = new ObjectInputStream(FIS);
-            Player.setName((String) OIS.readObject());
+                // System.out.println("Fuck #6");
+                FIS = new FileInputStream(new File("User/Save" + slot));
+                OIS = new ObjectInputStream(FIS);
+                Player.setName((String) OIS.readObject());
             }
             catch(IOException | ClassNotFoundException e){
+                // System.out.println("Fuck #7");
                 System.out.println(MafLib.RESET + "No save found. Initializing");
                 New();
             }
         }
+        // System.out.println("Fuck #8");
+        Loop();
     }
 
     private static void Settings(int mode){
