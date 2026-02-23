@@ -33,4 +33,5 @@ public class Skill {
     }
 
     public static final Skill Melee = new Skill("Melee", "Physical", "HP", 0, 5, 90);
+    public static final Skill Dia = new Skill("Dia", "Heal", "SP", 3, 6, 90);
 }
