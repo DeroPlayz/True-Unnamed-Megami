@@ -2,6 +2,8 @@ package dero.unnamed_megami;
 
 import java.text.NumberFormat;
 import java.util.Locale;
+
+import static dero.unnamed_megami.Main.Answer;
 import static dero.unnamed_megami.Main.ClearScreen;
 import static dero.unnamed_megami.Main.CombatLoop;
 import static dero.unnamed_megami.Main.EnemyParty;
@@ -58,13 +60,18 @@ class Entity {
             ClearScreen();
             CombatAct();
         }
-        if(Answer == 1){
-            Attack(Skill.Melee);
+        else if(Answer == 1){
+            int Target = SelectTarget();
+            if (Target > EnemyParty.size() || Target < 0){SelectTarget();}
+            else{UseSkill(Skill.Melee, EnemyParty.get(Target - 1));}
+        }
+        else if(Answer == 2){
+            
         }
         CombatLoop();
     }
 
-    public void Attack(Skill Attack){
+    public int SelectTarget(){
         String prompt = "Which enemy will you target?";
         for(int i = 0; i < EnemyParty.size(); i++){
             if((EnemyParty.get(i) == null) == false){
@@ -83,41 +90,55 @@ class Entity {
             }
         }
         prompt += "\n" + MafLib.RESET;
-        int Answer = MafLib.askInt(prompt);
-        if (Answer > EnemyParty.size()){Attack(Attack);}
-        else{
-            double chance = (int) (Math.random() * 100) + 1;
-            double threshold = (int) (Math.pow(Agility + 1, 3.74) * Math.pow((double) EnemyParty.get(Answer-1).getAgility(), 3.0) * (Attack.getAccuracy()/100.0));
-            // System.out.println("Chance: " + chance);
-            // // System.out.println("Threshold Pt. 1: " + Math.pow(Agility + 1, 3.74));
-            // // System.out.println("Threshold Pt. 2: " + Math.pow(EnemyParty[Answer-1].getAgility(), 3.0));
-            // // System.out.println("Threshold Pt. 3: " + (Attack.getAccuracy()/100.0));
-            // System.out.println("Threshold: " + threshold);
-            if (chance > threshold){
-                System.out.println("Miss!");
-            }
-            else{
-                // System.out.println("Base Power: " + Attack.getPower());
-                // System.out.println("User Strength: " + Strength);
-                double d = Attack.getPower() * Strength;
-                // System.out.println("BP * US: " + d);
+        return MafLib.askInt(prompt);
+    }
 
-                int c = (int) (Math.random()*3);
-                // System.out.println("Variation: " + c);
+    public void UseSkill(Skill Skill, Entity Target){
+        // System.out.println("Base Power: " + Attack.getPower());
+        // System.out.println("User Strength: " + Strength);
+        double TotalPower = Skill.getPower() * Strength;
+        // System.out.println("BP * US: " + d);
+        if(Skill.getElement() == "Healing"){
+            TotalPower = Skill.getPower() * Magic;
+            DealDamage(GetVariance(TotalPower)*-1, Target);
+        }
+        else if(AccuracyCheck(Skill, Target)){
 
-                double m = Math.random()*2+1;
-                m = (int) m;
-                m /= 10;
-                if (c == 1){d += d*m;}
-                if (c == 2){d -= d*m;}
-                // System.out.println("Modifier: " + m);
-                // System.out.println("Damage Dealt: " + (int) (d));
-                DealDamage((int) d, EnemyParty.get(Answer - 1));
-                if (EnemyParty.get(Answer - 1).getCurrentHP() < 1){
-                    EnemyParty.remove(Answer - 1);
-                }
+            int finalDamage = GetVariance(TotalPower);
+            // System.out.println("Damage Dealt: " + finalDamage);
+            DealDamage(finalDamage, EnemyParty.get(Answer - 1));
+            if (EnemyParty.get(Answer - 1).getCurrentHP() < 1){
+                EnemyParty.remove(Answer - 1);
             }
         }
+    }
+
+    public int GetVariance(double Damage){
+        int c = (int) (Math.random()*3);
+        // System.out.println("Variation: " + c);
+
+        double m = Math.random()*2+1;
+        m = (int) m;
+        m /= 10;
+        // System.out.println("Modifier: " + m);
+        if (c == 1){Damage += Damage*m;}
+        if (c == 2){Damage -= Damage*m;}
+        return (int) Damage;
+    }
+
+    public boolean AccuracyCheck(Skill Skill, Entity Target){
+        double chance = (int) (Math.random() * 100) + 1;
+        double threshold = (int) (Math.pow(Agility + 1, 3.74) * Math.pow((double) EnemyParty.get(Answer-1).getAgility(), 3.0) * (Skill.getAccuracy()/100.0));
+        // System.out.println("Chance: " + chance);
+        // // System.out.println("Threshold Pt. 1: " + Math.pow(Agility + 1, 3.74));
+        // // System.out.println("Threshold Pt. 2: " + Math.pow(EnemyParty[Answer-1].getAgility(), 3.0));
+        // // System.out.println("Threshold Pt. 3: " + (Attack.getAccuracy()/100.0));
+        // System.out.println("Threshold: " + threshold);
+        if (chance > threshold){
+            System.out.println("Miss!");
+            return false;
+        }
+        return true;
     }
 
     //Constructors

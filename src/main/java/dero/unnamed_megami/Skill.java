@@ -21,6 +21,7 @@ public class Skill {
      * This is to make sure supports can actually heal and buff their allies without a risk of it just doing nothing,
      * Additionally, this will ensure debuff skills land, even if you have an agility of 1 and your opponent's
      * is 99.
+     * Just kidding; I changed it so Support & Healing skills entirely bypass the accuracy check.
      */
 
     public Skill(String Name, String Element, String PointType, int Cost, int Power, int Accuracy){
@@ -33,5 +34,5 @@ public class Skill {
     }
 
     public static final Skill Melee = new Skill("Melee", "Physical", "HP", 0, 5, 90);
-    public static final Skill Dia = new Skill("Dia", "Heal", "SP", 3, 6, 90);
+    public static final Skill Dia = new Skill("Dia", "Heal", "SP", 3, 6, 100);
 }

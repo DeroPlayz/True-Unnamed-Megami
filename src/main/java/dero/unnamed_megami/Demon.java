@@ -1,5 +1,8 @@
 package dero.unnamed_megami;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class Demon extends Entity implements Cloneable{
 
     Demon(String Name, int Level, int MaxHP, int MaxSP, String Arcana, int Strength, int Magic, int Endurance, int Agility, double PhysicalAffinity, double FireAffinity, double IceAffinity, double ElectricAffinity, double WindAffinity, double LightAffinity, double DarkAffinity) {
@@ -37,7 +40,7 @@ public class Demon extends Entity implements Cloneable{
         1.5
     );
 
-    public static final Demon JackFrost = new Demon(
+    public static final Demon Jack_Frost = new Demon(
         "Jack Frost",
         7,
         24,
@@ -55,4 +58,10 @@ public class Demon extends Entity implements Cloneable{
         1,
         1
     );
+    
+    public static ArrayList<Demon> DemonIndex = new ArrayList<>(Arrays.asList(new Demon[]{Pixie, Jack_Frost}));
+
+    public static Demon selectDemon(){
+        return DemonIndex.get((int) (Math.random()*(DemonIndex.size())));
+    }
 }

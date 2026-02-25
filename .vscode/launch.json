@@ -9,6 +9,13 @@
             "name": "Main",
             "request": "launch",
             "mainClass": "dero.unnamed_megami.Main",
+            "projectName": "True-Unnamed-Megami"
+        },
+        {
+            "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "dero.unnamed_megami.Main",
             "projectName": "unnamed-megami"
         },
         {

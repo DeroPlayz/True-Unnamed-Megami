@@ -232,7 +232,7 @@ class Main{
             System.out.println(MafLib.RED + MafLib.BOLD + "Oh no! You've been ambushed by demons!" + MafLib.RESET);
             int j = (int) (Math.random()*2+1);
             for(int i = 0; i < j; i++){
-                EnemyParty.add(new Demon(Demon.Pixie));
+                EnemyParty.add(new Demon(Demon.selectDemon()));
             }
             CombatLoop();
         }
