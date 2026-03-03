@@ -62,27 +62,10 @@ class Main{
 
     private static void New(){
         Player.setName(MafLib.askString(MafLib.CYAN + "What is your name?" + MafLib.RESET + "\n"));
-        String Intro = "You wake up one morning, but notice everything is incredibly quiet.||| Too quiet.||\n"
-            + "You get up and get dressed before looking out your window.| To your horror, you see\n"
-            + "an apocalyptic wasteland where your home town used to be.|\n"
-            + "Terrified, you run out of your room, finding the rest of your home in complete ruin.|\n"
-            + "Partially covered by the rubble, you find the bodies of your father and younger brother\n"
-            + "where your garage was, their corpses crushed and mangled.|\n"
-            + "You continue searching around, horrified, and find your mom in the kitchen, barely recognizable.|\n"
-            + "Next to her, you see the skull of your younger sister.|\n"
-            + "Horrified, you just sit down for a moment and sob.||||\n"
-            + "Everything.| Gone.|\n"
-            + "Your friends.| Your home.| Your life.| Your surroundings.| Your family.| Even your dog.||||\n"
-            + "Bark!||\n"
-            + "Wait. What was that?|\n"
-            + "Bark! Bark!|\n"
-            + "You find your dog, Stella, hidden under some rubble, but she was far from unharmed,|\n"
-            + "whimpering and quivering pitifully.| She's stable, but scared and injured.|\n"
-            + "One of her hind legs was severely injured and her front paw reduced to nearly a nub.|\n"
-            + "You pick her up and search your home’s ruins, looking for something,|\n"
-            + "anything you could use to navigate the hellscape you’ve found yourself in.";
+        String Intro = "You wake up.| It's Thursday, March 18th of 20XY.|\n"
+            + "It's spring break, so you don't need to worry about getting to class on time.|| That's nice.";
         PrintStory(Intro);
-        Save();
+        Loop();
     }
 
     private static void Save(){
@@ -218,7 +201,7 @@ class Main{
         // System.out.println(Map.WORLD_MAP.toString());
         // System.out.println(Player.toString());
         // System.out.println(Stella.toString());
-        Answer = MafLib.askInt("What would you like to do?\n" + MafLib.GREEN + "1. Move\n" + MafLib.YELLOW + "2. View Map\n" + MafLib.BLUE + "3. Status\n" + MafLib.BLACK + "4. Settings\n" + MafLib.RESET);
+        Answer = MafLib.askInt("\nWhat would you like to do?\n" + MafLib.GREEN + "1. Move\n" + MafLib.YELLOW + "2. View Map\n" + MafLib.BLUE + "3. Status\n" + MafLib.BLACK + "4. Settings\n" + MafLib.RESET);
         if (Answer == 1){
             Move();
         }
@@ -227,7 +210,13 @@ class Main{
         }
         else if (Answer == 3){
             Answer = MafLib.askInt("What would you like to check?\n" + MafLib.BLUE + "1. Party\n" + MafLib.GREEN + "2. Inventory\n" + MafLib.RED + "3. Compendium\n" + MafLib.BLACK + "4. Nevermind, go back.\n" + MafLib.RESET);
-            if (Answer == 4){
+            if (Answer == 1){
+                System.out.println(Player);
+                System.out.println(Stella);
+            }
+            else if (Answer == 3){
+            }
+            else if (Answer == 4){
                 ClearScreen();
                 Loop();
             }
