@@ -13,6 +13,7 @@ import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 class Main{
     static Entity Player = new Entity();
@@ -63,6 +64,35 @@ class Main{
 
     private static void New(){
         Player.setName(MafLib.askString(MafLib.CYAN + "What is your name?" + MafLib.RESET + "\n"));
+        String Intro = "You wake up one morning, but notice everything is incredibly quiet.||| Too quiet.||\n"
+            + "You get up and get dressed before looking out your window.| To your horror, you see\n"
+            + "an apocalyptic wasteland where your home town used to be.|\n"
+            + "Terrified, you run out of your room, finding the rest of your home in complete ruin.|\n"
+            + "Partially covered by the rubble, you find the bodies of your father and younger brother\n"
+            + "where your garage was, their corpses crushed and mangled.|\n"
+            + "You continue searching around, horrified, and find your mom in the kitchen, barely recognizable.|\n"
+            + "Next to her, you see the skull of your younger sister.|\n"
+            + "Horrified, you just sit down for a moment and sob.||||\n"
+            + "Everything.| Gone.|\n"
+            + "Your friends.| Your home.| Your life.| Your surroundings.| Your family.| Even your dog.||||\n"
+            + "Bark!||\n"
+            + "Wait. What was that?|\n"
+            + "Bark! Bark!|\n"
+            + "You find your dog, Stella, hidden under some rubble, but she was far from unharmed,|\n"
+            + "whimpering and quivering pitifully.| She's stable, but scared and injured.| One of her hind legs was severely injured and her front paw reduced to nearly a nub.|\n"
+            + "You pick her up and search your home’s ruins, looking for something,|\n"
+            + "anything you could use to navigate the hellscape you’ve found yourself in.";
+        for(int i = 0; i < Intro.length(); i++){
+            long sleep_dur = 50;
+            if (String.valueOf(Intro.charAt(i)).equals("|")){sleep_dur *= 2;}
+            try {
+                Thread.sleep(sleep_dur);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if (!String.valueOf(Intro.charAt(i)).equals("|")){
+                System.out.print(Intro.charAt(i));}
+        }
         Save();
     }
 
@@ -74,52 +104,54 @@ class Main{
         }
         else{
             if (new File("User/Save" + slot).exists()){
-                MafLib.askString(MafLib.RED + "This slot contains existing save data. If you intend to overwrite it, press Enter to continue.\nIf you do not wish to overwrite the save, press CTRL+C (or CMD+C on Mac) to exit the game.\n" + MafLib.RESET);
+                System.out.println(MafLib.RED + "This slot contains existing save data. If you intend to overwrite it, press Enter to continue.\nIf you do not wish to overwrite the save, press CTRL+C (or CMD+C on Mac) to exit the game.\n" + MafLib.RESET);
+                Scanner PressEnter = new Scanner(System.in);
+                PressEnter.nextLine();
+                PressEnter.close();
             }
-            FileOutputStream FOS;
-            ObjectOutputStream OOS;
             try {
-                Files.createDirectory(Paths.get("User"));
-                FOS = new FileOutputStream(new File("User/Save" + slot));
-                OOS = new ObjectOutputStream(FOS);
-                OOS.writeObject(Player.getName());
-                // System.out.println("Fuck #0");
+                Files.delete(Paths.get("User/Save" + slot));
+                Files.delete(Paths.get("User"));
+                AccessFiles(slot);
+            } catch (IOException e) {
+                AccessFiles(slot);
             }
-            catch (FileNotFoundException e) {
-                e.printStackTrace();
-                // System.out.println("Fuck #1");
-            }
-            catch (FileAlreadyExistsException e) {
-                e.printStackTrace();
-                // System.out.println("Fuck #2");
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-                // System.out.println("Fuck #3");
-            }
-            // System.out.println("Fuck #4");
             Load(slot);
+        }
+    }
+
+    private static void AccessFiles(int slot){
+        FileOutputStream FOS;
+        ObjectOutputStream OOS;
+        try {
+            Files.createDirectory(Paths.get("User"));
+        }
+        catch (IOException e) {
+            // e.printStackTrace();
+        }
+
+        try {
+            FOS = new FileOutputStream(new File("User/Save" + slot));
+            OOS = new ObjectOutputStream(FOS);
+            OOS.writeObject(Player.getName());
+        } catch (IOException e) {
+            // e.printStackTrace();
         }
     }
 
     private static void Load(){
         //Loads actual save files so the user can make a selection.
         String pr = "Which slot would you like to load from?";
-        // System.out.println("Fuck #5");
         try{
             for(int i = 1; i <= 10; i++){
-                // System.out.println("Fuck #6." + i);
                 if (new File("User/Save" + i).exists()){
-                    // System.out.println("Fuck #7." + i);
                     FileInputStream SR = new FileInputStream("User/Save" + i);
                     ObjectInputStream ReadFromSave = new ObjectInputStream(SR);
                     pr += "\n" + i + ". " + ReadFromSave.readObject();
                     ReadFromSave.close();
                     SR.close();
-                    // System.out.println("Fuck #8." + i);
                 }
             }
-            // System.out.println("Fuck #9");
         }
         catch(IOException | ClassNotFoundException e){}
 
@@ -247,7 +279,7 @@ class Main{
             for(int i = 0; i < EnemyParty.size(); i++){
                 System.out.println(EnemyParty.get(i).PrintBrief());
             }
-            Player.CombatAct();
+            Player.PlayerChooseCombatAction();
         }
     }
 }
