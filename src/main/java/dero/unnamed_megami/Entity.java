@@ -3,7 +3,6 @@ package dero.unnamed_megami;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-import static dero.unnamed_megami.Main.Answer;
 import static dero.unnamed_megami.Main.ClearScreen;
 import static dero.unnamed_megami.Main.CombatLoop;
 import static dero.unnamed_megami.Main.EnemyParty;
@@ -43,9 +42,10 @@ class Entity {
         private double FireAffinity = 1;                        public double getFireAffinity(){return FireAffinity;}           public void setFireAffinity(double FireAffinity){this.FireAffinity = FireAffinity;}
         private double IceAffinity = 1;                         public double getIceAffinity(){return IceAffinity;}             public void setIceAffinity(double IceAffinity){this.IceAffinity = IceAffinity;}
         private double ElectricAffinity = 1;                    public double getElectricAffinity(){return ElectricAffinity;}   public void setElectricAffinity(double ElectricAffinity){this.ElectricAffinity = ElectricAffinity;}
-        private double WindAffinity = 1;                        public double getWindAffinity(){return WindAffinity;}           public void setWindAffinity(double WindAffinity){this.WindAffinity = WindAffinity;}
+        private double ForceAffinity = 1;                       public double getForceAffinity(){return ForceAffinity;}           public void setForceAffinity(double ForceAffinity){this.ForceAffinity = ForceAffinity;}
         private double LightAffinity = 1;                       public double getLightAffinity(){return LightAffinity;}         public void setLightAffinity(double LightAffinity){this.LightAffinity = LightAffinity;}
         private double DarkAffinity = 1;                        public double getDarkAffinity(){return DarkAffinity;}           public void setDarkAffinity(double DarkAffinity){this.DarkAffinity = DarkAffinity;}
+    
     //Position
         int X;                                                  public int getX(){return X;}                                    public void setX(int X){this.X = X;}
         int Z;                                                  public int getZ(){return Z;}                                    public void setZ(int Z){this.Z = Z;}
@@ -54,11 +54,11 @@ class Entity {
         target.CurrentHP -= amount;
     }
 
-    public void CombatAct(){
+    public void PlayerChooseCombatAction(){
         int Answer = MafLib.askInt("What would you like to do?\n" + MafLib.RED + "1. Melee\t" + MafLib.BLUE + "2. Spell\n" + MafLib.GREEN + "3. Use an item\t" + MafLib.YELLOW + "4. Guard\n" + MafLib.RESET);
         if(Answer < 1 || Answer > 5){
             ClearScreen();
-            CombatAct();
+            PlayerChooseCombatAction();
         }
         else if(Answer == 1){
             int Target = SelectTarget();
@@ -66,7 +66,7 @@ class Entity {
             else{UseSkill(Skill.Melee, EnemyParty.get(Target - 1));}
         }
         else if(Answer == 2){
-            
+        
         }
         CombatLoop();
     }
@@ -106,9 +106,9 @@ class Entity {
 
             int finalDamage = GetVariance(TotalPower);
             // System.out.println("Damage Dealt: " + finalDamage);
-            DealDamage(finalDamage, EnemyParty.get(Answer - 1));
-            if (EnemyParty.get(Answer - 1).getCurrentHP() < 1){
-                EnemyParty.remove(Answer - 1);
+            DealDamage(finalDamage, Target);
+            if (Target.getCurrentHP() < 1){
+                EnemyParty.remove(EnemyParty.indexOf(Target));
             }
         }
     }
@@ -128,7 +128,7 @@ class Entity {
 
     public boolean AccuracyCheck(Skill Skill, Entity Target){
         double chance = (int) (Math.random() * 100) + 1;
-        double threshold = (int) (Math.pow(Agility + 1, 3.74) * Math.pow((double) EnemyParty.get(Answer-1).getAgility(), 3.0) * (Skill.getAccuracy()/100.0));
+        double threshold = (int) (Math.pow(Agility + 1, 3.74) * Math.pow((double) Target.getAgility(), 3.0) * (Skill.getAccuracy()/100.0));
         // System.out.println("Chance: " + chance);
         // // System.out.println("Threshold Pt. 1: " + Math.pow(Agility + 1, 3.74));
         // // System.out.println("Threshold Pt. 2: " + Math.pow(EnemyParty[Answer-1].getAgility(), 3.0));
@@ -182,7 +182,7 @@ class Entity {
         Endurance = 1;
         Agility = 1;
     }
-    Entity(String Name, int Level, int MaxHP, int MaxSP, String Arcana, int Strength, int Magic, int Endurance, int Agility, double PhysicalAffinity, double FireAffinity, double IceAffinity, double ElectricAffinity, double WindAffinity, double LightAffinity, double DarkAffinity){
+    Entity(String Name, int Level, int MaxHP, int MaxSP, String Arcana, int Strength, int Magic, int Endurance, int Agility, double PhysicalAffinity, double FireAffinity, double IceAffinity, double ElectricAffinity, double ForceAffinity, double LightAffinity, double DarkAffinity){
         this.Name = Name;
         this.Level = Level;
         this.CurrentHP = this.MaxHP = MaxHP;
@@ -196,7 +196,7 @@ class Entity {
         this.FireAffinity = FireAffinity;
         this.IceAffinity = IceAffinity;
         this.ElectricAffinity = ElectricAffinity;
-        this.WindAffinity = WindAffinity;
+        this.ForceAffinity = ForceAffinity;
         this.LightAffinity = LightAffinity;
         this.DarkAffinity = DarkAffinity;
     }

@@ -5,12 +5,12 @@ import java.util.Arrays;
 
 public class Demon extends Entity implements Cloneable{
 
-    Demon(String Name, int Level, int MaxHP, int MaxSP, String Arcana, int Strength, int Magic, int Endurance, int Agility, double PhysicalAffinity, double FireAffinity, double IceAffinity, double ElectricAffinity, double WindAffinity, double LightAffinity, double DarkAffinity) {
-        super(Name, Level, MaxHP, MaxSP, Arcana, Strength, Magic, Endurance, Agility, PhysicalAffinity, FireAffinity, IceAffinity, ElectricAffinity, WindAffinity, LightAffinity, DarkAffinity);
+    Demon(String Name, int Level, int MaxHP, int MaxSP, String Arcana, int Strength, int Magic, int Endurance, int Agility, double PhysicalAffinity, double FireAffinity, double IceAffinity, double ElectricAffinity, double ForceAffinity, double LightAffinity, double DarkAffinity) {
+        super(Name, Level, MaxHP, MaxSP, Arcana, Strength, Magic, Endurance, Agility, PhysicalAffinity, FireAffinity, IceAffinity, ElectricAffinity, ForceAffinity, LightAffinity, DarkAffinity);
     }
 
     Demon(Demon d) {
-        super(d.getName(), d.getLevel(), d.getMaxHP(), d.getMaxSP(), d.getArcana(), d.getStrength(), d.getMagic(), d.getEndurance(), d.getAgility(), d.getPhysicalAffinity(), d.getFireAffinity(), d.getIceAffinity(), d.getElectricAffinity(), d.getWindAffinity(), d.getLightAffinity(), d.getDarkAffinity());
+        super(d.getName(), d.getLevel(), d.getMaxHP(), d.getMaxSP(), d.getArcana(), d.getStrength(), d.getMagic(), d.getEndurance(), d.getAgility(), d.getPhysicalAffinity(), d.getFireAffinity(), d.getIceAffinity(), d.getElectricAffinity(), d.getForceAffinity(), d.getLightAffinity(), d.getDarkAffinity());
     }
 
     public String PrintBrief(){
