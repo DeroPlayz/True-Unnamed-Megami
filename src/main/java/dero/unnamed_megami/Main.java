@@ -4,12 +4,10 @@ import static dero.unnamed_megami.Entity.Stella;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -83,17 +81,7 @@ class Main{
             + "One of her hind legs was severely injured and her front paw reduced to nearly a nub.|\n"
             + "You pick her up and search your home’s ruins, looking for something,|\n"
             + "anything you could use to navigate the hellscape you’ve found yourself in.";
-        for(int i = 0; i < Intro.length(); i++){
-            long sleep_dur = 50;
-            if (String.valueOf(Intro.charAt(i)).equals("|")){sleep_dur *= 2;}
-            try {
-                Thread.sleep(sleep_dur);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            if (!String.valueOf(Intro.charAt(i)).equals("|")){
-                System.out.print(Intro.charAt(i));}
-        }
+        PrintStory(Intro);
         Save();
     }
 
@@ -281,6 +269,20 @@ class Main{
                 System.out.println(EnemyParty.get(i).PrintBrief());
             }
             Player.PlayerChooseCombatAction();
+        }
+    }
+
+    public static void PrintStory(String story){
+        for(int i = 0; i < story.length(); i++){
+            long sleep_dur = 50;
+            if (String.valueOf(story.charAt(i)).equals("|")){sleep_dur *= 2;}
+            try {
+                Thread.sleep(sleep_dur);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if (!String.valueOf(story.charAt(i)).equals("|")){
+                System.out.print(story.charAt(i));}
         }
     }
 }
