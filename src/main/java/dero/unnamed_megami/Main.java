@@ -79,7 +79,8 @@ class Main{
             + "Wait. What was that?|\n"
             + "Bark! Bark!|\n"
             + "You find your dog, Stella, hidden under some rubble, but she was far from unharmed,|\n"
-            + "whimpering and quivering pitifully.| She's stable, but scared and injured.| One of her hind legs was severely injured and her front paw reduced to nearly a nub.|\n"
+            + "whimpering and quivering pitifully.| She's stable, but scared and injured.|\n"
+            + "One of her hind legs was severely injured and her front paw reduced to nearly a nub.|\n"
             + "You pick her up and search your home’s ruins, looking for something,|\n"
             + "anything you could use to navigate the hellscape you’ve found yourself in.";
         for(int i = 0; i < Intro.length(); i++){
