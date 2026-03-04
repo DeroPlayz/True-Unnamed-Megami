@@ -11,14 +11,15 @@ import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 class Main{
     static Entity Player = new Entity();
     static Entity[] Party = {Player, Stella, null, null};
     static ArrayList<Demon> EnemyParty = new ArrayList<>();
     static int Answer = 0;
-    
+    static long story_speed = 100;
+    static long menu_speed = 0;
+
     public static void main(String[] args){
         // Source - https://stackoverflow.com/a/23487534
         // Posted by bobah, modified by community. See post 'Timeline' for change history
@@ -35,6 +36,20 @@ class Main{
     }
 
     private static void StartUp(){
+        try{
+            if (new File("User/Settings.txt").exists()){
+                FileInputStream SR = new FileInputStream("User/Settings.txt");
+                ObjectInputStream ReadConfig = new ObjectInputStream(SR);
+                story_speed = (long) ReadConfig.readObject();
+                menu_speed = (long) ReadConfig.readObject();
+                ReadConfig.close();
+                SR.close();
+            }
+        }
+        catch(IOException | ClassNotFoundException e){
+            e.printStackTrace();
+        }
+
         //Generally speaking, NG is White, LG is Cyan, Settings are Black, and SG is Green.
         Player.setX(7);
         Player.setZ(7);
@@ -63,36 +78,36 @@ class Main{
     private static void New(){
         Player.setName(MafLib.askString(MafLib.CYAN + "What is your name?" + MafLib.RESET + "\n"));
         String Intro = "You wake up.| It's Thursday, March 18th of 20XY.|\n"
-            + "It's spring break, so you don't need to worry about getting to class on time.|| That's nice.";
+            + "It's spring break, so you don't need to worry about getting to class on time.|| That's nice.\n";
         PrintStory(Intro);
         Loop();
     }
 
-    private static void Save(){
+    private static void AccessFiles(){
         int slot = MafLib.askInt(MafLib.GREEN + "Which slot would you like to save in?\n" + MafLib.RESET);
         if (slot < 1 || slot > 10){
             ClearScreen();
-            StartUp();
+            AccessFiles();
         }
         else{
             if (new File("User/Save" + slot).exists()){
-                System.out.println(MafLib.RED + "This slot contains existing save data. If you intend to overwrite it, press Enter to continue.\nIf you do not wish to overwrite the save, press CTRL+C (or CMD+C on Mac) to exit the game.\n" + MafLib.RESET);
-                Scanner PressEnter = new Scanner(System.in);
-                PressEnter.nextLine();
-                PressEnter.close();
+                Answer = MafLib.askInt(MafLib.RED + "This slot contains existing save data.\nIf you wish to overwrite the save, press 1.\nIf you do not wish to overwrite the save, press 2.\n" + MafLib.RESET);
+                if (Answer == 2){
+                    AccessFiles();
+                }
             }
             try {
                 Files.delete(Paths.get("User/Save" + slot));
                 Files.delete(Paths.get("User"));
-                AccessFiles(slot);
+                Save(slot);
             } catch (IOException e) {
-                AccessFiles(slot);
+                Save(slot);
             }
             Load(slot);
         }
     }
 
-    private static void AccessFiles(int slot){
+    private static void Save(int slot){
         FileOutputStream FOS;
         ObjectOutputStream OOS;
         try {
@@ -184,24 +199,77 @@ class Main{
         if (mode == 1){
             System.out.println("2. Save");
             System.out.println("3. Load" + MafLib.RESET);
+            System.out.println("4. Text Scroll Speed");
         }
         Answer = MafLib.askInt("");
         if (Answer == 1){
             ClearScreen();
             StartUp();
         }
+        else if (Answer == 2){
+            AccessFiles();
+        }
+        else if (Answer == 4){
+            Answer = MafLib.askInt("Would you like to edit message text speed, or Menu text speed?\n1. Story Text\n2. Menu Text\n");
+            System.out.println("Which speed would you like?");
+            story_speed = 150;
+            PrintStory("1: Slow - The quick brown fox jumps over the lazy dog\n");
+            if (Answer == 1){story_speed = 150;}
+            if (Answer == 2){menu_speed = 150;}
+            
+            story_speed = 100;
+            PrintStory("2: Regular - The quick brown fox jumps over the lazy dog\n");
+            if (Answer == 1){story_speed = 100;}
+            if (Answer == 2){menu_speed = 100;}
+            
+            story_speed = 50;
+            PrintStory("3: Fast - The quick brown fox jumps over the lazy dog\n");
+            if (Answer == 1){story_speed = 50;}
+            if (Answer == 2){menu_speed = 50;}
+            
+            story_speed = 0;
+            PrintStory("4: Instant - The quick brown fox jumps over the lazy dog\n");
+            if (Answer == 1){story_speed = 0;}
+            if (Answer == 2){menu_speed = 0;}
+
+            Answer = MafLib.askInt("");
+            if (Answer == 1){
+                story_speed = 150;
+            }
+            else if (Answer == 2){
+                story_speed = 100;
+            }
+            else if (Answer == 3){
+                story_speed = 50;
+            }
+            else if (Answer == 4){
+                story_speed = 0;
+            }
+            SaveSettings();
+        }
     }
 
+    public static void SaveSettings(){
+        FileOutputStream FOS;
+        ObjectOutputStream OOS;
+        try {
+            // Files.deleteIfExists(Paths.get("User/Settings"));
+            FOS = new FileOutputStream(new File("User/Settings.txt"));
+            OOS = new ObjectOutputStream(FOS);
+            OOS.writeObject(story_speed);
+            OOS.writeObject(menu_speed);
+        } catch (IOException e) {
+            // e.printStackTrace();
+        }
+    }
     public static void ClearScreen(){
         System.out.println("\033[H\033[2J");
         System.out.flush();
     }
 
     public static void Loop() {
-        // System.out.println(Map.WORLD_MAP.toString());
-        // System.out.println(Player.toString());
-        // System.out.println(Stella.toString());
-        Answer = MafLib.askInt("\nWhat would you like to do?\n" + MafLib.GREEN + "1. Move\n" + MafLib.YELLOW + "2. View Map\n" + MafLib.BLUE + "3. Status\n" + MafLib.BLACK + "4. Settings\n" + MafLib.RESET);
+        PrintStory("What would you like to do?\n" + MafLib.GREEN + "1. Move\n" + MafLib.YELLOW + "2. View Map\n" + MafLib.BLUE + "3. Status\n" + MafLib.BLACK + "4. Settings\n" + MafLib.RESET);
+        Answer = MafLib.askInt("");
         if (Answer == 1){
             Move();
         }
@@ -261,17 +329,41 @@ class Main{
         }
     }
 
-    public static void PrintStory(String story){
-        for(int i = 0; i < story.length(); i++){
-            long sleep_dur = 50;
-            if (String.valueOf(story.charAt(i)).equals("|")){sleep_dur *= 2;}
+    public static void PrintStory(String message){
+        for(int i = 0; i < message.length(); i++){
+            /* 0 = Instant
+             * 50 = Fast
+             * 100 = Regular
+             * 150 = Slow
+             * 200 = Are you kidding me? */
+            long current_speed = story_speed;
+            if (String.valueOf(message.charAt(i)).equals("|")){current_speed = story_speed * 2;}
             try {
-                Thread.sleep(sleep_dur);
+                Thread.sleep(current_speed);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if (!String.valueOf(story.charAt(i)).equals("|")){
-                System.out.print(story.charAt(i));}
+            if (!String.valueOf(message.charAt(i)).equals("|")){
+                System.out.print(message.charAt(i));}
+        }
+    }
+
+        public static void PrintMenu(String message){
+        for(int i = 0; i < message.length(); i++){
+            /* 0 = Instant
+             * 50 = Fast
+             * 100 = Regular
+             * 150 = Slow
+             * 200 = Are you kidding me? */
+            long current_speed = menu_speed;
+            if (String.valueOf(message.charAt(i)).equals("|")){current_speed = menu_speed * 2;}
+            try {
+                Thread.sleep(current_speed);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if (!String.valueOf(message.charAt(i)).equals("|")){
+                System.out.print(message.charAt(i));}
         }
     }
 }
