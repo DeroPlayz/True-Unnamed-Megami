@@ -2,6 +2,7 @@ package dero.unnamed_megami;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import static dero.unnamed_megami.Main.EnemyParty;
 
 public class Demon extends Entity implements Cloneable{
 
@@ -18,7 +19,15 @@ public class Demon extends Entity implements Cloneable{
     }
 
     public void Act(){
-        
+        if(super.getArcana() == "Lovers"){
+            for(int i = 0; i < Main.EnemyParty.size(); i++){
+                if(EnemyParty.get(i).getCurrentHP() < Main.EnemyParty.get(i).getMaxHP()/2){
+                    if(super.getCurrentSP() > Skill.Dia.getCost()){
+                        UseSkill(Skill.Dia, EnemyParty.get(i));
+                    }
+                }
+            }
+        }        
     }
 
     public static final Demon Pixie = new Demon(
