@@ -91,14 +91,14 @@ public class Skill {
     public static final Skill Mazandyne = new Skill("Mazandyne", "Force", 18, 24, 90, Enemies, 0);
 
     public static final Skill Hama = new Skill("Hama", "Light", 8, 25, 100, Enemies, 1);
-    public static final Skill Hamaon = new Skill("Hamaon", "Light", 16, 50, 100, Enemies, 1);
+    public static final Skill Hamaon = new Skill("Hamaon", "Light", 16, 55, 100, Enemies, 1);
     public static final Skill Mahama = new Skill("Mahama", "Light", 12, 30, 100, Enemies, 0);
-    public static final Skill Mahamaon = new Skill("Mahamaon", "Light", 24, 55, 100, Enemies, 0);
+    public static final Skill Mahamaon = new Skill("Mahamaon", "Light", 24, 50, 100, Enemies, 0);
     
     public static final Skill Mudo = new Skill("Mudo", "Dark", 8, 25, 100, Enemies, 1);
-    public static final Skill Mudoon = new Skill("Mudoon", "Dark", 16, 50, 100, Enemies, 1);
+    public static final Skill Mudoon = new Skill("Mudoon", "Dark", 16, 55, 100, Enemies, 1);
     public static final Skill Mamudo = new Skill("Mamudo", "Dark", 12, 30, 100, Enemies, 0);
-    public static final Skill Mamudoon = new Skill("Mamudoon", "Dark", 24, 55, 100, Enemies, 0);
+    public static final Skill Mamudoon = new Skill("Mamudoon", "Dark", 24, 50, 100, Enemies, 0);
     
     public static final Skill Dia = new Skill("Dia", "Heal", 3, 6, 100, Allies, 1);
     public static final Skill Diarama = new Skill("Diarama", "Heal", 6, 6, 100, Allies, 1);
