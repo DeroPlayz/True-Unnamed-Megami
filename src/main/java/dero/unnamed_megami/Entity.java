@@ -61,8 +61,8 @@ class Entity {
             PlayerChooseCombatAction();
         }
         else if(Answer == 1){
-            int Target = SelectTarget();
-            if (Target > EnemyParty.size() || Target < 0){SelectTarget();}
+            int Target = SelectTarget(Skill.Melee);
+            if (Target > EnemyParty.size() || Target < 0){SelectTarget(Skill.Melee);}
             else{UseSkill(Skill.Melee, EnemyParty.get(Target - 1));}
         }
         else if(Answer == 2){
@@ -71,8 +71,17 @@ class Entity {
         CombatLoop();
     }
 
-    public int SelectTarget(){
-        String prompt = "Which enemy will you target?";
+    public int SelectTarget(Skill skill){
+        String prompt = "Which";
+        if (skill.getTargetType() == 1){
+            prompt += " all";
+        }
+        else if (skill.getTargetType() == 2){
+            prompt += " enem";
+        }
+        if (skill.getTargetCount() < 2){prompt += "y ";}
+        else{prompt += "ies ";}
+        prompt += "will you target?";
         for(int i = 0; i < EnemyParty.size(); i++){
             if((EnemyParty.get(i) == null) == false){
                 if(EnemyParty.get(i).getCurrentHP() <= EnemyParty.get(i).getMaxHP()*0.3){;
