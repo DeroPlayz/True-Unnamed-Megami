@@ -9,11 +9,8 @@ package dero.unnamed_megami;
 import java.util.Scanner;
 // import java.util.concurrent.CountDownLatch;
 
-// import javax.swing.JLabel;
-import javax.swing.JTextField;
-
 public class MafLib{
-    public static JTextField response = new JTextField();
+    public static String response;
     public static boolean asking = false;
     public static final String RESET = "\033[0m";
     public static final String CLEARC = "\033[39m";
@@ -44,7 +41,7 @@ public class MafLib{
 
     public static int askInt(String Prompt){
         System.out.print(Prompt);
-        String response = Scan.next();
+        response = Scan.next();
         response = response.replaceAll("[^0-9.]", "");
         int dot = response.indexOf(".");
         if(dot == -1){
@@ -62,7 +59,7 @@ public class MafLib{
 
     public static double askDouble(String Prompt){
         System.out.print(Prompt);
-        String response = Scan.next();
+        response = Scan.next();
         response = response.replaceAll("[^0-9]", "");
         if(!response.contains(".")){
             return Double.valueOf(response + ".0");
