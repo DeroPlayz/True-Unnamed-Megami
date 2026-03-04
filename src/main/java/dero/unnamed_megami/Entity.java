@@ -6,6 +6,7 @@ import java.util.Locale;
 import static dero.unnamed_megami.Main.ClearScreen;
 import static dero.unnamed_megami.Main.CombatLoop;
 import static dero.unnamed_megami.Main.EnemyParty;
+import static dero.unnamed_megami.Main.current_turn;
 
 class Entity {
     public static final double WEAK = 1.5;
@@ -42,10 +43,12 @@ class Entity {
         private double FireAffinity = 1;                        public double getFireAffinity(){return FireAffinity;}           public void setFireAffinity(double FireAffinity){this.FireAffinity = FireAffinity;}
         private double IceAffinity = 1;                         public double getIceAffinity(){return IceAffinity;}             public void setIceAffinity(double IceAffinity){this.IceAffinity = IceAffinity;}
         private double ElectricAffinity = 1;                    public double getElectricAffinity(){return ElectricAffinity;}   public void setElectricAffinity(double ElectricAffinity){this.ElectricAffinity = ElectricAffinity;}
-        private double ForceAffinity = 1;                       public double getForceAffinity(){return ForceAffinity;}           public void setForceAffinity(double ForceAffinity){this.ForceAffinity = ForceAffinity;}
+        private double ForceAffinity = 1;                       public double getForceAffinity(){return ForceAffinity;}         public void setForceAffinity(double ForceAffinity){this.ForceAffinity = ForceAffinity;}
         private double LightAffinity = 1;                       public double getLightAffinity(){return LightAffinity;}         public void setLightAffinity(double LightAffinity){this.LightAffinity = LightAffinity;}
         private double DarkAffinity = 1;                        public double getDarkAffinity(){return DarkAffinity;}           public void setDarkAffinity(double DarkAffinity){this.DarkAffinity = DarkAffinity;}
     
+        private Skill[] KnownSkills = new Skill[8];             public Skill[] getKnownSkills(){return KnownSkills;}            public void setKnownSkills(Skill[] KnownSkills){this.KnownSkills = KnownSkills;}
+
     //Position
         int X;                                                  public int getX(){return X;}                                    public void setX(int X){this.X = X;}
         int Z;                                                  public int getZ(){return Z;}                                    public void setZ(int Z){this.Z = Z;}
@@ -54,11 +57,11 @@ class Entity {
         target.CurrentHP -= amount;
     }
 
-    public void PlayerChooseCombatAction(){
-        int Answer = MafLib.askInt("What would you like to do?\n" + MafLib.RED + "1. Melee\t" + MafLib.BLUE + "2. Spell\n" + MafLib.GREEN + "3. Use an item\t" + MafLib.YELLOW + "4. Guard\n" + MafLib.RESET);
+    public void Act(){
+        int Answer = MafLib.askInt(Name + "\'s Turn - What would you like to do?\n" + MafLib.RED + "1. Melee\t" + MafLib.BLUE + "2. Spell\n" + MafLib.GREEN + "3. Use an item\t" + MafLib.YELLOW + "4. Guard\n" + MafLib.RESET);
         if(Answer < 1 || Answer > 5){
             ClearScreen();
-            PlayerChooseCombatAction();
+            Act();
         }
         else if(Answer == 1){
             int Target = SelectTarget(Skill.Melee);
@@ -68,6 +71,7 @@ class Entity {
         else if(Answer == 2){
         
         }
+        current_turn++;
         CombatLoop();
     }
 
@@ -132,6 +136,7 @@ class Entity {
         // System.out.println("Modifier: " + m);
         if (c == 1){Damage += Damage*m;}
         if (c == 2){Damage -= Damage*m;}
+        // System.out.println(Damage);
         return (int) Damage;
     }
 
@@ -163,7 +168,7 @@ class Entity {
     }
     Entity(String Name){
         this.Name = Name;
-        Level = 1;
+        Level = 0;
         Cash = 0;
         Arcana = "Fool";
         Strength = 1;
@@ -208,6 +213,25 @@ class Entity {
         this.ForceAffinity = ForceAffinity;
         this.LightAffinity = LightAffinity;
         this.DarkAffinity = DarkAffinity;
+    }
+    Entity(String Name, int Level, int MaxHP, int MaxSP, String Arcana, int Strength, int Magic, int Endurance, int Agility, double PhysicalAffinity, double FireAffinity, double IceAffinity, double ElectricAffinity, double ForceAffinity, double LightAffinity, double DarkAffinity, Skill[] KnownSkills){
+        this.Name = Name;
+        this.Level = Level;
+        this.CurrentHP = this.MaxHP = MaxHP;
+        this.CurrentSP = this.MaxSP = MaxSP;
+        this.Arcana = Arcana;
+        this.Strength = Strength;
+        this.Magic = Magic;
+        this.Endurance = Endurance;
+        this.Agility = Agility;
+        this.PhysicalAffinity = PhysicalAffinity;
+        this.FireAffinity = FireAffinity;
+        this.IceAffinity = IceAffinity;
+        this.ElectricAffinity = ElectricAffinity;
+        this.ForceAffinity = ForceAffinity;
+        this.LightAffinity = LightAffinity;
+        this.DarkAffinity = DarkAffinity;
+        this.KnownSkills = KnownSkills;
     }
 
     //toString
