@@ -34,13 +34,13 @@ public class MafLib{
     static Scanner Scan = new Scanner(System.in);
     
     public static String askString(String Prompt){
-        System.out.print(Prompt);
+        System.out.print(Prompt + RESET);
         String response = Scan.next();
         return response;
     }
 
     public static int askInt(String Prompt){
-        System.out.print(Prompt);
+        System.out.print(Prompt + RESET);
         response = Scan.next();
         response = response.replaceAll("[^0-9.]", "");
         int dot = response.indexOf(".");
@@ -57,7 +57,8 @@ public class MafLib{
         // return MafLib.askInt(Prompt);
     }
 
-        public static int askInt(){
+    public static int askInt(){
+        System.out.print(RESET);
         response = Scan.next();
         response = response.replaceAll("[^0-9.]", "");
         int dot = response.indexOf(".");
@@ -75,7 +76,7 @@ public class MafLib{
     }
 
     public static double askDouble(String Prompt){
-        System.out.print(Prompt);
+        System.out.print(Prompt + RESET);
         response = Scan.next();
         response = response.replaceAll("[^0-9]", "");
         if(!response.contains(".")){
@@ -87,7 +88,7 @@ public class MafLib{
         
     }
 
-    public static void TimedPrint(String message, long text_type){
+    public static void TimedPrint(String message, int text_type){
         for(int i = 0; i < message.length(); i++){
             /* 0 = Instant
              * 50 = Fast
@@ -104,6 +105,11 @@ public class MafLib{
             if (!String.valueOf(message.charAt(i)).equals("|")){
                 System.out.print(message.charAt(i));}
         }
+    }
+
+    public static void ClearScreen(){
+        System.out.println("\033[H\033[2J");
+        System.out.flush();
     }
 
     public static boolean isAlpha(String s){
