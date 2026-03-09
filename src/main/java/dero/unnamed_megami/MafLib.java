@@ -88,15 +88,15 @@ public class MafLib{
         
     }
 
-    public static void TimedPrint(String message, int text_type){
+    public static void TimedPrint(String message, long text_speed){
         for(int i = 0; i < message.length(); i++){
             /* 0 = Instant
              * 50 = Fast
              * 100 = Regular
              * 150 = Slow
              * 200 = Are you kidding me? */
-            long current_speed = text_type;
-            if (String.valueOf(message.charAt(i)).equals("|")){current_speed = text_type * 2;}
+            long current_speed = text_speed;
+            if (String.valueOf(message.charAt(i)).equals("|")){current_speed = text_speed * 2;}
             try {
                 Thread.sleep(current_speed);
             } catch (InterruptedException e) {
