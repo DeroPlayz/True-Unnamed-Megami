@@ -16,8 +16,10 @@ import java.util.Arrays;
 @SuppressWarnings("unused")
 class Main{
     public static Player User = new Player("");
-                
+    public static long story_text_speed = 100;
+    public static long menu_text_speed = 100;
     public static int Answer = 0;
+    
     public static void main(String[] args){
         // Source - https://stackoverflow.com/a/23487534
         // Posted by bobah, modified by community. See post 'Timeline' for change history
@@ -29,6 +31,7 @@ class Main{
                 System.out.println(MafLib.RESET); 
             }
         });
+        User.LoadSettings();
         MafLib.ClearScreen();
         MafLib.TimedPrint(
             MafLib.MAGENTA + "--Unnamed Megami--\n" +
@@ -37,17 +40,20 @@ class Main{
             MafLib.GREEN + "1. Start a new save file.\n" +
             MafLib.BLUE + "2. Load a save file.\n" +
             MafLib.BLACK + "3. Access Settings\n" +
-            MafLib.RESET + "4. View Credits\n", 0
+            MafLib.RESET + "4. View Credits\n", menu_text_speed
         );
         Answer = MafLib.askInt();
         if (Answer == 1){
-            MafLib.TimedPrint("Initiating a new save file!\n", 0);
+            MafLib.TimedPrint("Initiating a new save file!\n", menu_text_speed);
             User = new Player(MafLib.askString("What is your name?\n"));
             User.WriteSave();
             main(args);
         }
         else if (Answer == 2){
-            User.ShowSaves();
+            User.LoadSaves();
+        }
+        else if (Answer == 3){
+            User.ViewSettings();
         }
     }
 }
