@@ -87,13 +87,13 @@ class Main{
             Move();
         }
         else if (Answer == 2){
-            System.out.println(Map.WORLD_MAP.toString());
+            PrintMenu(Map.WORLD_MAP.toString() + "\n");
         }
         else if (Answer == 3){
             Answer = MafLib.askInt("What would you like to check?\n" + MafLib.BLUE + "1. Party\n" + MafLib.GREEN + "2. Inventory\n" + MafLib.RED + "3. Compendium\n" + MafLib.BLACK + "4. Nevermind, go back.\n" + MafLib.RESET);
             if (Answer == 1){
-                System.out.println(Player);
-                System.out.println(Stella);
+                PrintMenu(Player.toString() + "\n");
+                PrintMenu(Stella.toString() + "\n");
             }
             else if (Answer == 3){
             }
@@ -109,7 +109,8 @@ class Main{
     }
 
     public static void Move(){
-        Answer = MafLib.askInt(MafLib.RESET + "Which direction?\n1. Up\n2. Down\n3. Left\n4. Right\n5. Stop Moving\n");
+        PrintMenu(MafLib.RESET + "Which direction?\n1. Up\n2. Down\n3. Left\n4. Right\n5. Stop Moving\n");
+        Answer = MafLib.askInt("");
         if (Answer == 1){Player.setZ(Player.Z - 1);} // Up
         if (Answer == 2){Player.setZ(Player.Z + 1);} // Down
         // P.S. I now understand why lower Y is used for "up" sometimes.
@@ -120,7 +121,8 @@ class Main{
         if(Answer == 5){demon_attack_chance = 10;}
 
         if (demon_attack_chance <= 4){
-            System.out.println(MafLib.RED + MafLib.BOLD + "Oh no! You've been ambushed by demons!" + MafLib.RESET);
+            PrintMenu(MafLib.RED + MafLib.BOLD + "Oh no! You've been ambushed by demons!" + MafLib.RESET + "\n");
+            System.out.print("\n\n\n");
             int j = (int) (Math.random()*2+1);
             for(int i = 0; i < j; i++){
                 EnemyParty.add(new Demon(Demon.selectDemon()));
@@ -129,9 +131,9 @@ class Main{
             TurnOrder.addAll(Arrays.asList(Party));
             TurnOrder.sort(Comparator.comparingInt(Entity::getAgility).reversed());
             
-            // for(int i = 0; i < TurnOrder.size(); i++){
-            //     System.out.println(TurnOrder.get(i).getName());
-            // }
+            for(int i = 0; i < TurnOrder.size(); i++){
+                System.out.println(TurnOrder.get(i).getName());
+            }
 
             CombatLoop();
         }
@@ -142,20 +144,29 @@ class Main{
     }
 
     public static void CombatLoop(){
-        for(int i = 0; i < EnemyParty.size(); i++){
-            System.out.println(EnemyParty.get(i).PrintBrief());
+        for (int i = 0; i < TurnOrder.size(); i++){
+            if(TurnOrder.get(i).getCurrentHP() < 1){TurnOrder.remove(i);}
         }
-
-        if (current_turn > TurnOrder.size()){current_turn = 0;}
+        TurnOrder.trimToSize();
+        if (current_turn > TurnOrder.size()-1){current_turn = 0;}
+        // System.out.println("Current Turn: " + current_turn);
+        // System.out.println("Turn Order Size: " + TurnOrder.size());
         while (EnemyParty.size() > 0){
             if(TurnOrder.get(current_turn) == Player){
+                for(int i = 0; i < TurnOrder.size(); i++){
+                    PrintMenu(TurnOrder.get(i).PrintBrief() + "\n");
+                }
                 Player.Act();
             }
             else if(TurnOrder.get(current_turn) == Stella){
+                for(int i = 0; i < EnemyParty.size(); i++){
+                    PrintMenu(EnemyParty.get(i).PrintBrief() + "\n");
+                }
                 Stella.Act();
             }
             else{TurnOrder.get(current_turn).Act();}
         }
+        TurnOrder.clear();
     }
 
     private static void New(){
@@ -245,7 +256,7 @@ class Main{
             }
             catch(IOException | ClassNotFoundException e){
                 //Create a save file when an attempt is made to load when no save files exist.
-                System.out.println(MafLib.RESET + "No save found. Initializing");
+                PrintMenu(MafLib.RESET + "No save found. Initializing.\n");
                 New();
             }
         }
@@ -257,32 +268,28 @@ class Main{
             Load();
         }
         else{
-            // System.out.println("Fuck #5");
             FileInputStream FIS;
             ObjectInputStream OIS;
             try {
-                // System.out.println("Fuck #6");
                 FIS = new FileInputStream(new File("User/Save" + slot));
                 OIS = new ObjectInputStream(FIS);
                 Player.setName((String) OIS.readObject());
             }
             catch(IOException | ClassNotFoundException e){
-                // System.out.println("Fuck #7");
-                System.out.println(MafLib.RESET + "No save found. Initializing");
+                PrintMenu(MafLib.RESET + "No save found. Initializing.");
                 New();
             }
         }
-        // System.out.println("Fuck #8");
         Loop();
     }
 
     private static void Settings(int mode){
-        System.out.println(MafLib.BLACK + "--- Settings ---");
-        System.out.println("1. Go Back");
+        PrintMenu(MafLib.BLACK + "--- Settings ---\n");
+        PrintMenu("1. Go Back\n");
         if (mode == 1){
-            System.out.println("2. Save");
-            System.out.println("3. Load" + MafLib.RESET);
-            System.out.println("4. Text Scroll Speed");
+            PrintMenu("2. Save\n");
+            PrintMenu("3. Load" + MafLib.RESET + "\n");
+            PrintMenu("4. Text Scroll Speed\n");
         }
         Answer = MafLib.askInt("");
         if (Answer == 1){
@@ -294,24 +301,24 @@ class Main{
         }
         else if (Answer == 4){
             Answer = MafLib.askInt("Would you like to edit message text speed, or Menu text speed?\n1. Story Text\n2. Menu Text\n");
-            System.out.println("Which speed would you like?");
-            story_speed = 150;
-            PrintStory("1: Slow - The quick brown fox jumps over the lazy dog\n");
+            PrintMenu("Which speed would you like?");
+            menu_speed = 150;
+            PrintMenu("1: Slow - The quick brown fox jumps over the lazy dog\n");
             if (Answer == 1){story_speed = 150;}
             if (Answer == 2){menu_speed = 150;}
             
             story_speed = 100;
-            PrintStory("2: Regular - The quick brown fox jumps over the lazy dog\n");
+            PrintMenu("2: Regular - The quick brown fox jumps over the lazy dog\n");
             if (Answer == 1){story_speed = 100;}
             if (Answer == 2){menu_speed = 100;}
             
             story_speed = 50;
-            PrintStory("3: Fast - The quick brown fox jumps over the lazy dog\n");
+            PrintMenu("3: Fast - The quick brown fox jumps over the lazy dog\n");
             if (Answer == 1){story_speed = 50;}
             if (Answer == 2){menu_speed = 50;}
             
             story_speed = 0;
-            PrintStory("4: Instant - The quick brown fox jumps over the lazy dog\n");
+            PrintMenu("4: Instant - The quick brown fox jumps over the lazy dog\n");
             if (Answer == 1){story_speed = 0;}
             if (Answer == 2){menu_speed = 0;}
 

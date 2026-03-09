@@ -6,6 +6,7 @@ import java.util.Locale;
 import static dero.unnamed_megami.Main.ClearScreen;
 import static dero.unnamed_megami.Main.CombatLoop;
 import static dero.unnamed_megami.Main.EnemyParty;
+import static dero.unnamed_megami.Main.Party;
 import static dero.unnamed_megami.Main.current_turn;
 
 class Entity {
@@ -76,30 +77,43 @@ class Entity {
     }
 
     public int SelectTarget(Skill skill){
-        String prompt = "Which";
+        String prompt = "";
         if (skill.getTargetType() == 1){
-            prompt += " all";
+            prompt = "Which ally will you target";
+            for(int i = 0; i < Party.length; i++){
+                if((Party[i] == null) == false){
+                    if(Party[i].getCurrentHP() <= Party[i].getMaxHP()*0.3){;
+                        prompt += MafLib.RED;
+                    }
+                    if(Party[i].getCurrentHP() <= Party[i].getMaxHP()*0.6){;
+                        prompt += MafLib.YELLOW;
+                    }
+                    if(Party[i].getCurrentHP() > Party[i].getMaxHP()*0.6){;
+                        prompt += MafLib.GREEN;
+                    }    
+
+                    prompt += "\n" + (i+1) + ". ";
+                    prompt += Party[i].getName();
+                }
+            }
         }
         else if (skill.getTargetType() == 2){
-            prompt += " enem";
-        }
-        if (skill.getTargetCount() < 2){prompt += "y ";}
-        else{prompt += "ies ";}
-        prompt += "will you target?";
-        for(int i = 0; i < EnemyParty.size(); i++){
-            if((EnemyParty.get(i) == null) == false){
-                if(EnemyParty.get(i).getCurrentHP() <= EnemyParty.get(i).getMaxHP()*0.3){;
-                    prompt += MafLib.RED;
-                }
-                if(EnemyParty.get(i).getCurrentHP() <= EnemyParty.get(i).getMaxHP()*0.6){;
-                    prompt += MafLib.YELLOW;
-                }
-                if(EnemyParty.get(i).getCurrentHP() > EnemyParty.get(i).getMaxHP()*0.6){;
-                    prompt += MafLib.GREEN;
-                }    
+            prompt = "Which enemy will you target";
+            for(int i = 0; i < EnemyParty.size(); i++){
+                if((EnemyParty.get(i) == null) == false){
+                    if(EnemyParty.get(i).getCurrentHP() <= EnemyParty.get(i).getMaxHP()*0.3){;
+                        prompt += MafLib.RED;
+                    }
+                    if(EnemyParty.get(i).getCurrentHP() <= EnemyParty.get(i).getMaxHP()*0.6){;
+                        prompt += MafLib.YELLOW;
+                    }
+                    if(EnemyParty.get(i).getCurrentHP() > EnemyParty.get(i).getMaxHP()*0.6){;
+                        prompt += MafLib.GREEN;
+                    }    
 
-                prompt += "\n" + (i+1) + ". ";
-                prompt += EnemyParty.get(i).getName();
+                    prompt += "\n" + (i+1) + ". ";
+                    prompt += EnemyParty.get(i).getName();
+                }
             }
         }
         prompt += "\n" + MafLib.RESET;
@@ -242,6 +256,10 @@ class Entity {
         return s;
     }
 
+    public String PrintBrief(){
+        return Name + " (" + CurrentHP + "/" + MaxHP + ") [Level " + Level + "]";
+    }
+    
     public static Entity Stella = new Entity(
         "Stella",
         2,
