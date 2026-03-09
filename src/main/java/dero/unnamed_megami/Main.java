@@ -13,7 +13,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 
 class Main{
     static Entity Player = new Entity();
@@ -21,10 +20,9 @@ class Main{
     static ArrayList<Demon> EnemyParty = new ArrayList<>();
     static ArrayList<Entity> TurnOrder = new ArrayList<>();
     static int Answer = 0;
-    static long story_speed = 100;
-    static long menu_speed = 0;
-    static int current_turn = 0;
-
+    static long story_text_speed = 100;
+    static long menu_text_speed = 0;
+    
     public static void main(String[] args){
         // Source - https://stackoverflow.com/a/23487534
         // Posted by bobah, modified by community. See post 'Timeline' for change history
@@ -45,14 +43,14 @@ class Main{
             if (new File("User/Settings.txt").exists()){
                 FileInputStream SR = new FileInputStream("User/Settings.txt");
                 ObjectInputStream ReadConfig = new ObjectInputStream(SR);
-                story_speed = (long) ReadConfig.readObject();
-                menu_speed = (long) ReadConfig.readObject();
+                story_text_speed = (long) ReadConfig.readObject();
+                menu_text_speed = (long) ReadConfig.readObject();
                 ReadConfig.close();
                 SR.close();
             }
         }
         catch(IOException | ClassNotFoundException e){
-            e.printStackTrace();
+            // e.printStackTrace();
         }
 
         //Generally speaking, NG is White, LG is Cyan, Settings are Black, and SG is Green.
@@ -64,12 +62,8 @@ class Main{
         System.out.println(MafLib.RESET + "1. New Game");
         System.out.println(MafLib.CYAN + "2. Load Game");
         System.out.println(MafLib.BLACK + "3. Settings" + MafLib.RESET);
-        Answer = MafLib.askInt("");
-        if (Answer < 1 || Answer > 3){
-            ClearScreen();
-            StartUp();
-        }
-        else if (Answer == 1){
+        Answer = MafLib.askInt();
+        if (Answer == 1){
             New();
         }
         else if (Answer == 2){
@@ -77,6 +71,10 @@ class Main{
         }
         else if (Answer == 3){
             Settings(0);
+        }
+        else {
+            ClearScreen();
+            StartUp();
         }
     }
 
@@ -169,230 +167,8 @@ class Main{
         TurnOrder.clear();
     }
 
-    private static void New(){
-        Player.setName(MafLib.askString(MafLib.CYAN + "What is your name?" + MafLib.RESET + "\n"));
-        String Intro = "You wake up.| It's Thursday, March 18th of 20XY.|\n"
-            + "It's spring break, so you don't need to worry about getting to class on time.|| That's nice.\n";
-        PrintStory(Intro);
-        Loop();
-    }
-
-    private static void AccessFiles(){
-        int slot = MafLib.askInt(MafLib.GREEN + "Which slot would you like to save in?\n" + MafLib.RESET);
-        if (slot < 1 || slot > 10){
-            ClearScreen();
-            AccessFiles();
-        }
-        else{
-            if (new File("User/Save" + slot).exists()){
-                Answer = MafLib.askInt(MafLib.RED + "This slot contains existing save data.\nIf you wish to overwrite the save, press 1.\nIf you do not wish to overwrite the save, press 2.\n" + MafLib.RESET);
-                if (Answer == 2){
-                    AccessFiles();
-                }
-            }
-            try {
-                Files.delete(Paths.get("User/Save" + slot));
-                Files.delete(Paths.get("User"));
-                Save(slot);
-            } catch (IOException e) {
-                Save(slot);
-            }
-            Load(slot);
-        }
-    }
-
-    private static void Save(int slot){
-        FileOutputStream FOS;
-        ObjectOutputStream OOS;
-        try {
-            Files.createDirectory(Paths.get("User"));
-        }
-        catch (IOException e) {
-            // e.printStackTrace();
-        }
-
-        try {
-            FOS = new FileOutputStream(new File("User/Save" + slot));
-            OOS = new ObjectOutputStream(FOS);
-            OOS.writeObject(Player.getName());
-        } catch (IOException e) {
-            // e.printStackTrace();
-        }
-    }
-
-    private static void Load(){
-        //Loads actual save files so the user can make a selection.
-        String pr = "Which slot would you like to load from?";
-        try{
-            for(int i = 1; i <= 10; i++){
-                if (new File("User/Save" + i).exists()){
-                    FileInputStream SR = new FileInputStream("User/Save" + i);
-                    ObjectInputStream ReadFromSave = new ObjectInputStream(SR);
-                    pr += "\n" + i + ". " + ReadFromSave.readObject();
-                    ReadFromSave.close();
-                    SR.close();
-                }
-            }
-        }
-        catch(IOException | ClassNotFoundException e){}
-
-        //Asks the user to select a slot.
-        int slot = MafLib.askInt(MafLib.CYAN + pr + MafLib.RESET + "\n");
-        //If the slot chosen is invalid, repeat the question.
-        if (slot < 1 || slot > 10){
-            ClearScreen();
-            Load();
-        }
-
-        //If the slot is a real file and thers's save data located inside it, load it.
-        else{
-            FileInputStream FIS;
-            ObjectInputStream OIS;
-            try {
-            FIS = new FileInputStream(new File("User/Save" + slot));
-            OIS = new ObjectInputStream(FIS);
-            Player.setName((String) OIS.readObject());
-            Loop();
-            }
-            catch(IOException | ClassNotFoundException e){
-                //Create a save file when an attempt is made to load when no save files exist.
-                PrintMenu(MafLib.RESET + "No save found. Initializing.\n");
-                New();
-            }
-        }
-    }
-
-    private static void Load(int slot){
-        if (slot < 1 || slot > 10){
-            ClearScreen();
-            Load();
-        }
-        else{
-            FileInputStream FIS;
-            ObjectInputStream OIS;
-            try {
-                FIS = new FileInputStream(new File("User/Save" + slot));
-                OIS = new ObjectInputStream(FIS);
-                Player.setName((String) OIS.readObject());
-            }
-            catch(IOException | ClassNotFoundException e){
-                PrintMenu(MafLib.RESET + "No save found. Initializing.");
-                New();
-            }
-        }
-        Loop();
-    }
-
-    private static void Settings(int mode){
-        PrintMenu(MafLib.BLACK + "--- Settings ---\n");
-        PrintMenu("1. Go Back\n");
-        if (mode == 1){
-            PrintMenu("2. Save\n");
-            PrintMenu("3. Load" + MafLib.RESET + "\n");
-            PrintMenu("4. Text Scroll Speed\n");
-        }
-        Answer = MafLib.askInt("");
-        if (Answer == 1){
-            ClearScreen();
-            StartUp();
-        }
-        else if (Answer == 2){
-            AccessFiles();
-        }
-        else if (Answer == 4){
-            Answer = MafLib.askInt("Would you like to edit message text speed, or Menu text speed?\n1. Story Text\n2. Menu Text\n");
-            PrintMenu("Which speed would you like?");
-            menu_speed = 150;
-            PrintMenu("1: Slow - The quick brown fox jumps over the lazy dog\n");
-            if (Answer == 1){story_speed = 150;}
-            if (Answer == 2){menu_speed = 150;}
-            
-            story_speed = 100;
-            PrintMenu("2: Regular - The quick brown fox jumps over the lazy dog\n");
-            if (Answer == 1){story_speed = 100;}
-            if (Answer == 2){menu_speed = 100;}
-            
-            story_speed = 50;
-            PrintMenu("3: Fast - The quick brown fox jumps over the lazy dog\n");
-            if (Answer == 1){story_speed = 50;}
-            if (Answer == 2){menu_speed = 50;}
-            
-            story_speed = 0;
-            PrintMenu("4: Instant - The quick brown fox jumps over the lazy dog\n");
-            if (Answer == 1){story_speed = 0;}
-            if (Answer == 2){menu_speed = 0;}
-
-            Answer = MafLib.askInt("");
-            if (Answer == 1){
-                story_speed = 150;
-            }
-            else if (Answer == 2){
-                story_speed = 100;
-            }
-            else if (Answer == 3){
-                story_speed = 50;
-            }
-            else if (Answer == 4){
-                story_speed = 0;
-            }
-            SaveSettings();
-        }
-    }
-
-    public static void SaveSettings(){
-        FileOutputStream FOS;
-        ObjectOutputStream OOS;
-        try {
-            // Files.deleteIfExists(Paths.get("User/Settings"));
-            FOS = new FileOutputStream(new File("User/Settings.txt"));
-            OOS = new ObjectOutputStream(FOS);
-            OOS.writeObject(story_speed);
-            OOS.writeObject(menu_speed);
-        } catch (IOException e) {
-            // e.printStackTrace();
-        }
-    }
-
     public static void ClearScreen(){
         System.out.println("\033[H\033[2J");
         System.out.flush();
-    }
-
-    public static void PrintStory(String message){
-        for(int i = 0; i < message.length(); i++){
-            /* 0 = Instant
-             * 50 = Fast
-             * 100 = Regular
-             * 150 = Slow
-             * 200 = Are you kidding me? */
-            long current_speed = story_speed;
-            if (String.valueOf(message.charAt(i)).equals("|")){current_speed = story_speed * 2;}
-            try {
-                Thread.sleep(current_speed);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            if (!String.valueOf(message.charAt(i)).equals("|")){
-                System.out.print(message.charAt(i));}
-        }
-    }
-
-        public static void PrintMenu(String message){
-        for(int i = 0; i < message.length(); i++){
-            /* 0 = Instant
-             * 50 = Fast
-             * 100 = Regular
-             * 150 = Slow
-             * 200 = Are you kidding me? */
-            long current_speed = menu_speed;
-            if (String.valueOf(message.charAt(i)).equals("|")){current_speed = menu_speed * 2;}
-            try {
-                Thread.sleep(current_speed);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            if (!String.valueOf(message.charAt(i)).equals("|")){
-                System.out.print(message.charAt(i));}
-        }
     }
 }

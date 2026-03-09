@@ -57,6 +57,23 @@ public class MafLib{
         // return MafLib.askInt(Prompt);
     }
 
+        public static int askInt(){
+        response = Scan.next();
+        response = response.replaceAll("[^0-9.]", "");
+        int dot = response.indexOf(".");
+        if(dot == -1){
+            response = response.replaceAll("[^0-9]", "");
+        }
+        else{
+            response = response.substring(0, dot);
+        }
+        if (MafLib.isNumeric(response)){
+            return Integer.valueOf(response);
+        }
+        return 1;
+        // return MafLib.askInt(Prompt);
+    }
+
     public static double askDouble(String Prompt){
         System.out.print(Prompt);
         response = Scan.next();
@@ -68,6 +85,25 @@ public class MafLib{
             return Integer.valueOf(response);
         }
         
+    }
+
+    public static void TimedPrint(String message, long text_type){
+        for(int i = 0; i < message.length(); i++){
+            /* 0 = Instant
+             * 50 = Fast
+             * 100 = Regular
+             * 150 = Slow
+             * 200 = Are you kidding me? */
+            long current_speed = text_type;
+            if (String.valueOf(message.charAt(i)).equals("|")){current_speed = text_type * 2;}
+            try {
+                Thread.sleep(current_speed);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if (!String.valueOf(message.charAt(i)).equals("|")){
+                System.out.print(message.charAt(i));}
+        }
     }
 
     public static boolean isAlpha(String s){
