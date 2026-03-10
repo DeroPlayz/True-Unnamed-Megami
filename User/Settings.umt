@@ -1,1 +1,5 @@
-MENU_TEXT_SPEED: -1
+MENU_TEXT_SPEED: INSTANT
+STORY_TEXT_SPEED: NORMAL
+# Delay, represented in milliseconds.
+# Valid Options: SLOW (150ms), NORMAL (100ms), FAST (50ms), Instant (0ms),
+  # Custom - Valid Range: 0-9223372036854775807 (Inclusive)
