@@ -99,8 +99,13 @@ public class MafLib{
             if (String.valueOf(message.charAt(i)).equals("|")){current_speed = text_speed * 2;}
             try {
                 Thread.sleep(current_speed);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            } catch (InterruptedException | IllegalArgumentException e) {
+                System.out.println("Sorry! Your text speed is invalid.\n"
+                + "Please check your settings to ensure there are no negative numbers\n"
+                + "or values beyond Java's integer limit, which is " + Integer.MAX_VALUE + "\n");
+                Main.menu_text_speed = 100;
+                Main.story_text_speed = 100;
+                // e.printStackTrace();
             }
             if (!String.valueOf(message.charAt(i)).equals("|")){
                 System.out.print(message.charAt(i));}

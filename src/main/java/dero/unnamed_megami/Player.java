@@ -1,7 +1,10 @@
 package dero.unnamed_megami;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
@@ -9,6 +12,7 @@ import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
+import java.util.Scanner;
 
 public class Player extends Entity{
     static FileInputStream FIS;
@@ -100,6 +104,17 @@ public class Player extends Entity{
             Main.menu_text_speed
         );
         Main.Answer = MafLib.askInt();
+        if (Main.Answer == 1){
+            MafLib.TimedPrint("Which text speed do you want?\n", Main.menu_text_speed);
+            MafLib.TimedPrint("1. Slow - The quick brown fox jumps over the lazy dog\n", (long) 150);
+            MafLib.TimedPrint("2. Normal - The quick brown fox jumps over the lazy dog\n", (long) 100);
+            MafLib.TimedPrint("3. Fast - The quick brown fox jumps over the lazy dog\n", (long) 50);
+            MafLib.TimedPrint("4. Instant - The quick brown fox jumps over the lazy dog\n", (long) 0);
+            Main.Answer = MafLib.askInt();
+            if (Main.Answer < 1 || Main.Answer > 4){
+                ViewSettings();
+            }
+        }
     }
 
     public void WriteSettings(){
@@ -131,14 +146,39 @@ public class Player extends Entity{
 
     public void LoadSettings(){
         try {
-            Files.createDirectory(Path.of("User"));
-            FIS = new FileInputStream("User/Settings.umt");
-            OIS = new ObjectInputStream(FIS);
-            Main.story_text_speed = OIS.readLong();
-            Main.menu_text_speed = OIS.readLong();
-            OIS.close();
-            FIS.close();
+            Scanner settingsScanner = new Scanner(new File("User/Settings.umt"));
+            System.out.println("Settings loaded.");
+            while(settingsScanner.hasNextLine()){
+                String current = settingsScanner.nextLine();
+                if (current.contains("MENU_TEXT_SPEED")){
+                    if (current.substring(current.indexOf(":")+1).contains("SLOW")){
+                        Main.menu_text_speed = 150;
+                        System.out.println("Menu Text Speed: Slow");
+                    }
+                    else if (current.substring(current.indexOf(":")+1).contains("NORMAL")){
+                        Main.menu_text_speed = 100;
+                        System.out.println("Menu Text Speed: Normal");
+                    }
+                    else if (current.substring(current.indexOf(":")+1).contains("FAST")){
+                        Main.menu_text_speed = 50;
+                        System.out.println("Menu Text Speed: Fast");
+                    }
+                    else if (current.substring(current.indexOf(":")+1).contains("INSTANT")){
+                        Main.menu_text_speed = 0;
+                        System.out.println("Menu Text Speed: Instant");
+                    }
+                    else if (MafLib.isNumeric(current.substring(current.indexOf(":")+1).strip())){
+                        Main.menu_text_speed = Long.valueOf(current.substring(current.indexOf(":")+1).strip());
+                        System.out.println("Menu Text Speed: Custom (" + Main.menu_text_speed + " milliseconds per character)");
+                    }
+                }
+            }
+            settingsScanner.close();
+            // Main.story_text_speed = OIS.readLong();
+            // Main.menu_text_speed = OIS.readLong();
+            System.out.println();
         } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
