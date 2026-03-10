@@ -31,7 +31,8 @@ class Main{
                 System.out.println(MafLib.RESET); 
             }
         });
-        User.LoadSettings();
+        Preferences.LoadSettings();
+
         MafLib.ClearScreen();
         MafLib.TimedPrint(
             MafLib.MAGENTA + "--Unnamed Megami--\n" +
@@ -46,14 +47,14 @@ class Main{
         if (Answer == 1){
             MafLib.TimedPrint("Initiating a new save file!\n", menu_text_speed);
             User = new Player(MafLib.askString("What is your name?\n"));
-            User.WriteSave();
+            User.WriteSave(false);
             main(args);
         }
         else if (Answer == 2){
             User.LoadSaves();
         }
         else if (Answer == 3){
-            User.ViewSettings();
+            Preferences.ViewSettings();
         }
     }
 }
