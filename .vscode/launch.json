@@ -6,9 +6,16 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Main",
+            "name": "PowerShellExample",
             "request": "launch",
-            "mainClass": "dero.unnamed_megami.Main",
+            "mainClass": "dero.unnamed_megami.PowerShellExample",
+            "projectName": "True-Unnamed-Megami"
+        },
+        {
+            "type": "java",
+            "name": "PowerShellCommand",
+            "request": "launch",
+            "mainClass": "dero.unnamed_megami.PowerShellCommand",
             "projectName": "True-Unnamed-Megami"
         },
         {
@@ -16,56 +23,7 @@
             "name": "Main",
             "request": "launch",
             "mainClass": "dero.unnamed_megami.Main",
-            "projectName": "unnamed-megami"
-        },
-        {
-            "type": "java",
-            "name": "Main",
-            "request": "launch",
-            "mainClass": "src.Main",
-            "projectName": "True-Unnamed-Megami_d42373b4"
-        },
-        {
-            "type": "java",
-            "name": "Main",
-            "request": "launch",
-            "mainClass": "src.Main",
-            "projectName": "True-Unnamed-Megami_ae85d489"
-        },
-        {
-            "type": "java",
-            "name": "Main",
-            "request": "launch",
-            "mainClass": "src.Main",
-            "projectName": "Unnamed-Megami_28bf500c"
-        },
-        {
-            "type": "java",
-            "name": "Main",
-            "request": "launch",
-            "mainClass": "src.Main",
-            "projectName": "True-Unnamed-Megami_a3dc777"
-        },
-        {
-            "type": "java",
-            "name": "Main",
-            "request": "launch",
-            "mainClass": "src.Main",
-            "projectName": "Unnamed-Megami_cdc3aa34"
-        },
-        {
-            "type": "java",
-            "name": "Main",
-            "request": "launch",
-            "mainClass": "src.Main",
-            "projectName": "Unnamed-Megami-but-CSharp_5dc75fa3"
-        },
-        {
-            "type": "java",
-            "name": "Main",
-            "request": "launch",
-            "mainClass": "Main",
-            "projectName": "Unnamed-Megami-but-CSharp_5dc75fa3"
+            "projectName": "True-Unnamed-Megami"
         }
     ]
 }
