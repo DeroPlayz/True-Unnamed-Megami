@@ -17,7 +17,9 @@ public class Player extends Entity{
     static FileOutputStream FOS;
     static ObjectOutputStream OOS;
 
-    Player(String Name){
+    public int Difficulty;
+
+    Player(String Name, int Difficulty){
         super(Name, "Human", 0, 0, 0, 10, 0, Map.of(
             "Physical", Entity.Normal,
             "Fire", Entity.Normal,
@@ -28,8 +30,25 @@ public class Player extends Entity{
             "Dark", Entity.Normal,
             "Almighty", Entity.Normal)
         );
+        this.Difficulty = Difficulty;
     }
 
+    public void CreateSave(){
+        MafLib.TimedPrint("Initiating a new save file!\n", Main.menu_text_speed);
+            MafLib.TimedPrint("Select difficulty. This can be changed later.\n"
+            + "1. Gentle\n"
+            + "2. Easy\n"
+            + "3. Normal\n"
+            + "4. Challenging\n"
+            + "5. Hard\n"
+            + "6. Ruthless\n"
+            + "7. Merciless\n", Main.menu_text_speed);
+        Difficulty = MafLib.askInt();
+        if (Difficulty < -1 || Difficulty > 7){CreateSave();}
+        Name = MafLib.askString("What is your name?\n");
+        System.out.println(Name);
+        WriteSave(false);
+    }
     public void WriteSave(boolean Folder_Exists){
         try {
             if (Folder_Exists == false){Files.createDirectory(Path.of("User"));}
@@ -39,6 +58,7 @@ public class Player extends Entity{
             }
             FOS = new FileOutputStream("User/Save" + SaveSlot + ".umt");
             OOS = new ObjectOutputStream(FOS);
+            OOS.writeObject(Difficulty);
             OOS.writeObject(Name);
             OOS.writeObject(Race);
             OOS.close();
@@ -55,6 +75,7 @@ public class Player extends Entity{
                 FIS = new FileInputStream("User/Save" + i + ".umt");
                 OIS = new ObjectInputStream(FIS);
                 if (String.valueOf(i).length() < 2){System.out.print("0");}
+                OIS.readObject();
                 System.out.println(i + ". " + OIS.readObject());
             } catch (IOException | ClassNotFoundException e) {
                 // e.printStackTrace();
@@ -70,8 +91,9 @@ public class Player extends Entity{
         try {
             FIS = new FileInputStream("User/Save" + slot + ".umt");
             OIS = new ObjectInputStream(FIS);
+            Difficulty = Integer.parseInt(String.valueOf(OIS.readObject()));
             Name = (String) OIS.readObject();
-            System.out.println(Name);
+            Race = (String) OIS.readObject();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
