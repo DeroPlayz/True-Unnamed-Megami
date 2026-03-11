@@ -13,7 +13,7 @@ public class Entity {
     public String Name;
     public String Race;
     
-    public int Macca; //♄
+    public int Macca;
     public int XP;
     public int Level;
 
@@ -40,5 +40,11 @@ public class Entity {
         this.Current_MP = Max_MP;
         this.Max_MP = Max_MP;
         this.Affinities = Affinities;
+    }
+
+    
+    public String toString(){
+        return Name + "\nLevel " + Level + " (" + XP + " xp)" + "\nRace: " + Race + "\nHP: "
+        + Current_HP + "/" + Max_HP + "\nMP: " + Current_MP + "/" + Max_MP + "\nMacca: " + Macca + "\u2644\n";
     }
 }
