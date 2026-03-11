@@ -8,6 +8,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -15,7 +18,7 @@ import java.util.Arrays;
 
 @SuppressWarnings("unused")
 class Main{
-    public static Player User = new Player("");
+    public static Player User = new Player("", 0);
     public static long story_text_speed = 100;
     public static long menu_text_speed = 100;
     public static int Answer = 0;
@@ -33,6 +36,27 @@ class Main{
         });
         Preferences.LoadSettings();
 
+        try {
+            // 1. Tell the Windows Console to switch to UTF-8 mode (Code Page 65001)
+            // This affects the actual window your app is sitting in.
+            new ProcessBuilder("cmd", "/c", "chcp 65001 > nul")
+                .inheritIO()
+                .start()
+                .waitFor();
+
+            // 2. Tell Java to send UTF-8 bytes to System.out
+            System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8));
+            System.setErr(new PrintStream(System.err, true, StandardCharsets.UTF_8));
+
+            // 3. Test it
+            // System.out.println("Success: UTF-8 enabled.");
+            // System.out.println("♄");
+
+        } catch (Exception e) {
+            System.err.println("Could not set console encoding.");
+        }
+
+        System.exit(0);
         MafLib.ClearScreen();
         MafLib.TimedPrint(
             MafLib.MAGENTA + "--Unnamed Megami--\n" +
@@ -45,10 +69,7 @@ class Main{
         );
         Answer = MafLib.askInt();
         if (Answer == 1){
-            MafLib.TimedPrint("Initiating a new save file!\n", menu_text_speed);
-            User = new Player(MafLib.askString("What is your name?\n"));
-            User.WriteSave(false);
-            main(args);
+            User.CreateSave();
         }
         else if (Answer == 2){
             User.LoadSaves();
@@ -56,5 +77,6 @@ class Main{
         else if (Answer == 3){
             Preferences.ViewSettings();
         }
+        System.out.println(User);
     }
 }
