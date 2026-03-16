@@ -36,6 +36,10 @@ class Main{
         });
         Preferences.LoadSettings();
 
+        // Unfortunately, Gemini wrote this part for me. I mostly understand it,
+        // but good Lord I couldn't have figured this out otherwise. It took hours,
+        // and this is all just to render ONE character; ♄, the money symbol.
+        // Coding is weird.
         try {
             // 1. Tell the Windows Console to switch to UTF-8 mode (Code Page 65001)
             // This affects the actual window your app is sitting in.
@@ -56,7 +60,6 @@ class Main{
             System.err.println("Could not set console encoding.");
         }
 
-        System.exit(0);
         MafLib.ClearScreen();
         MafLib.TimedPrint(
             MafLib.MAGENTA + "--Unnamed Megami--\n" +
@@ -77,6 +80,9 @@ class Main{
         else if (Answer == 3){
             Preferences.ViewSettings();
         }
-        System.out.println(User);
+        else if (Answer == 4){
+            System.out.println();
+        }
+        Story.Intro.print();
     }
 }
