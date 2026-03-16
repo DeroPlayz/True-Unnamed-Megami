@@ -15,6 +15,8 @@ public class Entity {
     
     public int Macca;
     public int XP;
+    public int XP_Needed;
+    public int Lifetime_XP = 0;
     public int Level;
 
     public int Current_HP;
@@ -41,10 +43,9 @@ public class Entity {
         this.Max_MP = Max_MP;
         this.Affinities = Affinities;
     }
-
     
     public String toString(){
-        return Name + "\nLevel " + Level + " (" + XP + " xp)" + "\nRace: " + Race + "\nHP: "
-        + Current_HP + "/" + Max_HP + "\nMP: " + Current_MP + "/" + Max_MP + "\nMacca: " + Macca + "\u2644\n";
+        return Name + "\nLevel " + Level + " (" + XP + " xp, " + (XP_Needed-XP) + " until Level " + (Level+1) + ")" + "\nRace: " + Race + "\nHP: "
+        + Current_HP + "/" + Max_HP + "\nMP: " + Current_MP + "/" + Max_MP + "\nMacca: " + Macca + " ♄\n";
     }
 }
