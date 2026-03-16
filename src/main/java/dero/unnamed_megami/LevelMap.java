@@ -1,26 +1,27 @@
 package dero.unnamed_megami;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import static dero.unnamed_megami.Tile.*;
 
 public class LevelMap {
-    public Map<Tile, ArrayList<Tile>> Bounds;
+    public Tile[][] Bounds;
+
+    public LevelMap(Tile[][] Bounds){
+        this.Bounds = Bounds;
+    }
 
     @Override public String toString(){
         String s = "";
-        for (int i = 0; i < Bounds.size(); i++){
-            for (int j = 0; j < Bounds.get(i).size(); j++){
-                s += Bounds.get(i).get(j);
+        for(int i = 0; i < Bounds.length; i++){
+            for(int j = 0; j < Bounds[i].length; j++){
+                s += Bounds[i][j].toString() + " ";
             }
+            s += "\n";
         }
         return s;
     }
 
-    public LevelMap(Map<Tile, ArrayList<Tile>> Bounds){
-        this.Bounds = Bounds;
-    }
-
-    public static LevelMap Overworld = new LevelMap();
+    public static final LevelMap Overworld = new LevelMap(new Tile[][]{
+        {Grass, Dirt, Dirt, Grass, Dirt, Grass, Dirt, Dirt, Dirt, Grass},
+        {Dirt, Grass, Grass, Dirt, Grass, Dirt, Grass, Grass, Grass, Dirt}
+    });
 }
