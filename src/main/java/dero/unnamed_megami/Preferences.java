@@ -3,13 +3,9 @@ package dero.unnamed_megami;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -17,14 +13,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Preferences {
-    static FileInputStream FIS;
-    static ObjectInput OIS;
-
-    static FileOutputStream FOS;
-    static ObjectOutputStream OOS;
-
-    static PrintWriter SettingsWriter;
-    static BufferedReader SettingsReader;
+    private static PrintWriter SettingsWriter;
+    private static BufferedReader SettingsReader;
     
     public static void ViewSettings(){
         MafLib.TimedPrint("What would you like to change?\n" +
@@ -43,10 +33,10 @@ public class Preferences {
 
     public static void ConfigureTextSpeed(){
         MafLib.TimedPrint("Which text speed do you want?\n", Main.menu_text_speed);
-        // MafLib.TimedPrint("1. Slow - The quick brown fox jumps over the lazy dog\n", (long) 150);
-        // MafLib.TimedPrint("2. Normal - The quick brown fox jumps over the lazy dog\n", (long) 100);
-        // MafLib.TimedPrint("3. Fast - The quick brown fox jumps over the lazy dog\n", (long) 50);
-        // MafLib.TimedPrint("4. Instant - The quick brown fox jumps over the lazy dog\n", (long) 0);
+        MafLib.TimedPrint("1. Slow - The quick brown fox jumps over the lazy dog\n", (long) 150);
+        MafLib.TimedPrint("2. Normal - The quick brown fox jumps over the lazy dog\n", (long) 100);
+        MafLib.TimedPrint("3. Fast - The quick brown fox jumps over the lazy dog\n", (long) 50);
+        MafLib.TimedPrint("4. Instant - The quick brown fox jumps over the lazy dog\n", (long) 0);
         Main.Answer = MafLib.askInt();
         if (Main.Answer == 1){
             Main.menu_text_speed = 150;
