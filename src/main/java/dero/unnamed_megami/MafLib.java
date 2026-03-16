@@ -15,15 +15,15 @@ public class MafLib{
     public static final String RESET = "\033[0m";
     public static final String CLEARC = "\033[39m";
     public static final String CLEARF = "\033[22m" + "\033[23m" + "\033[24m" + "\033[27m" + "\033[28" + "\033[29m";
+    public static final String WHITE = "\033[37m"; public static final String WHITEH = "\033[47m";
     // public static final String BLACK = "\033[30m"; public static final String BLACKH = "\033[40m";
-    public static final String BLACK = "\033[37m"; public static final String BLACKH = "\033[47m";
+    public static final String BLACK = "\033[37m" + "\033[1m" /*Bold*/; public static final String BLACKH = "\033[47m";
     public static final String RED = "\033[31m"; public static final String REDH = "\033[41m";
     public static final String GREEN = "\033[32m"; public static final String GREENH = "\033[42m"; //Mint Green
     public static final String YELLOW = "\033[33m"; public static final String YELLOWH = "\033[43m";
     public static final String BLUE = "\033[34m"; public static final String BLUEH = "\033[44m"; //Dark Blue
     public static final String MAGENTA = "\033[35m"; public static final String MAGENTAH = "\033[45m";
     public static final String CYAN = "\033[36m"; public static final String CYANH = "\033[46m";
-    public static final String WHITE = "\033[37m"; public static final String WHITEH = "\033[47m";
     public static final String BLINK = "\033[5m";
     public static final String BOLD = "\033[1m";
     public static final String UNDERLINE = "\033[4m";
@@ -54,7 +54,6 @@ public class MafLib{
             return Integer.valueOf(response);
         }
         return 1;
-        // return MafLib.askInt(Prompt);
     }
 
     public static int askInt(){
@@ -72,7 +71,6 @@ public class MafLib{
             return Integer.valueOf(response);
         }
         return 1;
-        // return MafLib.askInt(Prompt);
     }
 
     public static double askDouble(String Prompt){
@@ -143,15 +141,5 @@ public class MafLib{
 
     public static String reduce(String s){
         return s.strip().toLowerCase();
-    }
-
-    public static int ArrayInd(Object[] a, String s){
-        int ind = -1;
-        for(int i = 0; i < a.length; i ++){
-            if(s.equals(a[i])){
-                ind = i;
-            }
-        }
-        return ind;
     }
 }
