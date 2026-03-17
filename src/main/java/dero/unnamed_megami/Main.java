@@ -84,5 +84,6 @@ class Main{
             System.out.println();
         }
         Story.Intro.print();
+        User.GameplayLoop();
     }
 }
