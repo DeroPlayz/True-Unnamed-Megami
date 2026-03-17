@@ -83,7 +83,5 @@ class Main{
         else if (Answer == 4){
             System.out.println();
         }
-        Story.Intro.print();
-        User.GameplayLoop();
     }
 }
