@@ -110,6 +110,12 @@ public class MafLib{
         System.out.flush();
     }
 
+    @SuppressWarnings("resource")
+    public static void WaitForEnter(){
+        Scanner scanner = new Scanner(System.in);
+        String inputLine = scanner.nextLine();
+    }
+
     public static boolean isAlpha(String s){
         s = s.toLowerCase();
         for(int i = 0; i < s.length(); i++){
