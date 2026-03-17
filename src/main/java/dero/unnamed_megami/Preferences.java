@@ -19,6 +19,8 @@ public class Preferences {
     public static void ViewSettings(){
         MafLib.TimedPrint("What would you like to change?\n" +
             "1. Text Speed\n" +
+            "2. Save Game\n" +
+            "3. Load Previous Save\n" +
             "0. Save Changes\n",
             Main.menu_text_speed
         );
@@ -26,8 +28,22 @@ public class Preferences {
         if (Main.Answer == 1){
             ConfigureTextSpeed();
         }
+        else if (Main.Answer == 2){
+            Main.User.WriteSave(false);
+        }
+        else if (Main.Answer == 3){
+            MafLib.TimedPrint("Are you sure you want to load a previous save? Any unsaved progress will be lost.\n1. No, go back.\n2. Yes, load a previous save.\n", Main.menu_text_speed);
+            Main.Answer = MafLib.askInt();
+            if (Main.Answer == 2){
+                Main.User.LoadSaves();
+            }
+            else{
+                ViewSettings();
+            }
+        }
         else if (Main.Answer == 0){
             SaveSettings(false);
+            Main.User.GameplayLoop();
         }
     }
 
