@@ -11,6 +11,8 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Map;
 
+import javax.swing.plaf.synth.Region;
+
 public class Player extends Entity{
     static FileInputStream FIS;
     static ObjectInput OIS;
@@ -18,9 +20,12 @@ public class Player extends Entity{
     static FileOutputStream FOS;
     static ObjectOutputStream OOS;
 
-    public int X_Position;
-    public int Y_Position;
+    public int Y_Position = 1;
+    public int X_Position = 3;
+    public LevelMap Region = LevelMap.UserBedroom;
+    
     public int Difficulty;
+
     public ArrayList<String> StoryBeatsCompleted = new ArrayList<>();
 
     Player(String Name, int Difficulty){
@@ -117,27 +122,90 @@ public class Player extends Entity{
 
     public void GameplayLoop(){
         MafLib.TimedPrint("How will you proceed?\n", Main.menu_text_speed);
-        MafLib.TimedPrint("1. Move", Main.menu_text_speed);
-        MafLib.TimedPrint("2. View Party Status", Main.menu_text_speed);
-        MafLib.TimedPrint("3. Check Inventory", Main.menu_text_speed);
-        MafLib.TimedPrint("4. Settings & Data", Main.menu_text_speed);
-        System.out.println();
+        MafLib.TimedPrint("1. Move\n", Main.menu_text_speed);
+        MafLib.TimedPrint("2. View Map\n", Main.menu_text_speed);
+        MafLib.TimedPrint("3. View Party Status\n", Main.menu_text_speed);
+        MafLib.TimedPrint("4. Check Inventory\n", Main.menu_text_speed);
+        MafLib.TimedPrint("5. Settings & Data\n", Main.menu_text_speed);
         Main.Answer = MafLib.askInt();
         if (Main.Answer == 1){
-            
+            QueryMove();
         }
-        if (Main.Answer == 2){
+        else if (Main.Answer == 2){
+            System.out.println(Region);
+            MafLib.TimedPrint("Press enter when you are done.", Main.menu_text_speed);
+            MafLib.WaitForEnter();
+        }
+        else if (Main.Answer == 3){
 
         }
-        if (Main.Answer == 3){
+        else if (Main.Answer == 4){
 
         }
-        if (Main.Answer == 4){
+        else if (Main.Answer == 5){
             Preferences.ViewSettings();
         }
         else{
             MafLib.ClearScreen();
-            GameplayLoop();
         }
+        GameplayLoop();
+    }
+
+    public void QueryMove(){
+        MafLib.TimedPrint("Select your desired patht.\n", Main.menu_text_speed);
+        MafLib.TimedPrint("1. Up\n", Main.menu_text_speed);
+        MafLib.TimedPrint("2. Down\n", Main.menu_text_speed);
+        MafLib.TimedPrint("3. Left\n", Main.menu_text_speed);
+        MafLib.TimedPrint("4. Right\n", Main.menu_text_speed);
+        MafLib.TimedPrint("5. Stop Moving\n", Main.menu_text_speed);
+        Main.Answer = MafLib.askInt();
+        Move(Main.Answer);
+    }
+
+    public void Move(int Direction){
+        if (
+            Direction == 1
+         && Y_Position != 0
+         && -1 < Y_Position - 1
+         && Region.Bounds[Y_Position - 1][X_Position] != null
+         && Region.Bounds[Y_Position - 1][X_Position].isCrossable()){
+            Y_Position--;
+        }
+        else if (
+            Direction == 2
+         && Y_Position != Region.Bounds.length
+         && Region.Bounds.length > Y_Position + 1
+         && Region.Bounds[Y_Position + 1][X_Position] != null
+         && Region.Bounds[Y_Position + 1][X_Position].isCrossable()){
+            Y_Position++;
+        }
+        else if (
+            Direction == 3
+         && X_Position != 0
+         && -1 < X_Position - 1
+         && Region.Bounds[Y_Position][X_Position - 1] != null
+         && Region.Bounds[Y_Position][X_Position - 1].isCrossable()){
+            X_Position--;
+        }
+        else if (
+            Direction == 4
+         && Y_Position != Region.Bounds[Y_Position].length
+         && Region.Bounds[Y_Position].length > X_Position + 1
+         && Region.Bounds[Y_Position][X_Position + 1] != null
+         && Region.Bounds[Y_Position][X_Position + 1].isCrossable()){
+            X_Position++;
+        }
+
+       LevelMap Destination = LevelMap.Maps.get(Region.Bounds[Y_Position][X_Position].Destination);
+        if (Destination != null){
+            int new_X = Region.Bounds[Y_Position][X_Position].XPos;
+            int new_Y = Region.Bounds[Y_Position][X_Position].YPos;
+            X_Position = new_X;
+            Y_Position = new_Y;
+            Region = Destination;
+        }
+        MafLib.ClearScreen();
+        System.out.println(Region);
+        Move(MafLib.askInt());
     }
 }
