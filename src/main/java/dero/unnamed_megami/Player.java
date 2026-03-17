@@ -23,10 +23,8 @@ public class Player extends Entity{
     public int Y_Position = 1;
     public int X_Position = 3;
     public LevelMap Region = LevelMap.UserBedroom;
-    
+    public int StorySteps = 0;
     public int Difficulty;
-
-    public ArrayList<String> StoryBeatsCompleted = new ArrayList<>();
 
     Player(String Name, int Difficulty){
         super(Name, "Human", 0, 0, 0, 10, 0, Map.of(
@@ -80,6 +78,7 @@ public class Player extends Entity{
             FOS = new FileOutputStream("User/Save" + SaveSlot + ".umt");
             OOS = new ObjectOutputStream(FOS);
             OOS.writeObject(Difficulty);
+            OOS.writeObject(StorySteps);
             OOS.writeObject(Name);
             OOS.writeObject(Race);
             OOS.close();
@@ -87,6 +86,7 @@ public class Player extends Entity{
         } catch (IOException e) {
             WriteSave(true);
         }
+        GameplayLoop();
     }
 
     public void LoadSaves(){
@@ -96,6 +96,7 @@ public class Player extends Entity{
                 FIS = new FileInputStream("User/Save" + i + ".umt");
                 OIS = new ObjectInputStream(FIS);
                 if (String.valueOf(i).length() < 2){System.out.print("0");}
+                OIS.readObject();
                 OIS.readObject();
                 System.out.println(i + ". " + OIS.readObject());
             } catch (IOException | ClassNotFoundException e) {
@@ -113,14 +114,20 @@ public class Player extends Entity{
             FIS = new FileInputStream("User/Save" + slot + ".umt");
             OIS = new ObjectInputStream(FIS);
             Difficulty = Integer.parseInt(String.valueOf(OIS.readObject()));
+            StorySteps = Integer.parseInt(String.valueOf(OIS.readObject()));
             Name = (String) OIS.readObject();
             Race = (String) OIS.readObject();
+            GameplayLoop();
+
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
     public void GameplayLoop(){
+        if(StorySteps == 0){
+            Scene.Intro.print();
+        }
         MafLib.TimedPrint("How will you proceed?\n", Main.menu_text_speed);
         MafLib.TimedPrint("1. Move\n", Main.menu_text_speed);
         MafLib.TimedPrint("2. View Map\n", Main.menu_text_speed);
