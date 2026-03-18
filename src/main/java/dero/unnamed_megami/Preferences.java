@@ -21,6 +21,7 @@ public class Preferences {
             "1. Text Speed\n" +
             "2. Save Game\n" +
             "3. Load Previous Save\n" +
+            "4. Exit to Menu\n" +
             "0. Save Changes\n",
             Main.menu_text_speed
         );
@@ -41,22 +42,12 @@ public class Preferences {
                 ViewSettings();
             }
         }
+        else if (Main.Answer == 4){
+            Main.main(new String[0]);
+        }
         else if (Main.Answer == 0){
             SaveSettings(false);
             Main.User.GameplayLoop();
-        }
-    }
-
-    public static void ConfigureTextSpeed(){
-        MafLib.TimedPrint("Which text speed do you want?\n", Main.menu_text_speed);
-        MafLib.TimedPrint("1. Slow - The quick brown fox jumps over the lazy dog\n", (long) 150);
-        MafLib.TimedPrint("2. Normal - The quick brown fox jumps over the lazy dog\n", (long) 100);
-        MafLib.TimedPrint("3. Fast - The quick brown fox jumps over the lazy dog\n", (long) 50);
-        MafLib.TimedPrint("4. Instant - The quick brown fox jumps over the lazy dog\n", (long) 0);
-        Main.Answer = MafLib.askInt();
-        if (Main.Answer == 1){
-            Main.menu_text_speed = 150;
-            ViewSettings();
         }
     }
     
@@ -159,5 +150,16 @@ public class Preferences {
         }
     }
 
-
+    public static void ConfigureTextSpeed(){
+        MafLib.TimedPrint("Which text speed do you want?\n", Main.menu_text_speed);
+        MafLib.TimedPrint("1. Slow - The quick brown fox jumps over the lazy dog\n", (long) 150);
+        MafLib.TimedPrint("2. Normal - The quick brown fox jumps over the lazy dog\n", (long) 100);
+        MafLib.TimedPrint("3. Fast - The quick brown fox jumps over the lazy dog\n", (long) 50);
+        MafLib.TimedPrint("4. Instant - The quick brown fox jumps over the lazy dog\n", (long) 0);
+        Main.Answer = MafLib.askInt();
+        if (Main.Answer == 1){
+            Main.menu_text_speed = 150;
+            ViewSettings();
+        }
+    }
 }
