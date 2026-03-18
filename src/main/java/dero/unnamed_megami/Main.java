@@ -85,5 +85,8 @@ class Main{
         else if (Answer == 4){
             System.out.println();
         }
+        else{
+            Main.main(new String[0]);
+        }
     }
 }
