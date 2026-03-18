@@ -19,6 +19,8 @@ import java.util.Arrays;
 @SuppressWarnings("unused")
 class Main{
     public static Player User = new Player("", 0);
+    public static Entity[] Player_Party = {User, Entity.Stella};
+    
     public static long story_text_speed = 100;
     public static long menu_text_speed = 100;
     public static int Answer = 0;
