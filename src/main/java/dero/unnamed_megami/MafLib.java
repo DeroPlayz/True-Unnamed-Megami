@@ -53,7 +53,7 @@ public class MafLib{
         if (MafLib.isNumeric(response)){
             return Integer.valueOf(response);
         }
-        return 1;
+        return 0;
     }
 
     public static int askInt(){
@@ -70,7 +70,7 @@ public class MafLib{
         if (MafLib.isNumeric(response)){
             return Integer.valueOf(response);
         }
-        return 1;
+        return 0;
     }
 
     public static double askDouble(String Prompt){
@@ -87,6 +87,7 @@ public class MafLib{
     }
 
     public static void TimedPrint(String message, long text_speed){
+        System.out.println((message.indexOf("\0")));
         for(int i = 0; i < message.length(); i++){
             /* 0 = Instant
              * 50 = Fast
@@ -101,7 +102,8 @@ public class MafLib{
                 e.printStackTrace();
             }
             if (!String.valueOf(message.charAt(i)).equals("|")){
-                System.out.print(message.charAt(i));}
+                System.out.print(message.charAt(i));
+            }
         }
     }
 
