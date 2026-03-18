@@ -2,21 +2,25 @@ package dero.unnamed_megami;
 
 public class Scene {
     
-    private String Name;
-    private String Contents;
+    public String Contents;
+    public int Step;
 
-    public Scene(String Name, String Contents){
-        this.Name= Name;
+    public Scene(String Contents, int Step){
         this.Contents = Contents;
+        this.Step = Step;
     }
 
-    public void print(){
-        MafLib.TimedPrint(Contents, Main.story_text_speed);
+    public static void print(){
+        if(Main.User.StorySteps == 0){
+            MafLib.TimedPrint(Intro1.Contents, Main.story_text_speed);
+        }
         Main.User.StorySteps++;
     }
 
-    public static Scene Intro = new Scene("Intro 1", "You wake up.| It's Thursday, March 18th of 20XY.|\n"
+    public static Scene Intro1 = new Scene("You wake up.| It's Thursday, March 18th of 20XY.|\n"
         + "It's spring break, so you don't need to worry about getting to class on time.|||| That's nice.\n"
-        + "||||||But it's quiet.|||| " + MafLib.UNDERLINE + "Too" + MafLib.RESET + " quiet.\n"
+        + "||||||But it's quiet.|||| " + MafLib.UNDERLINE + "Too" + MafLib.RESET + " quiet.\n", 1
     );
+
+    public static final Scene[] Scenes = {Intro1};
 }
