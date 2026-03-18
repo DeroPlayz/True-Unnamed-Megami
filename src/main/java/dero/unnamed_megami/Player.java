@@ -9,34 +9,34 @@ import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Map;
-
-import javax.swing.plaf.synth.Region;
+import static dero.unnamed_megami.Main.Player_Party;
 
 public class Player extends Entity{
+
     static FileInputStream FIS;
     static ObjectInput OIS;
-
     static FileOutputStream FOS;
     static ObjectOutputStream OOS;
 
     public int Y_Position = 1;
     public int X_Position = 3;
     public LevelMap Region = LevelMap.UserBedroom;
-    public int StorySteps = 0;
+
+    public ArrayList<Item> Inventory;
+
     public int Difficulty;
 
+    public int StorySteps = 0;
+
     Player(String Name, int Difficulty){
-        super(Name, "Human", 0, 0, 0, 10, 0, Map.of(
-            "Physical", Entity.Normal,
-            "Fire", Entity.Normal,
-            "Ice", Entity.Normal,
-            "Electric", Entity.Normal,
-            "Force", Entity.Normal,
-            "Light", Entity.Normal,
-            "Dark", Entity.Normal,
-            "Almighty", Entity.Normal)
-        );
+        super(Name, "Human", 0, 0, 0, 10, 0,
+            Entity.Normal,
+            Entity.Normal,
+            Entity.Normal,
+            Entity.Normal,
+            Entity.Normal,
+            Entity.Normal,
+            Entity.Normal);
         this.Difficulty = Difficulty;
         GainExp(0);
     }
@@ -125,15 +125,14 @@ public class Player extends Entity{
     }
 
     public void GameplayLoop(){
-        if(StorySteps == 0){
-            Scene.Intro.print();
-        }
+        Scene.print();
         MafLib.TimedPrint("How will you proceed?\n", Main.menu_text_speed);
         MafLib.TimedPrint("1. Move\n", Main.menu_text_speed);
         MafLib.TimedPrint("2. View Map\n", Main.menu_text_speed);
         MafLib.TimedPrint("3. View Party Status\n", Main.menu_text_speed);
         MafLib.TimedPrint("4. Check Inventory\n", Main.menu_text_speed);
         MafLib.TimedPrint("5. Settings & Data\n", Main.menu_text_speed);
+        MafLib.TimedPrint("6. Check Story Log\n", Main.menu_text_speed);
         Main.Answer = MafLib.askInt();
         if (Main.Answer == 1){
             QueryMove();
@@ -144,7 +143,7 @@ public class Player extends Entity{
             MafLib.WaitForEnter();
         }
         else if (Main.Answer == 3){
-
+            CheckPartyStatus();
         }
         else if (Main.Answer == 4){
 
@@ -214,5 +213,21 @@ public class Player extends Entity{
         MafLib.ClearScreen();
         System.out.println(Region);
         Move(MafLib.askInt());
+    }
+
+    public void CheckPartyStatus(){
+        MafLib.TimedPrint("Which party member would you like to check?\n", Main.menu_text_speed);
+        for(int i = 0; i < Player_Party.length; i++){
+            MafLib.TimedPrint((i+1) + ". " + Player_Party[i].Name + " (" + Player_Party[i].Race + ", Level " + Player_Party[i].Level + ")\n", Main.menu_text_speed);
+        }
+        Main.Answer = MafLib.askInt();
+        if (Main.Answer < 1 || Main.Answer > Player_Party.length){
+            CheckPartyStatus();
+        }
+        else{
+            MafLib.TimedPrint(Player_Party[Main.Answer - 1].toString(), Main.menu_text_speed);
+            MafLib.TimedPrint("Press enter to close this menu.", Main.menu_text_speed);
+            MafLib.WaitForEnter();
+        }
     }
 }
