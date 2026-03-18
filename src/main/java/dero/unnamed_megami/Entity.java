@@ -44,8 +44,39 @@ public class Entity {
         this.Affinities = Affinities;
     }
     
+    Entity(String Name, String Race, int Macca, int XP, int Level, int Max_HP, int Max_MP, double PhysAffinity, double FireAffinity, double IceAffinity, double ElecAffinity, double WindAffinity, double LightAffinity, double DarkAffinity){
+        this.Name = Name;
+        this.Race = Race;
+        this.Macca = Macca;
+        this.XP = XP;
+        this.Level = Level;
+        this.Current_HP = Max_HP;
+        this.Max_HP = Max_HP;
+        this.Current_MP = Max_MP;
+        this.Max_MP = Max_MP;
+        Affinities = Map.of(
+            "Physical", PhysAffinity,
+            "Fire", FireAffinity,
+            "Ice", IceAffinity,
+            "Electricity", ElecAffinity,
+            "Wind", WindAffinity,
+            "Light", LightAffinity,
+            "Dark", DarkAffinity
+        );
+    }
+
     public String toString(){
         return Name + "\nLevel " + Level + " (" + XP + " xp, " + (XP_Needed-XP) + " until Level " + (Level+1) + ")" + "\nRace: " + Race + "\nHP: "
         + Current_HP + "/" + Max_HP + "\nMP: " + Current_MP + "/" + Max_MP + "\nMacca: " + Macca + " ♄\n";
     }
+
+    public static Entity Stella = new Entity("Stella", "Beast", 0, 0, 0, 5, 0, 
+        Normal,
+        Weak,
+        Resist,
+        Normal,
+        Normal,
+        Resist,
+        Weak
+    );
 }
