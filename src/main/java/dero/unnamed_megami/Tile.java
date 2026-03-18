@@ -1,6 +1,7 @@
 package dero.unnamed_megami;
 
 public class Tile {
+    public String ID;
     public char Icon;
     public String Formatting = "";
     public int EncounterChance; // Out of 10;
@@ -9,13 +10,15 @@ public class Tile {
     public int XPos;
     public int YPos;
 
-    public Tile(char Icon, String Formatting, int EncounterChance){
+    public Tile(String ID, char Icon, String Formatting, int EncounterChance){
+        this.ID = ID;
         this.Icon = Icon;
         this.Formatting = Formatting;
         this.EncounterChance = EncounterChance;
     }
 
-    public Tile(char Icon, String Formatting, int Destination, int XPos, int YPos){
+    public Tile(String ID, char Icon, String Formatting, int Destination, int XPos, int YPos){
+        this.ID = ID;
         this.Icon = Icon;
         this.Formatting = Formatting;
         this.EncounterChance = 0;
@@ -24,31 +27,57 @@ public class Tile {
         this.YPos = YPos;
     }
 
-    public Tile(char Icon, int EncounterChance){
+    public Tile(String ID, char Icon, int EncounterChance){
+        this.ID = ID;
         this.Icon = Icon;
         this.EncounterChance = EncounterChance;
     }
 
     //Special Tiles
-    public static final Tile Blank = new Tile(' ', 0);
-    public static final Tile Placeholder = new Tile('?', MafLib.MAGENTA + MafLib.BOLD + MafLib.UNDERLINE, 0);
+    public static final Tile Blank = new Tile("Blank", ' ', 0);
+    public static final Tile Placeholder = new Tile("Placeholder", '?', MafLib.MAGENTA + MafLib.BOLD + MafLib.UNDERLINE, 0);
 
-    //Regular Tiles
-    public static final Tile Grass = new Tile('G', MafLib.GREEN, 2);
-    public static final Tile Dirt = new Tile('D', MafLib.YELLOW, 4);
-    public static final Tile Floor = new Tile('■', 4);
-    public static final Tile BedLeft = new Tile('b', MafLib.CYAN, 0);
-    public static final Tile BedRight = new Tile('d', MafLib.CYAN, 0);
+    //Indoor Tiles
+    public static final Tile UserBedroomWindow = new Tile("UserBedroomWindow", '□', 0);
+    public static final Tile Floor = new Tile("Floor", '■', 0);
+    public static final Tile BedLeft = new Tile("BedLeft", 'b', MafLib.CYAN, 0);
+    public static final Tile BedRight = new Tile("BedRight", 'd', MafLib.CYAN, 0);
+    public static final Tile ToiletFacingLeft = new Tile("ToiletFacingLeft", 'd', MafLib.YELLOW, 0);
+    public static final Tile ToiletFacingRight = new Tile("ToiletFacingRight", 'b', MafLib.YELLOW, 0);
+
+    //Outdoor Tiles
+    public static final Tile Grass = new Tile("Grass", 'G', MafLib.GREEN, 2);
+    public static final Tile Dirt = new Tile("Dirt", 'D', MafLib.YELLOW, 4);
+
+    public static final int DEST_User_Bedroom = 1;
+    public static final int DEST_User_House_Hallway1 = 2;
+    public static final int DEST_User_House_Bathroom1 = 3;
+    // public static final int DEST_User_Bedroom = 1;
+    // public static final int DEST_User_Bedroom = 1;
+    // public static final int DEST_User_Bedroom = 1;
 
     //Doors
-    public static final Tile Door_User_Bedroom_To_User_House_Hallway = new Tile(
-        'D', MafLib.UNDERLINE,
-        2, 0, 0);
-    public static final Tile Door_User_House_Hallway_To_User_Bedroom = new Tile(
-        'D', MafLib.UNDERLINE,
-        1, 2, 4);
+    public static final Tile Door_User_Bedroom_To_User_House_Hallway1 = new Tile(
+        "Door_User_Bedroom_To_User_House_Hallway1", 'D', MafLib.UNDERLINE,
+        DEST_User_House_Hallway1, 0, 0);
+
+    public static final Tile Door_User_House_Hallway1_To_User_Bedroom = new Tile(
+        "Door_User_House_Hallway1_To_User_Bedroom", 'D', MafLib.UNDERLINE,
+        DEST_User_Bedroom, 2, 4);
+
+    public static final Tile Door_User_House_Hallway1_To_User_House_Bathroom1 = new Tile(
+        "Door_User_House_Hallway1_To_User_House_Bathroom1", 'D', MafLib.UNDERLINE,
+        DEST_User_House_Bathroom1, 3, 2);
+
+    public static final Tile Door_User_House_Bathroom1_To_User_House_Hallway1 = new Tile(
+        "Door_User_House_Bathroom1_To_User_House_Hallway1", 'D', MafLib.UNDERLINE,
+        DEST_User_House_Hallway1, 0, 7);
     
-    public static final Tile[] Uncrossable_Tiles = {Blank, BedLeft, BedRight};
+    
+    public static final Tile[] Uncrossable_Tiles = {
+        Blank,
+        BedLeft, BedRight
+    };
 
     public boolean isCrossable(){
         for(int i = 0; i < Uncrossable_Tiles.length; i++){

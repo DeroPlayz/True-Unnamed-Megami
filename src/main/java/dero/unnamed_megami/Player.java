@@ -51,6 +51,12 @@ public class Player extends Entity{
         }
     }
 
+    public String toString(){
+        String[] diffs = {"Gentle", "Easy", "Normal", "Challenging", "Hard", MafLib.RED + "Ruthless" + MafLib.RESET, MafLib.RED + MafLib.BOLD + "Merciless" + MafLib.RESET};
+        return Name + "\nLevel " + Level + " (" + XP + " xp, " + (XP_Needed-XP) + " until Level " + (Level+1) + ")" + "\nRace: " + Race + "\nHP: "
+        + Current_HP + "/" + Max_HP + "\nMP: " + Current_MP + "/" + Max_MP + "\nMacca: " + Macca + " ♄\nDifficulty: " + diffs[Difficulty] + "\n";
+    }
+
     public void CreateSave(){
         MafLib.TimedPrint("Initiating a new save file!\n", Main.menu_text_speed);
             MafLib.TimedPrint("Select difficulty. This can be changed later.\n"
@@ -62,7 +68,7 @@ public class Player extends Entity{
             + "6. Ruthless      " + MafLib.BOLD
             + "7. Merciless\n" + MafLib.RESET, Main.menu_text_speed);
         Difficulty = MafLib.askInt();
-        if (Difficulty < -1 || Difficulty > 7){CreateSave();}
+        if (Difficulty < 1 || Difficulty > 7){CreateSave();}
         Name = MafLib.askString("What is your name?\n");
         System.out.println(Name);
         WriteSave(false);
@@ -125,7 +131,7 @@ public class Player extends Entity{
     }
 
     public void GameplayLoop(){
-        Scene.print();
+        
         MafLib.TimedPrint("How will you proceed?\n", Main.menu_text_speed);
         MafLib.TimedPrint("1. Move\n", Main.menu_text_speed);
         MafLib.TimedPrint("2. View Map\n", Main.menu_text_speed);
@@ -135,6 +141,7 @@ public class Player extends Entity{
         MafLib.TimedPrint("6. Check Story Log\n", Main.menu_text_speed);
         Main.Answer = MafLib.askInt();
         if (Main.Answer == 1){
+            System.out.println(Region);
             QueryMove();
         }
         else if (Main.Answer == 2){
@@ -169,6 +176,8 @@ public class Player extends Entity{
     }
 
     public void Move(int Direction){
+        int Old_X = X_Position;
+        int Old_Y = Y_Position;
         if (
             Direction == 1
          && Y_Position != 0
@@ -202,7 +211,40 @@ public class Player extends Entity{
             X_Position++;
         }
 
-       LevelMap Destination = LevelMap.Maps.get(Region.Bounds[Y_Position][X_Position].Destination);
+        if (Region.Bounds[Y_Position][X_Position].ID.contains("Toilet")){
+            MafLib.TimedPrint("Would you like to go #1 or #2?\n", Main.menu_text_speed);
+            Main.Answer = MafLib.askInt();
+            if (Main.Answer == 1){
+                MafLib.TimedPrint("You relieved yourself. You didn't stain your pants or spill on the floor.\n", Main.menu_text_speed);
+            }
+            else if (Main.Answer == 2){
+                MafLib.TimedPrint("You moved your bowels. You felt your muscles tensing to push it out.\n", Main.menu_text_speed);
+            }
+            else{
+                MafLib.TimedPrint("Shit or get off the pot!\n", 10);
+                MafLib.WaitForEnter();
+                X_Position = Old_X;
+                Y_Position = Old_Y;
+            }
+        }
+        if (Region.Bounds[Y_Position][X_Position].ID.contains("UserBedroomWindow")){
+            MafLib.TimedPrint("Would you like to look out the window?\n1. Yes\n2. No\n", Main.menu_text_speed);
+            Main.Answer = MafLib.askInt();
+            if (Main.Answer == 1){
+                MafLib.TimedPrint("You look out the window, but the world looks unfamiliar.\n"
+                + "|||" + MafLib.BOLD + "Vastly" + MafLib.RESET + " unfamiliar.\n"
+                + "Corpses litter the streets; human, dog, cat, bird, " + MafLib.UNDERLINE
+                + "anything" + MafLib.RESET + " you could imagine.\n"
+                + "|||Gutwrenching.\n|||Utterly gutwrenching.\n", Main.story_text_speed);
+                MafLib.WaitForEnter();
+            }
+            else{
+                X_Position = Old_X;
+                Y_Position = Old_Y;
+            }
+        }
+
+        LevelMap Destination = LevelMap.Maps.get(Region.Bounds[Y_Position][X_Position].Destination);
         if (Destination != null){
             int new_X = Region.Bounds[Y_Position][X_Position].XPos;
             int new_Y = Region.Bounds[Y_Position][X_Position].YPos;
