@@ -87,7 +87,6 @@ public class MafLib{
     }
 
     public static void TimedPrint(String message, long text_speed){
-        System.out.println((message.indexOf("\0")));
         for(int i = 0; i < message.length(); i++){
             /* 0 = Instant
              * 50 = Fast
@@ -95,7 +94,52 @@ public class MafLib{
              * 150 = Slow
              * 200 = Are you kidding me? */
             long current_speed = text_speed;
-            if (String.valueOf(message.charAt(i)).equals("|")){current_speed = text_speed * 2;}
+            // if (String.valueOf(message.charAt(i)).equals("|")){current_speed = text_speed * 2;}
+            // System.out.println(i);
+            if (i < message.length()-2){
+                // System.out.println(message.substring(i, i+2).contains("+("));
+                if (message.substring(i, i+2).contains("+(")){
+                    String formatting = message.substring(i+1, i + message.substring(i).indexOf(")") + 1);
+                    // System.out.println(formatting);
+                    if (formatting.contains("RESET")){System.out.print(MafLib.RESET);}
+                    if (formatting.contains("CLEARC")){System.out.print(MafLib.CLEARC);}
+                    if (formatting.contains("CLEARF")){System.out.print(MafLib.CLEARF);}
+                    if (formatting.contains("WHITE")){System.out.print(MafLib.WHITE);}
+                    if (formatting.contains("WHITEH")){System.out.print(MafLib.WHITEH);}
+                    if (formatting.contains("BLACK")){System.out.print(MafLib.BLACK);}
+                    if (formatting.contains("BLACKH")){System.out.print(MafLib.BLACKH);}
+                    if (formatting.contains("RED")){System.out.print(MafLib.RED);}
+                    if (formatting.contains("REDH")){System.out.print(MafLib.REDH);}
+                    if (formatting.contains("GREEN")){System.out.print(MafLib.GREEN);}
+                    if (formatting.contains("GREENH")){System.out.print(MafLib.GREENH);}
+                    if (formatting.contains("YELLOW")){System.out.print(MafLib.YELLOW);}
+                    if (formatting.contains("YELLOWH")){System.out.print(MafLib.YELLOWH);}
+                    if (formatting.contains("BLUE")){System.out.print(MafLib.BLUE);}
+                    if (formatting.contains("BLUEH")){System.out.print(MafLib.BLUEH);}
+                    if (formatting.contains("MAGENTA")){System.out.print(MafLib.MAGENTA);}
+                    if (formatting.contains("MAGENTAH")){System.out.print(MafLib.MAGENTAH);}
+                    if (formatting.contains("CYAN")){System.out.print(MafLib.CYAN);}
+                    if (formatting.contains("CYANH")){System.out.print(MafLib.CYANH);}
+                    if (formatting.contains("BLINK")){System.out.print(MafLib.BLINK);}
+                    if (formatting.contains("BOLD")){System.out.print(MafLib.BOLD);}
+                    if (formatting.contains("UNDERLINE")){System.out.print(MafLib.UNDERLINE);}
+                    if (formatting.contains("STRIKE")){System.out.print(MafLib.STRIKE);}
+                    if (formatting.contains("INVERT")){System.out.print(MafLib.INVERT);}
+                    if (formatting.contains("HIDE")){System.out.print(MafLib.HIDE);}
+                    if (formatting.contains("WAIT:")){
+                        int delay = Integer.valueOf(formatting.substring(formatting.indexOf(":")+1, formatting.indexOf(")")));
+                        for(int j = 0; j < delay; j++){
+                            try {
+                                Thread.sleep(current_speed);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                    i += formatting.length() + 1;
+                    // System.out.println(message.substring(i));
+                }
+            }
             try {
                 Thread.sleep(current_speed);
             } catch (InterruptedException e) {
