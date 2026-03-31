@@ -32,7 +32,7 @@ public class LevelMap {
         {UserBedroomWindow, Floor, Floor, Floor, Floor},
         {Floor, Floor, Floor, Floor, Floor},
         {Floor, Floor, Floor, Floor, Floor},
-        {Floor, Door_User_Bedroom_To_User_House_Hallway1, Floor, Floor},
+        {Floor, Floor, Door_User_Bedroom_To_User_House_Hallway1, Floor, Floor},
     });
     public static final LevelMap UserHouseHallway1 = new LevelMap(new Tile[][]{
         {Door_User_House_Hallway1_To_User_Bedroom, Floor, Blank},
