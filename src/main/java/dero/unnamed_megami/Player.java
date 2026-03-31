@@ -9,6 +9,8 @@ import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
+
 import static dero.unnamed_megami.Main.Player_Party;
 
 public class Player extends Entity{
@@ -26,7 +28,7 @@ public class Player extends Entity{
 
     public int Difficulty;
 
-    public int StorySteps = 0;
+    public ArrayList<String> CompletedScenes = new ArrayList<>();
 
     Player(String Name, int Difficulty){
         super(Name, "Human", 0, 0, 0, 10, 0,
@@ -84,9 +86,13 @@ public class Player extends Entity{
             FOS = new FileOutputStream("User/Save" + SaveSlot + ".umt");
             OOS = new ObjectOutputStream(FOS);
             OOS.writeObject(Difficulty);
-            OOS.writeObject(StorySteps);
             OOS.writeObject(Name);
             OOS.writeObject(Race);
+            OOS.writeObject("Story Steps:");
+            OOS.writeObject(CompletedScenes.size());
+            for(int i = 0; i < CompletedScenes.size(); i++){
+                OOS.writeObject(CompletedScenes.get(i));
+            }
             OOS.close();
             FOS.close();
         } catch (IOException e) {
@@ -102,7 +108,6 @@ public class Player extends Entity{
                 FIS = new FileInputStream("User/Save" + i + ".umt");
                 OIS = new ObjectInputStream(FIS);
                 if (String.valueOf(i).length() < 2){System.out.print("0");}
-                OIS.readObject();
                 OIS.readObject();
                 System.out.println(i + ". " + OIS.readObject());
             } catch (IOException | ClassNotFoundException e) {
@@ -120,9 +125,19 @@ public class Player extends Entity{
             FIS = new FileInputStream("User/Save" + slot + ".umt");
             OIS = new ObjectInputStream(FIS);
             Difficulty = Integer.parseInt(String.valueOf(OIS.readObject()));
-            StorySteps = Integer.parseInt(String.valueOf(OIS.readObject()));
             Name = (String) OIS.readObject();
             Race = (String) OIS.readObject();
+            OIS.readObject();
+            int CompletedScenesLength = Integer.parseInt(String.valueOf(OIS.readObject()));
+            System.out.println(CompletedScenesLength);
+            for(int i = 0; i < CompletedScenesLength; i++){
+                if (Main.User.CompletedScenes == null){
+                    Main.User.CompletedScenes = new ArrayList<>(Arrays.asList((String) OIS.readObject()));
+                }
+                else{
+                Main.User.CompletedScenes.add((String) OIS.readObject());
+            }
+            }            
             GameplayLoop();
 
         } catch (IOException | ClassNotFoundException e) {
@@ -131,7 +146,7 @@ public class Player extends Entity{
     }
 
     public void GameplayLoop(){
-        
+        Scene.Intro_Wake_Up.print();
         MafLib.TimedPrint("How will you proceed?\n", Main.menu_text_speed);
         MafLib.TimedPrint("1. Move\n", Main.menu_text_speed);
         MafLib.TimedPrint("2. View Map\n", Main.menu_text_speed);
@@ -142,7 +157,17 @@ public class Player extends Entity{
         Main.Answer = MafLib.askInt();
         if (Main.Answer == 1){
             System.out.println(Region);
-            QueryMove();
+            Main.Answer = -1;
+            MafLib.TimedPrint("Select your desired path.\n", Main.menu_text_speed);
+            MafLib.TimedPrint("1. Up\n", Main.menu_text_speed);
+            MafLib.TimedPrint("2. Down\n", Main.menu_text_speed);
+            MafLib.TimedPrint("3. Left\n", Main.menu_text_speed);
+            MafLib.TimedPrint("4. Right\n", Main.menu_text_speed);
+            MafLib.TimedPrint("5. Stop Moving\n", Main.menu_text_speed);
+            while(Main.Answer < 1 || Main.Answer > 5){
+                Main.Answer = MafLib.askInt();
+            }
+            Move(Main.Answer);
         }
         else if (Main.Answer == 2){
             System.out.println(Region);
@@ -158,21 +183,13 @@ public class Player extends Entity{
         else if (Main.Answer == 5){
             Preferences.ViewSettings();
         }
+        else if (Main.Answer == 6){
+            Scene.ReviewStory();
+        }
         else{
             MafLib.ClearScreen();
         }
         GameplayLoop();
-    }
-
-    public void QueryMove(){
-        MafLib.TimedPrint("Select your desired patht.\n", Main.menu_text_speed);
-        MafLib.TimedPrint("1. Up\n", Main.menu_text_speed);
-        MafLib.TimedPrint("2. Down\n", Main.menu_text_speed);
-        MafLib.TimedPrint("3. Left\n", Main.menu_text_speed);
-        MafLib.TimedPrint("4. Right\n", Main.menu_text_speed);
-        MafLib.TimedPrint("5. Stop Moving\n", Main.menu_text_speed);
-        Main.Answer = MafLib.askInt();
-        Move(Main.Answer);
     }
 
     public void Move(int Direction){
@@ -210,51 +227,48 @@ public class Player extends Entity{
          && Region.Bounds[Y_Position][X_Position + 1].isCrossable()){
             X_Position++;
         }
+        if (Direction != 5){
+            if (Region.Bounds[Y_Position][X_Position].ID.contains("Toilet")){
+                MafLib.TimedPrint("Would you like to go #1 or #2?\n", Main.menu_text_speed);
+                Main.Answer = MafLib.askInt();
+                if (Main.Answer == 1){
+                    MafLib.TimedPrint("You relieved yourself. You didn't stain your pants or spill on the floor.\n", Main.menu_text_speed);
+                }
+                else if (Main.Answer == 2){
+                    MafLib.TimedPrint("You moved your bowels. You felt your muscles tensing to push it out.\n", Main.menu_text_speed);
+                }
+                else{
+                    MafLib.TimedPrint("Shit or get off the pot!\n", 10);
+                    MafLib.WaitForEnter();
+                    X_Position = Old_X;
+                    Y_Position = Old_Y;
+                }
+            }
+            if (Region.Bounds[Y_Position][X_Position].ID.contains("UserBedroomWindow")){
+                MafLib.TimedPrint("Would you like to look out the window?\n1. Yes\n2. No\n", Main.menu_text_speed);
+                Main.Answer = MafLib.askInt();
+                if (Main.Answer == 1){
+                    Scene.Intro_Look_Window.print();
+                    MafLib.WaitForEnter();
+                }
+                else{
+                    X_Position = Old_X;
+                    Y_Position = Old_Y;
+                }
+            }
 
-        if (Region.Bounds[Y_Position][X_Position].ID.contains("Toilet")){
-            MafLib.TimedPrint("Would you like to go #1 or #2?\n", Main.menu_text_speed);
-            Main.Answer = MafLib.askInt();
-            if (Main.Answer == 1){
-                MafLib.TimedPrint("You relieved yourself. You didn't stain your pants or spill on the floor.\n", Main.menu_text_speed);
+            LevelMap Destination = LevelMap.Maps.get(Region.Bounds[Y_Position][X_Position].Destination);
+            if (Destination != null){
+                int new_X = Region.Bounds[Y_Position][X_Position].XPos;
+                int new_Y = Region.Bounds[Y_Position][X_Position].YPos;
+                X_Position = new_X;
+                Y_Position = new_Y;
+                Region = Destination;
             }
-            else if (Main.Answer == 2){
-                MafLib.TimedPrint("You moved your bowels. You felt your muscles tensing to push it out.\n", Main.menu_text_speed);
-            }
-            else{
-                MafLib.TimedPrint("Shit or get off the pot!\n", 10);
-                MafLib.WaitForEnter();
-                X_Position = Old_X;
-                Y_Position = Old_Y;
-            }
+            MafLib.ClearScreen();
+            System.out.println(Region);
+            Move(MafLib.askInt());
         }
-        if (Region.Bounds[Y_Position][X_Position].ID.contains("UserBedroomWindow")){
-            MafLib.TimedPrint("Would you like to look out the window?\n1. Yes\n2. No\n", Main.menu_text_speed);
-            Main.Answer = MafLib.askInt();
-            if (Main.Answer == 1){
-                MafLib.TimedPrint("You look out the window, but the world looks unfamiliar.\n"
-                + "|||" + MafLib.BOLD + "Vastly" + MafLib.RESET + " unfamiliar.\n"
-                + "Corpses litter the streets; human, dog, cat, bird, " + MafLib.UNDERLINE
-                + "anything" + MafLib.RESET + " you could imagine.\n"
-                + "|||Gutwrenching.\n|||Utterly gutwrenching.\n", Main.story_text_speed);
-                MafLib.WaitForEnter();
-            }
-            else{
-                X_Position = Old_X;
-                Y_Position = Old_Y;
-            }
-        }
-
-        LevelMap Destination = LevelMap.Maps.get(Region.Bounds[Y_Position][X_Position].Destination);
-        if (Destination != null){
-            int new_X = Region.Bounds[Y_Position][X_Position].XPos;
-            int new_Y = Region.Bounds[Y_Position][X_Position].YPos;
-            X_Position = new_X;
-            Y_Position = new_Y;
-            Region = Destination;
-        }
-        MafLib.ClearScreen();
-        System.out.println(Region);
-        Move(MafLib.askInt());
     }
 
     public void CheckPartyStatus(){
