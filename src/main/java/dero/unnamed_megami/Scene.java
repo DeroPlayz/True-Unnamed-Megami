@@ -2,6 +2,7 @@ package dero.unnamed_megami;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import org.apache.commons.lang3.ArrayUtils;
 
 public class Scene {
 
@@ -16,15 +17,10 @@ public class Scene {
     }
 
     public void print(){
-        if(!Main.User.CompletedScenes.contains(ID)){
+        if(Main.User.CompletedScenes.get(ID) == false){
             MafLib.TimedPrint(Contents, Main.story_text_speed);
+            Main.User.CompletedScenes.put(ID, true);
             MafLib.WaitForEnter();
-            if (Main.User.CompletedScenes == null){
-                Main.User.CompletedScenes = new ArrayList<>(Arrays.asList(ID));
-            }
-            else{
-                Main.User.CompletedScenes.add(ID);
-            }
         }
     }
 
@@ -36,7 +32,7 @@ public class Scene {
     public static final Scene Intro_Wake_Up = new Scene("Intro_Wake_Up",
     "You wake up.+(WAIT:1) It's Thursday, March 18th of 20XY.|\n" +
     "It's spring break, so you don't need to worry about getting to class on time.+(WAIT:6) That's nice.\n" +
-    "+(WAIT:10)But it's quiet. +(UNDERLINE WAIT:8)Too+(RESET) quiet.\n", "Waking Up...");
+    "+(WAIT:10)But it's quiet. +(UNDERLINE WAIT:8)Too+(RESET) quiet.\n", "Waking up...");
 
     public static final Scene Intro_Look_Window = new Scene("Intro_Look_Window",
     "You look out the window, but the world looks unfamiliar.\n" +
@@ -47,27 +43,42 @@ public class Scene {
 
     public static final Scene[] Intro = {Intro_Wake_Up, Intro_Look_Window};
 
+    public static final Scene[] All_Scenes = ArrayUtils.addAll(Intro);
+ 
     public static void ReviewStory(){
+        // for(int i = 0; i < All_Scenes.length; i++){
+            // System.out.println(All_Scenes[i].ID);
+        // }
         MafLib.TimedPrint("What would you like to review?\n1. Intro\n0. Nevermind\n", Main.menu_text_speed);
         Main.Answer = MafLib.askInt();
-        if (Main.Answer < -1 || Main.Answer > 1){
+        if (Main.Answer == 0){
+            Main.User.GameplayLoop();
+        }
+        else if (Main.Answer < -1 || Main.Answer > 1){
             MafLib.ClearScreen();
             ReviewStory();
-        }
-        else if (Main.Answer == 0){
-            Main.User.GameplayLoop();
         }
         else if (Main.Answer == 1){
             Main.Answer = -1;
             MafLib.TimedPrint("Which scene?\n", 0);
             for(int i = 0; i < Intro.length; i++){
-                MafLib.TimedPrint((i+1) + ". " + Intro[i].Desc + "\n", Main.menu_text_speed);
+                if(Main.User.CompletedScenes.get(Intro[i].ID)){
+                    MafLib.TimedPrint((i+1) + ". " + Intro[i].Desc + "\n", Main.menu_text_speed);
+                }
             }
-            while(Main.Answer < 0 || Main.Answer > Intro.length-1){
-                Main.Answer = MafLib.askInt() - 1;
+            MafLib.TimedPrint("0. Nevermind\n", Main.menu_text_speed);
+            if (Main.Answer == 0){
+                System.out.println("Loop!");
+                Main.User.GameplayLoop();
             }
-            Intro[Main.Answer].review();
-            ReviewStory();
+            else{
+                while(Main.Answer < 0 || Main.Answer > Intro.length-1){
+                    Main.Answer = MafLib.askInt() - 1;
+                    if (Main.User.CompletedScenes.get(Intro[Main.Answer].ID) == false){Main.Answer = -1;}
+                }
+                Intro[Main.Answer].review();
+                ReviewStory();
+            }
         }
     }
 }
