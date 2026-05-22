@@ -10,6 +10,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import static dero.unnamed_megami.Main.Player_Party;
 
@@ -28,7 +31,11 @@ public class Player extends Entity{
 
     public int Difficulty;
 
-    public ArrayList<String> CompletedScenes = new ArrayList<>();
+    public HashMap<String, Boolean> CompletedScenes = new HashMap<>(){{
+        for(int i = 0; i < Scene.All_Scenes.length; i++){
+            put(Scene.All_Scenes[i].ID, false);
+        }
+    }};
 
     Player(String Name, int Difficulty){
         super(Name, "Human", 0, 0, 0, 10, 0,
@@ -79,7 +86,7 @@ public class Player extends Entity{
     public void WriteSave(boolean Folder_Exists){
         try {
             if (Folder_Exists == false){Files.createDirectory(Path.of("User"));}
-            int SaveSlot = MafLib.askInt("Which slot will you save in?\n");
+                int SaveSlot = MafLib.askInt("Which slot will you save in?\n");
             if (SaveSlot < 1 || SaveSlot > 10){
                 WriteSave(false);
             }
@@ -88,10 +95,17 @@ public class Player extends Entity{
             OOS.writeObject(Difficulty);
             OOS.writeObject(Name);
             OOS.writeObject(Race);
-            OOS.writeObject("Story Steps:");
-            OOS.writeObject(CompletedScenes.size());
-            for(int i = 0; i < CompletedScenes.size(); i++){
-                OOS.writeObject(CompletedScenes.get(i));
+            int ScenesViewed = 0;
+            for(Map.Entry<String, Boolean> ent : CompletedScenes.entrySet()){
+                if (ent.getValue().equals(true)) {
+                    ScenesViewed++; 
+                }
+            }
+            OOS.writeObject(ScenesViewed);
+            for(Map.Entry<String, Boolean> ent : CompletedScenes.entrySet()){
+                if (ent.getValue().equals(true)) {
+                    OOS.writeObject(ent.getKey()); 
+                }
             }
             OOS.close();
             FOS.close();
@@ -127,17 +141,10 @@ public class Player extends Entity{
             Difficulty = Integer.parseInt(String.valueOf(OIS.readObject()));
             Name = (String) OIS.readObject();
             Race = (String) OIS.readObject();
-            OIS.readObject();
             int CompletedScenesLength = Integer.parseInt(String.valueOf(OIS.readObject()));
-            System.out.println(CompletedScenesLength);
             for(int i = 0; i < CompletedScenesLength; i++){
-                if (Main.User.CompletedScenes == null){
-                    Main.User.CompletedScenes = new ArrayList<>(Arrays.asList((String) OIS.readObject()));
-                }
-                else{
-                Main.User.CompletedScenes.add((String) OIS.readObject());
+                CompletedScenes.put((String) OIS.readObject(), true);
             }
-            }            
             GameplayLoop();
 
         } catch (IOException | ClassNotFoundException e) {
