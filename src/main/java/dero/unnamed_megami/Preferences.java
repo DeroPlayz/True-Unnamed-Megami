@@ -30,13 +30,14 @@ public class Preferences {
             ConfigureTextSpeed();
         }
         else if (Main.Answer == 2){
-            Main.User.WriteSave(false);
+            UIO.WriteSave(false);
         }
         else if (Main.Answer == 3){
             MafLib.TimedPrint("Are you sure you want to load a previous save? Any unsaved progress will be lost.\n1. No, go back.\n2. Yes, load a previous save.\n", Main.menu_text_speed);
             Main.Answer = MafLib.askInt();
             if (Main.Answer == 2){
-                Main.User.LoadSaves();
+                UIO.RetrieveSaves();
+                UIO.LoadSave();
             }
             else{
                 ViewSettings();

@@ -12,7 +12,7 @@ class Main{
     public static long menu_text_speed = 100;
     public static int Answer = 0;
     
-    public static void main(String[] args){
+    public static void main(String[] args) {
         // Source - https://stackoverflow.com/a/23487534
         // Posted by bobah, modified by community. See post 'Timeline' for change history
         // Retrieved 2026-02-17, License - CC BY-SA 3.0
@@ -61,10 +61,11 @@ class Main{
         );
         Answer = MafLib.askInt();
         if (Answer == 1){
-            User.CreateSave();
+            UIO.CreateSave();
         }
         else if (Answer == 2){
-            User.LoadSaves();
+            UIO.RetrieveSaves();
+            UIO.LoadSave();
         }
         else if (Answer == 3){
             Preferences.ViewSettings();

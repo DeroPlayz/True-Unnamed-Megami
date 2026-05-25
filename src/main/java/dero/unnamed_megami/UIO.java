@@ -34,8 +34,8 @@ public class UIO {
 
     public static void WriteSave(boolean Folder_Exists){
         try {
-            if (Folder_Exists == false){Files.createDirectory(Path.of("User"));}
-                int SaveSlot = MafLib.askInt("Which slot will you save in?\n");
+            int SaveSlot = MafLib.askInt("Which slot will you save in?\n");
+            if (Folder_Exists == false){Files.createDirectory(Path.of("User/Save" + SaveSlot));}
             if (SaveSlot < 1 || SaveSlot > 10){
                 WriteSave(false);
             }
@@ -83,5 +83,6 @@ public class UIO {
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+        Main.User.GameplayLoop();
     }
 }
